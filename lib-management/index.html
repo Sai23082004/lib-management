@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Library Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: #37517e;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #2c4066;
+            transform: scale(1.05);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .main-body {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+
+        .left-content {
+            flex: 1;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .left-content h1 {
+            font-size: 2.5rem;
+            color: #37517e;
+            margin-bottom: 15px;
+            font-weight: bold;
+            animation: slideInLeft 1s ease-in-out;
+        }
+
+        .left-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInBounce 1.5s ease-in-out;
+        }
+
+        .login-section {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-buttons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .login-btn {
+            background-color: #37517e;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 150px;
+        }
+
+        .login-btn:hover, .login-btn.active {
+            background-color: #2c4066;
+            transform: scale(1.05);
+        }
+
+        .login-form {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeInScale 0.5s ease-in-out;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .login-form h2 {
+            font-size: 1.5rem;
+            color: #37517e;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            color: #37517e;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #37517e;
+            box-shadow: 0 0 8px rgba(55, 81, 126, 0.3);
+            outline: none;
+        }
+
+        .sign-in-btn {
+            background-color: #37517e;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .sign-in-btn:hover {
+            background-color: #2c4066;
+            transform: scale(1.05);
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .form-group.error input {
+            border-color: #ff0000;
+        }
+
+        .footer {
+            background-color: #37517e;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            border-top: 3px solid #2c4066;
+        }
+
+        .footer a {
+            color: #f0b619;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #fff;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInBounce {
+            0% { opacity: 0; transform: translateY(20px); }
+            60% { opacity: 1; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -250px;
+                width: 250px;
+                height: 100vh;
+                background-color: #37517e;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                padding: 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+                transition: right 0.3s ease-in-out;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 998;
+            }
+
+            .overlay.active {
+                display: block;
+            }
+
+            .main-body {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .left-content h1 {
+                font-size: 2rem;
+            }
+
+            .left-content img {
+                max-width: 80%;
+            }
+
+            .login-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .login-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">Online Library Management System</a>
+        <button class="nav-toggle" id="nav-toggle">☰</button>
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="overlay" id="overlay"></div>
+
+    <section class="main-body">
+        <div class="left-content">
+            <h1>Get Better Read on the World</h1>
+            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                 alt="Library Image">
+        </div>
+
+        <div class="login-section">
+            <div class="login-buttons">
+                <button class="login-btn active" id="student-btn">Student</button>
+                <button class="login-btn" id="admin-btn">Admin</button>
+            </div>
+
+            <div class="login-form active" id="student-form">
+                <h2>Welcome to Student Library System</h2>
+                <form id="student-login-form">
+                    <div class="form-group">
+                        <label for="student-username">Username</label>
+                        <input type="text" id="student-username" name="username" placeholder="Enter username" required>
+                        <span class="error-message" id="student-username-error"></span>
+                    </div>
+                    <button type="submit" class="sign-in-btn">Sign In</button>
+                </form>
+            </div>
+
+            <div class="login-form" id="admin-form">
+                <h2>Welcome to Admin Library System</h2>
+                <form id="admin-login-form">
+                    <div class="form-group">
+                        <label for="admin-username">Username</label>
+                        <input type="text" id="admin-username" name="username" placeholder="Enter username" required>
+                        <span class="error-message" id="admin-username-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">Password</label>
+                        <input type="password" id="admin-password" name="password" placeholder="Enter password" required>
+                        <span class="error-message" id="admin-password-error"></span>
+                    </div>
+                    <div class="error-message" id="admin-general-error"></div>
+                    <button type="submit" class="sign-in-btn">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© Copyright by <a href="#">Shinobi Systems</a></p>
+    </footer>
+
+    <script>
+        // DOM elements
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
+        const studentBtn = document.getElementById('student-btn');
+        const adminBtn = document.getElementById('admin-btn');
+        const studentForm = document.getElementById('student-form');
+        const adminForm = document.getElementById('admin-form');
+        const studentLoginForm = document.getElementById('student-login-form');
+        const adminLoginForm = document.getElementById('admin-login-form');
+
+        // Navbar toggle
+        navToggle.addEventListener('click', () => {
+            const isActive = navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            navToggle.textContent = isActive ? '✖' : '☰';
+        });
+
+        overlay.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            navToggle.textContent = '☰';
+        });
+
+        // Switch between forms
+        studentBtn.addEventListener('click', () => switchForm('student'));
+        adminBtn.addEventListener('click', () => switchForm('admin'));
+
+        function switchForm(type) {
+            studentForm.classList.toggle('active', type === 'student');
+            adminForm.classList.toggle('active', type === 'admin');
+            studentBtn.classList.toggle('active', type === 'student');
+            adminBtn.classList.toggle('active', type === 'admin');
+        }
+
+        // Handle form submissions
+        async function handleLogin(e, formType, endpoint) {
+            e.preventDefault();
+            clearErrors(formType);
+
+            const username = document.getElementById(`${formType}-username`).value.trim();
+            const password = formType === 'admin' ? document.getElementById('admin-password').value.trim() : null;
+            let isValid = true;
+
+            if (!username) {
+                showError(formType, 'username', 'Username is required.');
+                isValid = false;
+            }
+            if (formType === 'admin' && !password) {
+                showError(formType, 'password', 'Password is required.');
+                isValid = false;
+            }
+
+            if (isValid) {
+                try {
+                    const payload = { email: username };
+                    if (password) payload.password = password;
+
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        if (data.email) showError(formType, 'username', data.email[0]);
+                        if (data.password) showError(formType, 'password', data.password[0]);
+                        if (!data.email && !data.password) {
+                            showGeneralError(formType, data.detail || 'Login failed.');
+                        }
+                        return;
+                    }
+
+                    // Store tokens in local storage using the provided keys
+                    localStorage.setItem('access_token', data.token); // 'token' as access token
+                    localStorage.setItem('refresh_token', data.refresh); // 'refresh' as refresh token
+                    console.log(`${formType} login successful:`, data);
+                    // Redirect to vendor.html
+                    window.location.href = 'vender.html';
+
+                } catch (error) {
+                    showGeneralError(formType, 'An error occurred. Please try again.');
+                    console.error('Login error:', error);
+                }
+            }
+        }
+
+        // Admin login
+        adminLoginForm.addEventListener('submit', (e) => 
+            handleLogin(e, 'admin', 'http://127.0.0.1:8000/api/login/')
+        );
+
+        // Student login (example endpoint)
+        studentLoginForm.addEventListener('submit', (e) => 
+            handleLogin(e, 'student', 'http://127.0.0.1:8000/api/student-login/')
+        );
+
+        // Utility functions
+        function showError(formType, field, message) {
+            const input = document.getElementById(`${formType}-${field}`);
+            const errorElement = document.getElementById(`${formType}-${field}-error`);
+            errorElement.textContent = message;
+            input.parentElement.classList.add('error');
+        }
+
+        function showGeneralError(formType, message) {
+            document.getElementById(`${formType}-general-error`).textContent = message;
+        }
+
+        function clearErrors(formType) {
+            const form = document.getElementById(`${formType}-form`);
+            form.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            form.querySelectorAll('.form-group').forEach(group => group.classList.remove('error'));
+        }
+
+        // Initialize with student form
+        switchForm('student');
+    </script>
+</body>
+</html>
