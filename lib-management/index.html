@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-site-verification" content="wyV9hIs46a7cM1ddiHYdETBjstGnW1ddhMFDGZTWFNE" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -155,6 +156,7 @@
 
         .input-group {
             margin-bottom: 15px;
+            position: relative;
         }
 
         .input-group label {
@@ -176,6 +178,16 @@
         .input-group input:focus {
             border-color: #4285f4;
             outline: none;
+        }
+
+        .input-group .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 65%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #5f6368;
+            font-size: 1rem;
         }
 
         .error-text {
@@ -344,6 +356,32 @@
             100% { transform: rotateY(360deg); }
         }
 
+        /* Network Status Popup */
+        .network-status {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1002;
+            font-size: 0.9rem;
+        }
+
+        .network-status.offline {
+            display: block;
+            background: #d93025;
+            color: #fff;
+        }
+
+        .network-status.online {
+            display: block;
+            background: #34c759;
+            color: #fff;
+        }
+
         @media (max-width: 768px) {
             .nav-toggle {
                 display: block;
@@ -481,11 +519,13 @@
                     <div class="input-group">
                         <label for="registerPassword">Password</label>
                         <input type="password" id="registerPassword" name="password" placeholder="Enter your password" required>
+                        <i class="fas fa-eye toggle-password" id="toggleRegisterPassword"></i>
                         <span class="error-text" id="registerPasswordError"></span>
                     </div>
                     <div class="input-group">
                         <label for="registerConfirmPassword">Confirm Password</label>
                         <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                        <i class="fas fa-eye toggle-password" id="toggleRegisterConfirmPassword"></i>
                         <span class="error-text" id="registerConfirmPasswordError"></span>
                     </div>
                     <span class="error-text" id="registerGeneralError"></span>
@@ -609,6 +649,8 @@
         <p>© 2025 <a href="#">Shinobi Systems</a></p>
     </footer>
 
+    <div class="network-status" id="networkStatus"></div>
+
     <script>
         // API Base URL
         const api = "https://lib-management-backend-hu2z.onrender.com/api/";
@@ -651,6 +693,9 @@
         const resetLoading = document.getElementById('resetLoading');
         const resendOtp = document.getElementById('resendOtp');
         const resendForgotOtp = document.getElementById('resendForgotOtp');
+        const toggleRegisterPassword = document.getElementById('toggleRegisterPassword');
+        const toggleRegisterConfirmPassword = document.getElementById('toggleRegisterConfirmPassword');
+        const networkStatus = document.getElementById('networkStatus');
         let otpTimerInterval;
         let forgotOtpTimerInterval;
         let registrationData = null;
@@ -728,6 +773,33 @@
             navbarBrand.textContent = 'Library Management System';
         }
 
+        // Password Visibility Toggle
+        toggleRegisterPassword.addEventListener('click', () => {
+            const passwordInput = document.getElementById('registerPassword');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleRegisterPassword.classList.remove('fa-eye');
+                toggleRegisterPassword.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleRegisterPassword.classList.remove('fa-eye-slash');
+                toggleRegisterPassword.classList.add('fa-eye');
+            }
+        });
+
+        toggleRegisterConfirmPassword.addEventListener('click', () => {
+            const confirmPasswordInput = document.getElementById('registerConfirmPassword');
+            if (confirmPasswordInput.type === 'password') {
+                confirmPasswordInput.type = 'text';
+                toggleRegisterConfirmPassword.classList.remove('fa-eye');
+                toggleRegisterConfirmPassword.classList.add('fa-eye-slash');
+            } else {
+                confirmPasswordInput.type = 'password';
+                toggleRegisterConfirmPassword.classList.remove('fa-eye-slash');
+                toggleRegisterConfirmPassword.classList.add('fa-eye');
+            }
+        });
+
         // OTP Timer (Registration - 10 minutes)
         function startOtpTimer() {
             let timeLeft = 600; // 10 minutes in seconds
@@ -766,10 +838,35 @@
             }, 1000);
         }
 
+        // Network Status Detection
+        function updateNetworkStatus() {
+            if (!navigator.onLine) {
+                networkStatus.textContent = 'You are offline. Please connect to the network again.';
+                networkStatus.classList.remove('online');
+                networkStatus.classList.add('offline');
+            } else {
+                networkStatus.textContent = 'Network connected successfully';
+                networkStatus.classList.remove('offline');
+                networkStatus.classList.add('online');
+                setTimeout(() => {
+                    networkStatus.classList.remove('online');
+                }, 3000); // Hide after 3 seconds when online
+            }
+        }
+
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+        updateNetworkStatus(); // Initial check
+
         // Student Login Handler (Get User Details)
         async function handleStudentLogin(e) {
             e.preventDefault();
             clearErrors('student');
+
+            if (!navigator.onLine) {
+                showGeneralError('student', 'You are offline. Please connect to the network.');
+                return;
+            }
 
             const username = document.getElementById('studentUsername').value.trim();
             const rollNumber = document.getElementById('studentRollNumber').value.trim();
@@ -785,9 +882,7 @@
             }
 
             if (isValid) {
-                // Update navbar heading with library username
                 navbarBrand.textContent = `${username} Library`;
-
                 studentLoading.classList.add('active');
                 try {
                     const response = await fetch(`${api}getuserdetails/${username}/${rollNumber}/`, {
@@ -809,15 +904,12 @@
                         return;
                     }
 
-                    console.log('User details response:', data);
-
-                    // Store user data in localStorage and redirect
                     localStorage.setItem('userData', JSON.stringify(data));
                     studentLoading.classList.remove('active');
                     window.location.href = 'user.html';
 
                 } catch (error) {
-                    showGeneralError('student', 'Invalid credentials');
+                    showGeneralError('student', 'Invalid credentials or network error');
                     console.error('Student login fetch error:', error);
                     studentLoading.classList.remove('active');
                 }
@@ -828,6 +920,11 @@
         async function handleAdminLogin(e) {
             e.preventDefault();
             clearErrors('admin');
+
+            if (!navigator.onLine) {
+                showGeneralError('admin', 'You are offline. Please connect to the network.');
+                return;
+            }
 
             const email = document.getElementById('adminEmail').value.trim();
             const password = document.getElementById('adminPassword').value.trim();
@@ -890,6 +987,11 @@
         async function handleRegister(e) {
             e.preventDefault();
             clearErrors('register');
+
+            if (!navigator.onLine) {
+                showGeneralError('register', 'You are offline. Please connect to the network.');
+                return;
+            }
 
             const username = document.getElementById('registerUsername').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
@@ -990,6 +1092,11 @@
             e.preventDefault();
             clearErrors('otp');
 
+            if (!navigator.onLine) {
+                showGeneralError('otp', 'You are offline. Please connect to the network.');
+                return;
+            }
+
             const otp = document.getElementById('otpInput').value.trim();
             if (!otp) {
                 showError('otp', '', 'OTP is required');
@@ -1036,6 +1143,11 @@
         // Resend OTP Handler (Registration)
         resendOtp.addEventListener('click', async (e) => {
             e.preventDefault();
+            if (!navigator.onLine) {
+                showGeneralError('otp', 'You are offline. Please connect to the network.');
+                return;
+            }
+
             otpLoading.classList.add('active');
             try {
                 const response = await fetch(`${api}register/`, {
@@ -1068,6 +1180,11 @@
         async function handleForgotPassword(e) {
             e.preventDefault();
             clearErrors('forgot');
+
+            if (!navigator.onLine) {
+                showGeneralError('forgot', 'You are offline. Please connect to the network.');
+                return;
+            }
 
             const email = document.getElementById('forgotEmail').value.trim();
             if (!email) {
@@ -1107,6 +1224,11 @@
         async function handleForgotOtpVerification(e) {
             e.preventDefault();
             clearErrors('forgotOtp');
+
+            if (!navigator.onLine) {
+                showGeneralError('forgotOtp', 'You are offline. Please connect to the network.');
+                return;
+            }
 
             const otp = document.getElementById('forgotOtpInput').value.trim();
             if (!otp) {
@@ -1149,6 +1271,11 @@
         // Resend OTP Handler (Forgot Password)
         resendForgotOtp.addEventListener('click', async (e) => {
             e.preventDefault();
+            if (!navigator.onLine) {
+                showGeneralError('forgotOtp', 'You are offline. Please connect to the network.');
+                return;
+            }
+
             forgotOtpLoading.classList.add('active');
             try {
                 const response = await fetch(`${api}forgot-password/`, {
@@ -1181,6 +1308,11 @@
         async function handleResetPassword(e) {
             e.preventDefault();
             clearErrors('reset');
+
+            if (!navigator.onLine) {
+                showGeneralError('reset', 'You are offline. Please connect to the network.');
+                return;
+            }
 
             const newPassword = document.getElementById('newPassword').value.trim();
             const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();

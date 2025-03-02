@@ -668,12 +668,9 @@
               <option value="civil">CIVIL</option>
               <option value="mtech-cse">M.Tech CSE</option>
               <option value="mba">MBA</option>
-              <option value="10th-sir">10th Taken by Sir</option>
-              <option value="10th-madam">10th Taken by Madam</option>
-              <option value="11th-sir">11th Taken by Sir</option>
-              <option value="11th-madam">11th Taken by Madam</option>
-              <option value="12th-sir">12th Taken by Sir</option>
-              <option value="12th-madam">12th Taken by Madam</option>
+              <option value="10th">10th Standard</option>
+              <option value="11th">11th Standard</option>
+              <option value="12th">12th Standard</option>
             </select>
           </div>
           <div class="search-field">
@@ -766,12 +763,9 @@
                 <option value="civil">CIVIL</option>
                 <option value="mtech-cse">M.Tech CSE</option>
                 <option value="mba">MBA</option>
-                <option value="10th-sir">10th Taken by Sir</option>
-                <option value="10th-madam">10th Taken by Madam</option>
-                <option value="11th-sir">11th Taken by Sir</option>
-                <option value="11th-madam">11th Taken by Madam</option>
-                <option value="12th-sir">12th Taken by Sir</option>
-                <option value="12th-madam">12th Taken by Madam</option>
+                <option value="10th">10th Standard</option>
+                <option value="11th">11th Standard</option>
+                <option value="12th">12th Standard</option>
               </select>
               <span class="error-message" id="branch-error"></span>
             </div>
@@ -1139,7 +1133,6 @@
             filteredData = filteredData.filter(item => calculateYear(item.year) === parseInt(year));
           }
 
-          // Update library heading with the first library name from the data (assuming admin manages one library)
           if (filteredData.length > 0) {
             const libraryName = filteredData[0].library || "Unknown";
             libraryHeading.textContent = `${libraryName} Library Dashboard`;
@@ -1215,7 +1208,6 @@
           if (!response.ok) throw new Error("Failed to fetch books");
           const data = await response.json();
 
-          // Update library heading
           libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
 
           document.getElementById("add-roll-no-display").textContent = data.id || "-";
@@ -1264,7 +1256,6 @@
 
           const data = await response.json();
 
-          // Update library heading
           libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
 
           document.getElementById("return-roll-no-display").textContent = data.id || "-";
@@ -1309,10 +1300,8 @@
           if (!response.ok) throw new Error("Failed to fetch user profile");
           const data = await response.json();
 
-          // Update library heading
           libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
 
-          // Populate student card
           document.getElementById("profile-roll-no").textContent = data.id || "-";
           document.getElementById("profile-firstName").textContent = data.firstName || "-";
           document.getElementById("profile-lastName").textContent = data.lastName || "-";
@@ -1323,7 +1312,6 @@
           document.getElementById("profile-gender").textContent = data.gender || "-";
           document.getElementById("profile-created").textContent = data.created ? new Date(data.created).toLocaleString() : "-";
 
-          // Populate books table
           const books = data.books || [];
           if (books.length === 0) {
             booksTableContainer.style.display = "none";
@@ -1412,7 +1400,7 @@
       async function registerUser(formData) {
         const accessToken = localStorage.getItem("access_token");
         if (!accessToken) {
-          showGeneralError("User<|control704|> is not logged in!");
+          showGeneralError("User is not logged in!");
           setTimeout(() => (window.location.href = "./index.html"), 2000);
           return false;
         }
@@ -1739,7 +1727,7 @@
       summaryStats.style.display = "none";
       studentCount.textContent = "Number of students: 0";
 
-      // Initial Dashboard Fetch (assuming default values)
+      // Initial Dashboard Fetch
       fetchDashboardData("all", "all");
     </script>
   </body>
