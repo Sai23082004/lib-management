@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Library Management System</title>
+    <title>Library Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,7 +14,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f5f6f5;
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
@@ -22,23 +22,25 @@
         }
 
         .navbar {
-            background-color: #37517e;
+            background-color: #4285f4;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
-            animation: fadeInDown 1s ease-in-out;
         }
 
         .navbar-brand {
-            color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
+            color: #fff;
             text-decoration: none;
+            text-align: center;
+            flex-grow: 1;
         }
 
         .nav-links {
@@ -50,204 +52,296 @@
         .nav-links a {
             color: #fff;
             text-decoration: none;
-            font-size: 1.1rem;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
         }
 
         .nav-links a:hover {
-            background-color: #2c4066;
-            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .nav-toggle {
             display: none;
             background: none;
             border: none;
-            font-size: 1.8rem;
             color: #fff;
+            font-size: 1.8rem;
             cursor: pointer;
         }
 
-        .main-body {
-            display: flex;
-            justify-content: space-between;
+        .main-container {
             max-width: 1200px;
-            margin: 50px auto;
+            margin: 40px auto;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
             flex-grow: 1;
+            gap: 20px;
         }
 
-        .left-content {
+        .welcome-section {
             flex: 1;
             padding: 20px;
-            text-align: left;
         }
 
-        .left-content h1 {
-            font-size: 2.5rem;
-            color: #37517e;
+        .welcome-section h1 {
+            font-size: 2.2rem;
+            color: #4285f4;
             margin-bottom: 15px;
-            font-weight: bold;
-            animation: slideInLeft 1s ease-in-out;
         }
 
-        .left-content img {
+        .welcome-section img {
             max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            animation: fadeInBounce 1.5s ease-in-out;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .login-section {
+        .auth-container {
             flex: 1;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
 
-        .login-buttons {
+        .auth-buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
-        .login-btn {
-            background-color: #37517e;
-            color: #fff;
+        .auth-btn {
+            padding: 10px 20px;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 4px;
+            background-color: #e8f0fe;
+            color: #4285f4;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            width: 150px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .login-btn:hover, .login-btn.active {
-            background-color: #2c4066;
-            transform: scale(1.05);
+        .auth-btn.active {
+            background-color: #4285f4;
+            color: #fff;
         }
 
-        .login-form {
+        .auth-btn:hover {
+            background-color: #d2e3fc;
+        }
+
+        .form-box, .register-box {
             display: none;
             width: 100%;
             max-width: 400px;
-            text-align: center;
-            animation: fadeInScale 0.5s ease-in-out;
-        }
-
-        .login-form.active {
-            display: block;
-        }
-
-        .login-form h2 {
-            font-size: 1.5rem;
-            color: #37517e;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 1rem;
-            color: #37517e;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
+            background: #fff;
+            padding: 25px;
             border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
-        .form-group input:focus {
-            border-color: #37517e;
-            box-shadow: 0 0 8px rgba(55, 81, 126, 0.3);
+        .form-box.active, .register-box.active {
+            display: block;
+        }
+
+        .form-box h2, .register-box h2 {
+            font-size: 1.6rem;
+            color: #202124;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #5f6368;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #4285f4;
             outline: none;
         }
 
-        .sign-in-btn {
-            background-color: #37517e;
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .sign-in-btn:hover {
-            background-color: #2c4066;
-            transform: scale(1.05);
-        }
-
-        .error-message {
-            color: #ff0000;
-            font-size: 0.9rem;
+        .error-text {
+            color: #d93025;
+            font-size: 0.8rem;
             margin-top: 5px;
+            display: none;
+        }
+
+        .input-group.error .error-text {
             display: block;
         }
 
-        .form-group.error input {
-            border-color: #ff0000;
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #3267d6;
+        }
+
+        .form-options {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .form-options a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .popup-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .popup-box.active {
+            display: block;
+        }
+
+        .popup-box h2 {
+            font-size: 1.5rem;
+            color: #202124;
+            margin-bottom: 10px;
+        }
+
+        .popup-box p {
+            font-size: 1rem;
+            color: #5f6368;
+            margin-bottom: 20px;
+        }
+
+        .popup-box button {
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .popup-box button:hover {
+            background-color: #3267d6;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .overlay.active {
+            display: block;
         }
 
         .footer {
-            background-color: #37517e;
-            padding: 20px;
+            background-color: #4285f4;
+            padding: 15px;
             text-align: center;
             color: #fff;
-            border-top: 3px solid #2c4066;
         }
 
         .footer a {
-            color: #f0b619;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
             color: #fff;
+            text-decoration: underline;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Loading Animation */
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
         }
 
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        .loading-overlay.active {
+            display: flex;
         }
 
-        @keyframes fadeInBounce {
-            0% { opacity: 0; transform: translateY(20px); }
-            60% { opacity: 1; transform: translateY(-10px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .book-loader {
+            width: 60px;
+            height: 80px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: flip 1.5s infinite ease-in-out;
         }
 
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        .book-front, .book-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #4285f4;
+            border: 2px solid #3267d6;
+            border-radius: 5px;
+            backface-visibility: hidden;
+        }
+
+        .book-front {
+            z-index: 2;
+            background: url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80') center/cover no-repeat;
+        }
+
+        .book-back {
+            transform: rotateY(180deg);
+            background: #3267d6;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -256,186 +350,503 @@
             }
 
             .nav-links {
-                position: fixed;
-                top: 0;
-                right: -250px;
-                width: 250px;
-                height: 100vh;
-                background-color: #37517e;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 30px;
-                padding: 20px;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-                transition: right 0.3s ease-in-out;
-                z-index: 999;
-            }
-
-            .nav-links.active {
-                right: 0;
-            }
-
-            .overlay {
                 display: none;
                 position: fixed;
                 top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 998;
+                right: -200px;
+                width: 200px;
+                height: 100vh;
+                background-color: #4285f4;
+                flex-direction: column;
+                padding: 20px;
+                transition: right 0.3s;
             }
 
-            .overlay.active {
-                display: block;
+            .nav-links.active {
+                display: flex;
+                right: 0;
             }
 
-            .main-body {
+            .main-container {
                 flex-direction: column;
                 text-align: center;
             }
 
-            .left-content h1 {
-                font-size: 2rem;
-            }
-
-            .left-content img {
-                max-width: 80%;
-            }
-
-            .login-buttons {
+            .auth-buttons {
                 flex-direction: column;
                 gap: 10px;
             }
 
-            .login-btn {
+            .auth-btn {
                 width: 100%;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
             }
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <a href="#" class="navbar-brand">Online Library Management System</a>
-        <button class="nav-toggle" id="nav-toggle">☰</button>
-        <ul class="nav-links" id="nav-menu">
+        <button class="nav-toggle" id="navToggle">☰</button>
+        <a href="#" class="navbar-brand" id="navbarBrand">Library Management System</a>
+        <ul class="nav-links" id="navMenu">
             <li><a href="#">Home</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
     </nav>
+
     <div class="overlay" id="overlay"></div>
 
-    <section class="main-body">
-        <div class="left-content">
-            <h1>Get Better Read on the World</h1>
+    <div class="main-container">
+        <div class="welcome-section">
+            <h1>Discover Knowledge</h1>
             <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                  alt="Library Image">
         </div>
 
-        <div class="login-section">
-            <div class="login-buttons">
-                <button class="login-btn active" id="student-btn">Student</button>
-                <button class="login-btn" id="admin-btn">Admin</button>
+        <div class="auth-container">
+            <div class="auth-buttons">
+                <button class="auth-btn active" id="studentBtn">Student</button>
+                <button class="auth-btn" id="adminBtn">Admin</button>
             </div>
 
-            <div class="login-form active" id="student-form">
-                <h2>Welcome to Student Library System</h2>
-                <form id="student-login-form">
-                    <div class="form-group">
-                        <label for="student-username">Username</label>
-                        <input type="text" id="student-username" name="username" placeholder="Enter username" required>
-                        <span class="error-message" id="student-username-error"></span>
+            <div class="form-box active" id="studentLogin">
+                <h2>Student Login</h2>
+                <form id="studentLoginForm">
+                    <div class="input-group">
+                        <label for="studentUsername">Username for Library</label>
+                        <input type="text" id="studentUsername" name="username" placeholder="Enter library username" required>
+                        <span class="error-text" id="studentUsernameError"></span>
                     </div>
-                    <button type="submit" class="sign-in-btn">Sign In</button>
+                    <div class="input-group">
+                        <label for="studentRollNumber">Roll Number</label>
+                        <input type="text" id="studentRollNumber" name="rollNumber" placeholder="Enter your roll number" required>
+                        <span class="error-text" id="studentRollNumberError"></span>
+                    </div>
+                    <span class="error-text" id="studentGeneralError"></span>
+                    <button type="submit" class="submit-btn">Get Data</button>
+                    <div class="loading-overlay" id="studentLoading">
+                        <div class="book-loader">
+                            <div class="book-front"></div>
+                            <div class="book-back"></div>
+                        </div>
+                    </div>
                 </form>
             </div>
 
-            <div class="login-form" id="admin-form">
-                <h2>Welcome to Admin Library System</h2>
-                <form id="admin-login-form">
-                    <div class="form-group">
-                        <label for="admin-username">Username</label>
-                        <input type="text" id="admin-username" name="username" placeholder="Enter username" required>
-                        <span class="error-message" id="admin-username-error"></span>
+            <div class="form-box" id="adminLogin">
+                <h2>Admin Login</h2>
+                <form id="adminLoginForm">
+                    <div class="input-group">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" id="adminEmail" name="email" placeholder="Enter your email" required>
+                        <span class="error-text" id="adminEmailError"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="admin-password">Password</label>
-                        <input type="password" id="admin-password" name="password" placeholder="Enter password" required>
-                        <span class="error-message" id="admin-password-error"></span>
+                    <div class="input-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" name="password" placeholder="Enter your password" required>
+                        <span class="error-text" id="adminPasswordError"></span>
                     </div>
-                    <div class="error-message" id="admin-general-error"></div>
-                    <button type="submit" class="sign-in-btn">Sign In</button>
+                    <span class="error-text" id="adminGeneralError"></span>
+                    <button type="submit" class="submit-btn">Sign In</button>
+                    <div class="form-options">
+                        <a href="#" id="registerLink">Create account</a>
+                        <a href="#" id="forgotPasswordLink">Forgot password?</a>
+                    </div>
+                    <div class="loading-overlay" id="adminLoading">
+                        <div class="book-loader">
+                            <div class="book-front"></div>
+                            <div class="book-back"></div>
+                        </div>
+                    </div>
                 </form>
+            </div>
+
+            <div class="register-box" id="registerBox">
+                <h2>Register Admin</h2>
+                <form id="registerForm">
+                    <div class="input-group">
+                        <label for="registerUsername">Username for Library</label>
+                        <input type="text" id="registerUsername" name="username" placeholder="Enter your library username" required>
+                        <span class="error-text" id="registerUsernameError"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" name="email" placeholder="Enter your email" required>
+                        <span class="error-text" id="registerEmailError"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" name="password" placeholder="Enter your password" required>
+                        <span class="error-text" id="registerPasswordError"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="registerConfirmPassword">Confirm Password</label>
+                        <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                        <span class="error-text" id="registerConfirmPasswordError"></span>
+                    </div>
+                    <span class="error-text" id="registerGeneralError"></span>
+                    <button type="submit" class="submit-btn">Register</button>
+                    <div class="form-options">
+                        <a href="#" id="backToLogin">Back to login</a>
+                    </div>
+                    <div class="loading-overlay" id="registerLoading">
+                        <div class="book-loader">
+                            <div class="book-front"></div>
+                            <div class="book-back"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="register-box" id="otpBox">
+                <h2>Verify OTP</h2>
+                <form id="otpForm">
+                    <div class="input-group">
+                        <label for="otpInput">Enter OTP</label>
+                        <input type="text" id="otpInput" name="otp" placeholder="Enter 6-digit OTP" required>
+                        <span class="error-text" id="otpError"></span>
+                    </div>
+                    <span class="error-text" id="otpGeneralError"></span>
+                    <div class="form-options">
+                        <span id="otpTimer">10:00</span>
+                        <a href="#" id="resendOtp">Resend OTP</a>
+                    </div>
+                    <button type="submit" class="submit-btn">Verify OTP</button>
+                    <div class="loading-overlay" id="otpLoading">
+                        <div class="book-loader">
+                            <div class="book-front"></div>
+                            <div class="book-back"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="register-box" id="forgotPasswordBox">
+                <h2>Forgot Password</h2>
+                <form id="forgotPasswordForm">
+                    <div class="input-group">
+                        <label for="forgotEmail">Email</label>
+                        <input type="email" id="forgotEmail" name="email" placeholder="Enter your email" required>
+                        <span class="error-text" id="forgotEmailError"></span>
+                    </div>
+                    <span class="error-text" id="forgotGeneralError"></span>
+                    <button type="submit" class="submit-btn">Send OTP</button>
+                    <div class="form-options">
+                        <a href="#" id="backToLoginFromForgot">Back to login</a>
+                    </div>
+                    <div class="loading-overlay" id="forgotLoading">
+                        <div class="book-loader">
+                            <div class="book-front"></div>
+                            <div class="book-back"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="register-box" id="forgotOtpBox">
+                <h2>Verify OTP</h2>
+                <form id="forgotOtpForm">
+                    <div class="input-group">
+                        <label for="forgotOtpInput">Enter OTP</label>
+                        <input type="text" id="forgotOtpInput" name="otp" placeholder="Enter 6-digit OTP" required>
+                        <span class="error-text" id="forgotOtpError"></span>
+                    </div>
+                    <span class="error-text" id="forgotOtpGeneralError"></span>
+                    <div class="form-options">
+                        <span id="forgotOtpTimer">5:00</span>
+                        <a href="#" id="resendForgotOtp">Resend OTP</a>
+                    </div>
+                    <button type="submit" class="submit-btn">Verify OTP</button>
+                    <div class="loading-overlay" id="forgotOtpLoading">
+                        <div class="book-loader">
+                            <div class="book-front"></div>
+                            <div class="book-back"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="register-box" id="resetPasswordBox">
+                <h2>Reset Password</h2>
+                <form id="resetPasswordForm">
+                    <div class="input-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password" required>
+                        <span class="error-text" id="newPasswordError"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" name="confirmPassword" placeholder="Confirm new password" required>
+                        <span class="error-text" id="confirmNewPasswordError"></span>
+                    </div>
+                    <span class="error-text" id="resetGeneralError"></span>
+                    <button type="submit" class="submit-btn">Reset Password</button>
+                    <div class="form-options">
+                        <a href="#" id="backToLoginFromReset">Back to login</a>
+                    </div>
+                    <div class="loading-overlay" id="resetLoading">
+                        <div class="book-loader">
+                            <div class="book-front"></div>
+                            <div class="book-back"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="popup-box" id="successPopup">
+                <h2>Success!</h2>
+                <p id="successMessage">Your account has been created.</p>
+                <button id="loginNowBtn">OK</button>
             </div>
         </div>
-    </section>
+    </div>
 
     <footer class="footer">
-        <p>© Copyright by <a href="#">Shinobi Systems</a></p>
+        <p>© 2025 <a href="#">Shinobi Systems</a></p>
     </footer>
 
     <script>
-        // DOM elements
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        const overlay = document.getElementById('overlay');
-        const studentBtn = document.getElementById('student-btn');
-        const adminBtn = document.getElementById('admin-btn');
-        const studentForm = document.getElementById('student-form');
-        const adminForm = document.getElementById('admin-form');
-        const studentLoginForm = document.getElementById('student-login-form');
-        const adminLoginForm = document.getElementById('admin-login-form');
+        // API Base URL
+        const api = "http://127.0.0.1:8000/api/";
 
-        // Navbar toggle
+        // DOM Elements
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        const overlay = document.getElementById('overlay');
+        const navbarBrand = document.getElementById('navbarBrand');
+        const studentBtn = document.getElementById('studentBtn');
+        const adminBtn = document.getElementById('adminBtn');
+        const studentLogin = document.getElementById('studentLogin');
+        const adminLogin = document.getElementById('adminLogin');
+        const registerBox = document.getElementById('registerBox');
+        const otpBox = document.getElementById('otpBox');
+        const forgotPasswordBox = document.getElementById('forgotPasswordBox');
+        const forgotOtpBox = document.getElementById('forgotOtpBox');
+        const resetPasswordBox = document.getElementById('resetPasswordBox');
+        const studentLoginForm = document.getElementById('studentLoginForm');
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const registerForm = document.getElementById('registerForm');
+        const otpForm = document.getElementById('otpForm');
+        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+        const forgotOtpForm = document.getElementById('forgotOtpForm');
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+        const registerLink = document.getElementById('registerLink');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const backToLogin = document.getElementById('backToLogin');
+        const backToLoginFromForgot = document.getElementById('backToLoginFromForgot');
+        const backToLoginFromReset = document.getElementById('backToLoginFromReset');
+        const successPopup = document.getElementById('successPopup');
+        const successMessage = document.getElementById('successMessage');
+        const loginNowBtn = document.getElementById('loginNowBtn');
+        const studentLoading = document.getElementById('studentLoading');
+        const adminLoading = document.getElementById('adminLoading');
+        const registerLoading = document.getElementById('registerLoading');
+        const otpLoading = document.getElementById('otpLoading');
+        const forgotLoading = document.getElementById('forgotLoading');
+        const forgotOtpLoading = document.getElementById('forgotOtpLoading');
+        const resetLoading = document.getElementById('resetLoading');
+        const resendOtp = document.getElementById('resendOtp');
+        const resendForgotOtp = document.getElementById('resendForgotOtp');
+        let otpTimerInterval;
+        let forgotOtpTimerInterval;
+        let registrationData = null;
+        let forgotEmail = null;
+        let verifiedOtp = null;
+
+        // Navbar Toggle
         navToggle.addEventListener('click', () => {
-            const isActive = navMenu.classList.toggle('active');
+            navMenu.classList.toggle('active');
             overlay.classList.toggle('active');
-            navToggle.textContent = isActive ? '✖' : '☰';
+            navToggle.textContent = navMenu.classList.contains('active') ? '✖' : '☰';
         });
 
         overlay.addEventListener('click', () => {
             navMenu.classList.remove('active');
             overlay.classList.remove('active');
             navToggle.textContent = '☰';
+            resetForms();
         });
 
-        // Switch between forms
+        // Form Switching
         studentBtn.addEventListener('click', () => switchForm('student'));
         adminBtn.addEventListener('click', () => switchForm('admin'));
+        registerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchForm('register');
+        });
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchForm('forgot');
+        });
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchForm('admin');
+        });
+        backToLoginFromForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchForm('admin');
+        });
+        backToLoginFromReset.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchForm('admin');
+        });
+        loginNowBtn.addEventListener('click', () => {
+            switchForm('admin');
+            overlay.classList.remove('active');
+            successPopup.classList.remove('active');
+        });
 
         function switchForm(type) {
-            studentForm.classList.toggle('active', type === 'student');
-            adminForm.classList.toggle('active', type === 'admin');
+            studentLogin.classList.toggle('active', type === 'student');
+            adminLogin.classList.toggle('active', type === 'admin');
+            registerBox.classList.toggle('active', type === 'register');
+            otpBox.classList.toggle('active', type === 'otp');
+            forgotPasswordBox.classList.toggle('active', type === 'forgot');
+            forgotOtpBox.classList.toggle('active', type === 'forgotOtp');
+            resetPasswordBox.classList.toggle('active', type === 'reset');
             studentBtn.classList.toggle('active', type === 'student');
-            adminBtn.classList.toggle('active', type === 'admin');
+            adminBtn.classList.toggle('active', type === 'admin' || type === 'register' || type === 'otp' || type === 'forgot' || type === 'forgotOtp' || type === 'reset');
+            successPopup.classList.remove('active');
+            overlay.classList.remove('active');
         }
 
-        // Handle form submissions
-        async function handleLogin(e, formType, endpoint) {
-            e.preventDefault();
-            clearErrors(formType);
+        function resetForms() {
+            studentLogin.classList.add('active');
+            adminLogin.classList.remove('active');
+            registerBox.classList.remove('active');
+            otpBox.classList.remove('active');
+            forgotPasswordBox.classList.remove('active');
+            forgotOtpBox.classList.remove('active');
+            resetPasswordBox.classList.remove('active');
+            successPopup.classList.remove('active');
+            studentBtn.classList.add('active');
+            adminBtn.classList.remove('active');
+            navbarBrand.textContent = 'Library Management System';
+        }
 
-            const username = document.getElementById(`${formType}-username`).value.trim();
-            const password = formType === 'admin' ? document.getElementById('admin-password').value.trim() : null;
+        // OTP Timer (Registration - 10 minutes)
+        function startOtpTimer() {
+            let timeLeft = 600; // 10 minutes in seconds
+            clearInterval(otpTimerInterval);
+            
+            otpTimerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('otpTimer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(otpTimerInterval);
+                    document.getElementById('otpTimer').textContent = 'Expired';
+                    resendOtp.style.display = 'block';
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        // Forgot OTP Timer (5 minutes)
+        function startForgotOtpTimer() {
+            let timeLeft = 300; // 5 minutes in seconds
+            clearInterval(forgotOtpTimerInterval);
+            
+            forgotOtpTimerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('forgotOtpTimer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(forgotOtpTimerInterval);
+                    document.getElementById('forgotOtpTimer').textContent = 'Expired';
+                    resendForgotOtp.style.display = 'block';
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        // Student Login Handler (Get User Details)
+        async function handleStudentLogin(e) {
+            e.preventDefault();
+            clearErrors('student');
+
+            const username = document.getElementById('studentUsername').value.trim();
+            const rollNumber = document.getElementById('studentRollNumber').value.trim();
             let isValid = true;
 
             if (!username) {
-                showError(formType, 'username', 'Username is required.');
+                showError('student', 'Username', 'Username is required');
                 isValid = false;
             }
-            if (formType === 'admin' && !password) {
-                showError(formType, 'password', 'Password is required.');
+            if (!rollNumber) {
+                showError('student', 'RollNumber', 'Roll number is required');
                 isValid = false;
             }
 
             if (isValid) {
-                try {
-                    const payload = { email: username };
-                    if (password) payload.password = password;
+                // Update navbar heading with library username
+                navbarBrand.textContent = `${username} Library`;
 
-                    const response = await fetch(endpoint, {
+                studentLoading.classList.add('active');
+                try {
+                    const response = await fetch(`${api}getuserdetails/${username}/${rollNumber}/`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        if (data.error === "invalid library username") {
+                            showError('student', 'Username', 'Invalid username for library');
+                        } else if (data.error === "User not found!") {
+                            showError('student', 'RollNumber', 'Invalid roll number');
+                        } else {
+                            showGeneralError('student', 'An error occurred');
+                        }
+                        studentLoading.classList.remove('active');
+                        return;
+                    }
+
+                    console.log('User details response:', data);
+
+                    // Store user data in localStorage and redirect
+                    localStorage.setItem('userData', JSON.stringify(data));
+                    studentLoading.classList.remove('active');
+                    window.location.href = 'user.html';
+
+                } catch (error) {
+                    showGeneralError('student', 'Invalid credentials');
+                    console.error('Student login fetch error:', error);
+                    studentLoading.classList.remove('active');
+                }
+            }
+        }
+
+        // Admin Login Handler
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            clearErrors('admin');
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+            let isValid = true;
+
+            if (!email) {
+                showError('admin', 'Email', 'Email is required');
+                isValid = false;
+            }
+            if (!password) {
+                showError('admin', 'Password', 'Password is required');
+                isValid = false;
+            }
+
+            if (isValid) {
+                adminLoading.classList.add('active');
+                try {
+                    const payload = { email, password };
+                    const response = await fetch(`${api}login/`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
@@ -444,57 +855,434 @@
                     const data = await response.json();
 
                     if (!response.ok) {
-                        if (data.email) showError(formType, 'username', data.email[0]);
-                        if (data.password) showError(formType, 'password', data.password[0]);
-                        if (!data.email && !data.password) {
-                            showGeneralError(formType, data.detail || 'Login failed.');
+                        if (data.email) {
+                            if (data.email === "Invalid email!") {
+                                showError('admin', 'Email', 'Invalid email!');
+                            } else if (data.email.includes('please activate your account')) {
+                                showError('admin', 'Email', 'Please activate your account! Click "Forgot Password" to proceed.');
+                            } else {
+                                showError('admin', 'Email', data.email);
+                            }
                         }
+                        if (data.password) showError('admin', 'Password', data.password);
+                        if (!data.email && !data.password) showGeneralError('admin', data.detail || 'Login failed');
+                        adminLoading.classList.remove('active');
                         return;
                     }
 
-                    // Store tokens in local storage using the provided keys
-                    localStorage.setItem('access_token', data.token); // 'token' as access token
-                    localStorage.setItem('refresh_token', data.refresh); // 'refresh' as refresh token
-                    console.log(`${formType} login successful:`, data);
-                    // Redirect to vendor.html
-                    window.location.href = 'vender.html';
+                    if (data.token) {
+                        localStorage.setItem('access_token', data.token);
+                        console.log('Admin login successful, token saved:', data.token);
+                    }
+
+                    adminLoading.classList.remove('active');
+                    window.location.href = './vendor.html';
 
                 } catch (error) {
-                    showGeneralError(formType, 'An error occurred. Please try again.');
-                    console.error('Login error:', error);
+                    showGeneralError('admin', 'Login error. Try again.');
+                    console.error('Admin login fetch error:', error);
+                    adminLoading.classList.remove('active');
                 }
             }
         }
 
-        // Admin login
-        adminLoginForm.addEventListener('submit', (e) => 
-            handleLogin(e, 'admin', 'http://127.0.0.1:8000/api/login/')
-        );
+        // Register Handler
+        async function handleRegister(e) {
+            e.preventDefault();
+            clearErrors('register');
 
-        // Student login (example endpoint)
-        studentLoginForm.addEventListener('submit', (e) => 
-            handleLogin(e, 'student', 'http://127.0.0.1:8000/api/student-login/')
-        );
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
+            let isValid = true;
 
-        // Utility functions
-        function showError(formType, field, message) {
-            const input = document.getElementById(`${formType}-${field}`);
-            const errorElement = document.getElementById(`${formType}-${field}-error`);
+            if (!username) {
+                showError('register', 'Username', 'Username is required');
+                isValid = false;
+            }
+            if (!email) {
+                showError('register', 'Email', 'Email is required');
+                isValid = false;
+            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                showError('register', 'Email', 'Invalid email format');
+                isValid = false;
+            }
+            if (!password) {
+                showError('register', 'Password', 'Password is required');
+                isValid = false;
+            } else if (password.length > 8) {
+                showError('register', 'Password', 'Password must be 8 characters or less');
+                isValid = false;
+            }
+            if (!confirmPassword) {
+                showError('register', 'ConfirmPassword', 'Confirm password is required');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('register', 'ConfirmPassword', 'Passwords do not match');
+                isValid = false;
+            }
+
+            if (isValid) {
+                registerLoading.classList.add('active');
+                try {
+                    registrationData = { username, email, password };
+                    console.log('Sending registration data:', registrationData);
+
+                    const response = await fetch(`${api}register/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(registrationData)
+                    });
+
+                    const data = await response.json();
+                    console.log('Server response:', response.status, data);
+
+                    if (!response.ok) {
+                        if (typeof data === 'string') {
+                            if (data.includes('username already exists')) {
+                                showError('register', 'Username', 'Username already exists!');
+                            } else if (data.includes('email already exists')) {
+                                showError('register', 'Email', 'Email already exists!');
+                            } else {
+                                showGeneralError('register', data);
+                            }
+                        } else if (data.non_field_errors) {
+                            if (data.non_field_errors.some(err => err.includes('username already exists'))) {
+                                showError('register', 'Username', 'Username already exists!');
+                            }
+                            if (data.non_field_errors.some(err => err.includes('email already exists'))) {
+                                showError('register', 'Email', 'Email already exists!');
+                            }
+                        } else if (data.username) {
+                            showError('register', 'Username', data.username[0]);
+                        } else if (data.email) {
+                            showError('register', 'Email', data.email[0]);
+                        } else if (data.password) {
+                            showError('register', 'Password', data.password[0]);
+                        } else if (data.detail) {
+                            showGeneralError('register', data.detail);
+                        } else {
+                            showGeneralError('register', 'Registration failed: ' + JSON.stringify(data));
+                        }
+                        registerLoading.classList.remove('active');
+                        return;
+                    }
+
+                    console.log('Registration successful, proceeding to OTP');
+                    registerLoading.classList.remove('active');
+                    switchForm('otp');
+                    startOtpTimer();
+
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    showGeneralError('register', 'Network error. Please try again.');
+                    registerLoading.classList.remove('active');
+                }
+            }
+        }
+
+        // OTP Verification Handler (Registration)
+        async function handleOtpVerification(e) {
+            e.preventDefault();
+            clearErrors('otp');
+
+            const otp = document.getElementById('otpInput').value.trim();
+            if (!otp) {
+                showError('otp', '', 'OTP is required');
+                return;
+            }
+
+            otpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}register/verify-otp/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: registrationData.email,
+                        otp: otp
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (data.email) showError('otp', '', data.email[0]);
+                    if (data.otp) showError('otp', '', data.otp[0]);
+                    otpLoading.classList.remove('active');
+                    return;
+                }
+
+                clearInterval(otpTimerInterval);
+                if (data.token) {
+                    localStorage.setItem('access_token', data.token);
+                    console.log('Registration successful, token saved:', data.token);
+                }
+                otpLoading.classList.remove('active');
+                successMessage.textContent = 'Your account has been created.';
+                successPopup.classList.add('active');
+                overlay.classList.add('active');
+
+            } catch (error) {
+                showError('otp', '', 'OTP verification failed');
+                console.error('OTP verification error:', error);
+                otpLoading.classList.remove('active');
+            }
+        }
+
+        // Resend OTP Handler (Registration)
+        resendOtp.addEventListener('click', async (e) => {
+            e.preventDefault();
+            otpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}register/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(registrationData)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (data.email) showError('otp', '', data.email[0]);
+                    otpLoading.classList.remove('active');
+                    return;
+                }
+
+                startOtpTimer();
+                clearErrors('otp');
+                document.getElementById('otpInput').value = '';
+                showGeneralError('otp', 'New OTP sent successfully');
+                otpLoading.classList.remove('active');
+            } catch (error) {
+                showError('otp', '', 'Failed to resend OTP');
+                console.error('Resend OTP error:', error);
+                otpLoading.classList.remove('active');
+            }
+        });
+
+        // Forgot Password Handler (Send OTP)
+        async function handleForgotPassword(e) {
+            e.preventDefault();
+            clearErrors('forgot');
+
+            const email = document.getElementById('forgotEmail').value.trim();
+            if (!email) {
+                showError('forgot', 'Email', 'Email is required');
+                return;
+            }
+
+            forgotLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}forgot-password/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (data.email) showError('forgot', 'Email', data.email[0]);
+                    forgotLoading.classList.remove('active');
+                    return;
+                }
+
+                forgotEmail = email;
+                forgotLoading.classList.remove('active');
+                switchForm('forgotOtp');
+                startForgotOtpTimer();
+
+            } catch (error) {
+                showGeneralError('forgot', 'Failed to send OTP. Try again.');
+                console.error('Forgot password error:', error);
+                forgotLoading.classList.remove('active');
+            }
+        }
+
+        // Forgot OTP Verification Handler
+        async function handleForgotOtpVerification(e) {
+            e.preventDefault();
+            clearErrors('forgotOtp');
+
+            const otp = document.getElementById('forgotOtpInput').value.trim();
+            if (!otp) {
+                showError('forgotOtp', '', 'OTP is required');
+                return;
+            }
+
+            forgotOtpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}register/verify-otp/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: forgotEmail,
+                        otp: otp
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (data.email) showError('forgotOtp', '', data.email[0]);
+                    if (data.otp) showError('forgotOtp', '', data.otp[0]);
+                    forgotOtpLoading.classList.remove('active');
+                    return;
+                }
+
+                clearInterval(forgotOtpTimerInterval);
+                verifiedOtp = otp;
+                forgotOtpLoading.classList.remove('active');
+                switchForm('reset');
+
+            } catch (error) {
+                showError('forgotOtp', '', 'OTP verification failed');
+                console.error('Forgot OTP verification error:', error);
+                forgotOtpLoading.classList.remove('active');
+            }
+        }
+
+        // Resend OTP Handler (Forgot Password)
+        resendForgotOtp.addEventListener('click', async (e) => {
+            e.preventDefault();
+            forgotOtpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}forgot-password/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: forgotEmail })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (data.email) showError('forgotOtp', '', data.email[0]);
+                    forgotOtpLoading.classList.remove('active');
+                    return;
+                }
+
+                startForgotOtpTimer();
+                clearErrors('forgotOtp');
+                document.getElementById('forgotOtpInput').value = '';
+                showGeneralError('forgotOtp', 'New OTP sent successfully');
+                forgotOtpLoading.classList.remove('active');
+            } catch (error) {
+                showError('forgotOtp', '', 'Failed to resend OTP');
+                console.error('Resend forgot OTP error:', error);
+                forgotOtpLoading.classList.remove('active');
+            }
+        });
+
+        // Reset Password Handler
+        async function handleResetPassword(e) {
+            e.preventDefault();
+            clearErrors('reset');
+
+            const newPassword = document.getElementById('newPassword').value.trim();
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+            let isValid = true;
+
+            if (!newPassword) {
+                showError('reset', 'NewPassword', 'New password is required');
+                isValid = false;
+            } else if (newPassword.length > 8) {
+                showError('reset', 'NewPassword', 'Password must be 8 characters or less');
+                isValid = false;
+            }
+            if (!confirmNewPassword) {
+                showError('reset', 'ConfirmNewPassword', 'Confirm password is required');
+                isValid = false;
+            } else if (newPassword !== confirmNewPassword) {
+                showError('reset', 'ConfirmNewPassword', 'Passwords do not match');
+                isValid = false;
+            }
+
+            if (isValid) {
+                resetLoading.classList.add('active');
+                try {
+                    const response = await fetch(`${api}password-reset/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: forgotEmail,
+                            otp: verifiedOtp,
+                            new_password: newPassword
+                        })
+                    });
+
+                    const text = await response.text();
+                    let data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch (jsonError) {
+                        console.error('Response is not JSON:', text);
+                        throw new Error('Server returned invalid response: ' + text);
+                    }
+
+                    console.log('Reset password response:', response.status, data);
+
+                    if (!response.ok) {
+                        if (data.email) showError('reset', 'NewPassword', data.email[0]);
+                        if (data.otp) showError('reset', 'NewPassword', data.otp[0]);
+                        if (data.new_password) showError('reset', 'NewPassword', data.new_password[0]);
+                        if (data.detail) showGeneralError('reset', data.detail);
+                        resetLoading.classList.remove('active');
+                        return;
+                    }
+
+                    resetLoading.classList.remove('active');
+                    successMessage.textContent = 'Password reset is complete.';
+                    successPopup.classList.add('active');
+                    overlay.classList.add('active');
+
+                } catch (error) {
+                    showGeneralError('reset', 'Failed to reset password. Server error: ' + error.message);
+                    console.error('Reset password error:', error);
+                    resetLoading.classList.remove('active');
+                }
+            }
+        }
+
+        // Form Event Listeners
+        studentLoginForm.addEventListener('submit', handleStudentLogin);
+        adminLoginForm.addEventListener('submit', handleAdminLogin);
+        registerForm.addEventListener('submit', handleRegister);
+        otpForm.addEventListener('submit', handleOtpVerification);
+        forgotPasswordForm.addEventListener('submit', handleForgotPassword);
+        forgotOtpForm.addEventListener('submit', handleForgotOtpVerification);
+        resetPasswordForm.addEventListener('submit', handleResetPassword);
+
+        // Utility Functions
+        function showError(type, field, message) {
+            const errorElement = document.getElementById(`${type}${field}Error`) || document.getElementById(`${type}Error`);
             errorElement.textContent = message;
-            input.parentElement.classList.add('error');
+            errorElement.parentElement.classList.add('error');
         }
 
-        function showGeneralError(formType, message) {
-            document.getElementById(`${formType}-general-error`).textContent = message;
+        function showGeneralError(type, message) {
+            const generalErrorElement = document.getElementById(`${type}GeneralError`);
+            if (generalErrorElement) generalErrorElement.textContent = message;
         }
 
-        function clearErrors(formType) {
-            const form = document.getElementById(`${formType}-form`);
-            form.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-            form.querySelectorAll('.form-group').forEach(group => group.classList.remove('error'));
+        function clearErrors(type) {
+            const form = document.getElementById(
+                type === 'otp' ? 'otpBox' :
+                type === 'forgot' ? 'forgotPasswordBox' :
+                type === 'forgotOtp' ? 'forgotOtpBox' :
+                type === 'reset' ? 'resetPasswordBox' :
+                `${type}${type === 'register' ? 'Box' : 'Login'}`
+            );
+            form.querySelectorAll('.error-text').forEach(el => el.textContent = '');
+            form.querySelectorAll('.input-group').forEach(el => el.classList.remove('error'));
+            const generalErrorElement = document.getElementById(`${type}GeneralError`);
+            if (generalErrorElement) generalErrorElement.textContent = '';
         }
 
-        // Initialize with student form
+        // Initialize
         switchForm('student');
     </script>
 </body>

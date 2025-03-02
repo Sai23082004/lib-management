@@ -6,7 +6,6 @@
     <title>User Page - Library System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* General Reset */
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +20,6 @@
             min-height: 100vh;
         }
 
-        /* Sidebar (Navbar) */
         .sidebar {
             background-color: #FFFFFF;
             width: 250px;
@@ -94,7 +92,6 @@
             color: #FFFFFF;
         }
 
-        /* Hamburger Menu Toggle */
         .hamburger {
             display: none;
             font-size: 1.8rem;
@@ -106,7 +103,6 @@
             z-index: 2000;
         }
 
-        /* Profile Section (Top Right) */
         .profile {
             position: absolute;
             top: 20px;
@@ -154,7 +150,6 @@
             background-color: #E6ECEF;
         }
 
-        /* Main Body Styles */
         .main-body {
             width: calc(100% - 250px);
             margin-left: 250px;
@@ -171,6 +166,14 @@
 
         .content-section {
             flex-grow: 1;
+        }
+
+        .library-heading {
+            font-size: 2.2rem;
+            color: #1B265D;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
         }
 
         .greeting {
@@ -203,7 +206,6 @@
             color: #333;
         }
 
-        /* Table Styles */
         .table-container {
             overflow-x: auto;
             animation: fadeIn 0.5s ease-in-out;
@@ -245,6 +247,11 @@
             color: #FFFFFF;
         }
 
+        .status-btn.submitted {
+            background-color: #28A745;
+            color: #FFFFFF;
+        }
+
         .status-btn:hover {
             transform: scale(1.05);
         }
@@ -256,7 +263,6 @@
             margin-top: 20px;
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 10px;
@@ -266,7 +272,6 @@
             margin-top: auto;
         }
 
-        /* Animations */
         @keyframes fadeInLeft {
             0% { opacity: 0; transform: translateX(-20px); }
             100% { opacity: 1; transform: translateX(0); }
@@ -282,7 +287,6 @@
             100% { opacity: 1; }
         }
 
-        /* Responsive Design for Small Screens */
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
@@ -290,7 +294,7 @@
 
             .sidebar {
                 transform: translateX(-100%);
-                width: 200px; /* Reduced width for tablets */
+                width: 200px;
             }
 
             .sidebar.active {
@@ -306,6 +310,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .library-heading {
+                font-size: 1.8rem;
+            }
+
             .greeting {
                 font-size: 1.5rem;
             }
@@ -315,13 +323,13 @@
             }
 
             table {
-                min-width: 600px; /* Ensures horizontal scrolling */
+                min-width: 600px;
             }
         }
 
         @media (max-width: 480px) {
             .sidebar {
-                width: 180px; /* Further reduced for small phones */
+                width: 180px;
             }
 
             .sidebar-brand i {
@@ -344,6 +352,10 @@
 
             .main-body {
                 padding: 15px;
+            }
+
+            .library-heading {
+                font-size: 1.5rem;
             }
 
             .greeting {
@@ -426,6 +438,7 @@
 
         <!-- User Page Section -->
         <div class="content-section active" id="user-page">
+            <div class="library-heading" id="library-heading"></div>
             <div class="greeting" id="greeting">Hello, User</div>
             <div class="user-details" id="user-details">
                 <div><span class="label">Name:</span> <span class="value" id="user-name"></span></div>
@@ -437,19 +450,19 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>S.No</th>
-                            <th>Roll No</th>
                             <th>Book ID</th>
                             <th>Book Name</th>
+                            <th>Code</th>
                             <th>Issue Date</th>
                             <th>Return Date</th>
+                            <th>Submitted Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody id="lent-books-table-body"></tbody>
                 </table>
             </div>
-            <p class="no-books-message" id="no-books-message">You have not lent any books from the library.</p>
+            <p class="no-books-message" id="no-books-message">You have not borrowed any books from the library.</p>
         </div>
 
         <!-- Footer -->
@@ -460,11 +473,15 @@
 
     <!-- JavaScript -->
     <script>
+        // API Base URL
+        const api = "http://127.0.0.1:8000/api/";
+
         const hamburger = document.getElementById('hamburger');
         const sidebar = document.getElementById('sidebar');
         const profileIcon = document.getElementById('profile-icon');
         const profileDropdown = document.getElementById('profile-dropdown');
         const signOut = document.getElementById('sign-out');
+        const libraryHeading = document.getElementById('library-heading');
         const greeting = document.getElementById('greeting');
         const sidebarUsername = document.getElementById('sidebar-username');
         const userName = document.getElementById('user-name');
@@ -498,62 +515,79 @@
             }
         });
 
-        // Sign Out Action (Mock)
+        // Sign Out Action
         signOut.addEventListener('click', (e) => {
             e.preventDefault();
+            localStorage.removeItem('userData');
             alert('Signed out successfully!');
-            // Redirect to login page in production
+            window.location.href = 'index.html';
         });
 
-        // Mock User Data
-        const userData = {
-            username: "JohnDoe123",
-            name: "John Doe",
-            rollNo: "CS001",
-            branch: "CSE",
-            year: "3"
-        };
+        // Load User Data from localStorage
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) {
+            alert('No user data found. Please log in.');
+            window.location.href = 'index.html';
+        } else {
+            // Populate User Details
+            const fullName = `${userData.firstName} ${userData.lastName}`;
+            const currentYear = new Date().getFullYear();
+            const year = currentYear - userData.startyear;
 
-        // Mock Lent Books Data
-        const lentBooksData = [
-            { sno: 2, regNo: "CS001", bookId: "BK124", bookName: "Data Structures", issueDate: "2023-11-01", returnDate: "-", status: "not-submitted" },
-        ];
+            libraryHeading.textContent = `${userData.library} Library`;
+            greeting.textContent = `Hello, ${fullName}`;
+            sidebarUsername.textContent = `Hello, ${fullName}`;
+            userName.textContent = fullName;
+            userRollNo.textContent = userData.id;
+            userBranch.textContent = userData.branch.toUpperCase();
+            userYear.textContent = year;
 
-        // Populate User Details
-        greeting.textContent = `Hello, ${userData.username}`;
-        sidebarUsername.textContent = `Hello, ${userData.username}`;
-        userName.textContent = userData.name;
-        userRollNo.textContent = userData.rollNo;
-        userBranch.textContent = userData.branch;
-        userYear.textContent = userData.year;
+            // Populate Lent Books Table
+            function populateLentBooksTable(books) {
+                lentBooksTableBody.innerHTML = '';
+                if (books && books.length > 0) {
+                    books.forEach(book => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${book.id}</td>
+                            <td>${book.name}</td>
+                            <td>${book.code}</td>
+                            <td>${new Date(book.created_at).toLocaleDateString()}</td>
+                            <td>${book.return_date ? new Date(book.return_date).toLocaleDateString() : '-'}</td>
+                            <td>${book.submited_date ? new Date(book.submited_date).toLocaleDateString() : '-'}</td>
+                            <td><button class="status-btn ${book.submited ? 'submitted' : 'not-submitted'}">${book.submited ? 'Submitted' : 'Not Submitted'}</button></td>
+                        `;
+                        lentBooksTableBody.appendChild(tr);
+                    });
+                    lentBooksTable.style.display = 'block';
+                    noBooksMessage.style.display = 'none';
+                } else {
+                    lentBooksTable.style.display = 'none';
+                    noBooksMessage.style.display = 'block';
+                }
+            }
 
-        // Function to Populate Lent Books Table
-        function populateLentBooksTable(data) {
-            lentBooksTableBody.innerHTML = '';
-            if (data.length > 0) {
-                data.forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${row.sno}</td>
-                        <td>${row.regNo}</td>
-                        <td>${row.bookId}</td>
-                        <td>${row.bookName}</td>
-                        <td>${row.issueDate}</td>
-                        <td>${row.returnDate}</td>
-                        <td><button class="status-btn ${row.status}">${row.status === 'submitted' ? 'Submitted' : 'Not Submitted'}</button></td>
-                    `;
-                    lentBooksTableBody.appendChild(tr);
-                });
-                lentBooksTable.style.display = 'block';
-                noBooksMessage.style.display = 'none';
-            } else {
-                lentBooksTable.style.display = 'none';
-                noBooksMessage.style.display = 'block';
+            // Initial Load of Lent Books
+            populateLentBooksTable(userData.books);
+
+            // Example function for future API integration (not currently used)
+            async function refreshUserData() {
+                try {
+                    const response = await fetch(`${api}getuserdetails/${userData.library}/${userData.id}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (!response.ok) throw new Error('Failed to refresh user data');
+                    const updatedData = await response.json();
+                    localStorage.setItem('userData', JSON.stringify(updatedData));
+                    populateLentBooksTable(updatedData.books);
+                } catch (error) {
+                    console.error('Error refreshing user data:', error);
+                }
             }
         }
-
-        // Initial Load of Lent Books
-        populateLentBooksTable(lentBooksData.filter(book => book.status === "not-submitted"));
     </script>
 </body>
 </html>
