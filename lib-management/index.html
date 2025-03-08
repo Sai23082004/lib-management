@@ -22,6 +22,7 @@
             flex-direction: column;
         }
 
+        /* Navbar */
         .navbar {
             background-color: #4285f4;
             padding: 15px 20px;
@@ -42,6 +43,7 @@
             text-decoration: none;
             text-align: center;
             flex-grow: 1;
+            cursor: pointer;
         }
 
         .nav-links {
@@ -56,6 +58,7 @@
             padding: 8px 15px;
             border-radius: 4px;
             transition: background-color 0.3s;
+            display: block;
         }
 
         .nav-links a:hover {
@@ -71,6 +74,7 @@
             cursor: pointer;
         }
 
+        /* Main Container */
         .main-container {
             max-width: 1200px;
             margin: 40px auto;
@@ -83,6 +87,7 @@
         .welcome-section {
             flex: 1;
             padding: 20px;
+            animation: fadeIn 1s ease-in-out;
         }
 
         .welcome-section h1 {
@@ -103,7 +108,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
         }
 
         .auth-buttons {
@@ -140,7 +144,7 @@
             padding: 25px;
             border-radius: 8px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
+            animation: slideUp 0.5s ease-in-out;
         }
 
         .form-box.active, .register-box.active {
@@ -166,7 +170,7 @@
             margin-bottom: 5px;
         }
 
-        .input-group input {
+        .input-group input, .input-group textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #dadce0;
@@ -175,7 +179,11 @@
             transition: border-color 0.3s;
         }
 
-        .input-group input:focus {
+        .input-group textarea {
+            resize: vertical;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
             border-color: #4285f4;
             outline: none;
         }
@@ -233,6 +241,7 @@
             text-decoration: underline;
         }
 
+        /* Popup */
         .popup-box {
             display: none;
             position: fixed;
@@ -246,6 +255,7 @@
             z-index: 1001;
             text-align: center;
             max-width: 300px;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .popup-box.active {
@@ -292,11 +302,13 @@
             display: block;
         }
 
+        /* Footer */
         .footer {
             background-color: #4285f4;
             padding: 15px;
             text-align: center;
             color: #fff;
+            margin-top: auto;
         }
 
         .footer a {
@@ -356,7 +368,7 @@
             100% { transform: rotateY(360deg); }
         }
 
-        /* Network Status Popup */
+        /* Network Status */
         .network-status {
             display: none;
             position: fixed;
@@ -382,27 +394,264 @@
             color: #fff;
         }
 
+        /* Shared Section Styles */
+        .about-section, .contact-section {
+            background-color: #f5f6f5;
+            padding: 40px 0;
+            display: none;
+        }
+
+        .about-content, .contact-content {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .about-heading, .contact-heading {
+            font-size: 2.5rem;
+            color: #4285f4;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .about-subtitle, .contact-subtitle {
+            font-size: 1.2rem;
+            color: #5f6368;
+            margin-bottom: 40px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .about-block, .contact-block {
+            margin-bottom: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-in-out;
+        }
+
+        .about-block h2, .contact-block h2 {
+            font-size: 1.8rem;
+            color: #202124;
+            margin-bottom: 15px;
+        }
+
+        .about-block p, .contact-block p {
+            font-size: 1rem;
+            color: #5f6368;
+        }
+
+        /* About Section Specific */
+        .read-more {
+            color: #4285f4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .step:hover {
+            transform: scale(1.05);
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            color: #4285f4;
+            margin-bottom: 10px;
+        }
+
+        .team-members, .founders-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .team-member, .founder-card {
+            text-align: center;
+            width: 220px;
+            padding: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .team-member:hover, .founder-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-photo, .founder-photo {
+            width: 100px;
+            height: 100px;
+            background: #4285f4;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .team-member h3, .founder-card h3 {
+            font-size: 1.2rem;
+            color: #202124;
+        }
+
+        .team-member p, .founder-card p {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+
+        .cta-block {
+            background: #4285f4;
+            color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .cta-block h2 {
+            color: #fff;
+        }
+
+        .demo-btn {
+            padding: 12px 25px;
+            background-color: #fff;
+            color: #4285f4;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .demo-btn:hover {
+            background-color: #e8f0fe;
+            color: #3267d6;
+        }
+
+        /* Contact Section Specific */
+        .founder-card {
+            background: #e8f0fe;
+            border-radius: 8px;
+        }
+
+        .contact-block a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .contact-block a:hover {
+            text-decoration: underline;
+        }
+
+        .map-container {
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: #4285f4;
+            font-size: 1.5rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #3267d6;
+            transform: scale(1.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             .nav-toggle {
                 display: block;
             }
 
             .nav-links {
-                display: none;
                 position: fixed;
                 top: 0;
-                right: -200px;
-                width: 200px;
+                left: -250px; /* Changed to slide from left */
+                width: 250px;
                 height: 100vh;
-                background-color: #4285f4;
+                background: linear-gradient(135deg, #1e3c72, #2a5298); /* Gradient background */
                 flex-direction: column;
-                padding: 20px;
-                transition: right 0.3s;
+                padding: 70px 20px 20px;
+                transition: left 0.3s ease-in-out;
+                z-index: 999;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
             }
 
             .nav-links.active {
+                left: 0; /* Slide in from left */
                 display: flex;
-                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .nav-links a {
+                padding: 15px 20px;
+                color: #fff;
+                font-size: 1.1rem;
+                text-align: left;
+                border-radius: 8px;
+                transition: background-color 0.3s, transform 0.2s;
+            }
+
+            .nav-links a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                transform: translateX(10px); /* Slight shift on hover */
             }
 
             .main-container {
@@ -422,23 +671,40 @@
             .navbar-brand {
                 font-size: 1.4rem;
             }
+
+            .steps-container, .team-members, .founders-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .team-member, .founder-card {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .map-container iframe {
+                height: 200px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <button class="nav-toggle" id="navToggle">☰</button>
-        <a href="#" class="navbar-brand" id="navbarBrand">Library Management System</a>
+        <span class="navbar-brand" id="navbarBrand">Library Management System</span>
         <ul class="nav-links" id="navMenu">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
+    <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
-    <div class="main-container">
+    <!-- Home Section -->
+    <div class="main-container" id="homeSection">
         <div class="welcome-section">
             <h1>Discover Knowledge</h1>
             <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
@@ -451,11 +717,12 @@
                 <button class="auth-btn" id="adminBtn">Admin</button>
             </div>
 
+            <!-- Student Login -->
             <div class="form-box active" id="studentLogin">
                 <h2>Student Login</h2>
                 <form id="studentLoginForm">
                     <div class="input-group">
-                        <label for="studentUsername">Username for Library</label>
+                        <label for="studentUsername">Library Username</label>
                         <input type="text" id="studentUsername" name="username" placeholder="Enter library username" required>
                         <span class="error-text" id="studentUsernameError"></span>
                     </div>
@@ -475,6 +742,7 @@
                 </form>
             </div>
 
+            <!-- Admin Login -->
             <div class="form-box" id="adminLogin">
                 <h2>Admin Login</h2>
                 <form id="adminLoginForm">
@@ -503,12 +771,13 @@
                 </form>
             </div>
 
+            <!-- Register Admin -->
             <div class="register-box" id="registerBox">
                 <h2>Register Admin</h2>
                 <form id="registerForm">
                     <div class="input-group">
-                        <label for="registerUsername">Username for Library</label>
-                        <input type="text" id="registerUsername" name="username" placeholder="Enter your library username" required>
+                        <label for="registerUsername">Library Username</label>
+                        <input type="text" id="registerUsername" name="username" placeholder="Enter library username" required>
                         <span class="error-text" id="registerUsernameError"></span>
                     </div>
                     <div class="input-group">
@@ -542,6 +811,7 @@
                 </form>
             </div>
 
+            <!-- OTP Verification -->
             <div class="register-box" id="otpBox">
                 <h2>Verify OTP</h2>
                 <form id="otpForm">
@@ -565,6 +835,7 @@
                 </form>
             </div>
 
+            <!-- Forgot Password -->
             <div class="register-box" id="forgotPasswordBox">
                 <h2>Forgot Password</h2>
                 <form id="forgotPasswordForm">
@@ -587,6 +858,7 @@
                 </form>
             </div>
 
+            <!-- Forgot OTP Verification -->
             <div class="register-box" id="forgotOtpBox">
                 <h2>Verify OTP</h2>
                 <form id="forgotOtpForm">
@@ -610,6 +882,7 @@
                 </form>
             </div>
 
+            <!-- Reset Password -->
             <div class="register-box" id="resetPasswordBox">
                 <h2>Reset Password</h2>
                 <form id="resetPasswordForm">
@@ -637,6 +910,7 @@
                 </form>
             </div>
 
+            <!-- Success Popup -->
             <div class="popup-box" id="successPopup">
                 <h2>Success!</h2>
                 <p id="successMessage">Your account has been created.</p>
@@ -645,10 +919,194 @@
         </div>
     </div>
 
+    <!-- About Section -->
+    <section class="about-section" id="aboutSection">
+        <div class="main-container">
+            <div class="about-content">
+                <h1 class="about-heading">About Us</h1>
+                <p class="about-subtitle">Empowering libraries with free, innovative solutions</p>
+
+                <div class="about-block aim-block">
+                    <h2>Our Aim</h2>
+                    <p>
+                        The Library Management System is a free, open-access application designed to bridge the gap between librarians and users. Anyone can create an account using a library name and credentials, manage users, add books, return books, and track all operations in real-time. Our goal is to provide an intermediate platform that simplifies library management, offering immediate updates and a seamless experience at no cost.
+                    </p>
+                    <a href="#learn-more" class="read-more">Learn More</a>
+                </div>
+
+                <div class="about-block how-it-works-block">
+                    <h2>How It Works</h2>
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                            <p><strong>Create Account:</strong> Admins register with library credentials.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon"><i class="fas fa-book"></i></div>
+                            <p><strong>Manage Books:</strong> Add, return, and track books instantly.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon"><i class="fas fa-users"></i></div>
+                            <p><strong>User Access:</strong> Students log in with library name and roll number to view books.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-block team-block">
+                    <h2>Meet Shinobi Systems</h2>
+                    <p>
+                        We are Shinobi Systems, a company dedicated to providing cutting-edge, user-friendly applications that solve real-world problems. Our team of passionate developers is committed to transforming library management for the better.
+                    </p>
+                    <div class="team-members">
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>M. Sai Teja</h3>
+                            <p>Full Stack Developer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>G. Saikiran</h3>
+                            <p>Full Stack Developer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>C. Abbas</h3>
+                            <p>Frontend Developer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>K. Bhavana</h3>
+                            <p>Frontend Developer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-block vision-block">
+                    <h2>Our Vision & Mission</h2>
+                    <p><strong>Vision:</strong> To revolutionize library management with innovative, free tools.</p>
+                    <p><strong>Mission:</strong> Automate library processes, enhance user experience, and support thousands of libraries worldwide by 2030.</p>
+                </div>
+
+                <div class="cta-block">
+                    <h2>Ready to Experience It?</h2>
+                    <p>Join us today and see the live demo of our Library Management System!</p>
+                    <button class="demo-btn">Request a Live Demo</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contactSection">
+        <div class="main-container">
+            <div class="contact-content">
+                <h1 class="contact-heading">Contact Us</h1>
+                <p class="contact-subtitle">We’re here to assist you with your library management needs!</p>
+
+                <div class="contact-block location-block">
+                    <h2>Our Location</h2>
+                    <p>Shinobi Systems HQ</p>
+                    <p>123 Innovation Street, Tech City, India</p>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509371!2d144.95373531531688!3d-37.81627997975195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d7e5b5e7e5f!2sVictoria!5e0!3m2!1sen!2sau!4v1634567890123" 
+                                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <div class="contact-block company-contact-block">
+                    <h2>Get in Touch</h2>
+                    <p><i class="fas fa-phone"></i> +91-98765-43210</p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:support@shinobisystems.com">support@shinobisystems.com</a></p>
+                </div>
+
+                <div class="contact-block founders-block">
+                    <h2>Meet Our Founders</h2>
+                    <div class="founders-container">
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>M. Sai Teja</h3>
+                            <p>Full Stack Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:msaiteja@shinobisystems.com">msaiteja@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/msaiteja" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/msaiteja" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/msaiteja" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>G. Saikiran</h3>
+                            <p>Full Stack Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:gsaikiran@shinobisystems.com">gsaikiran@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/gsaikiran" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/gsaikiran" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/gsaikiran" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>C. Abbas</h3>
+                            <p>Frontend Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:cabbas@shinobisystems.com">cabbas@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/cabbas" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/cabbas" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/cabbas" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>K. Bhavana</h3>
+                            <p>Frontend Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:kbhavana@shinobisystems.com">kbhavana@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/kbhavana" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/kbhavana" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/kbhavana" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-block feedback-block">
+                    <h2>Send Us Your Feedback</h2>
+                    <form id="feedbackForm">
+                        <div class="input-group">
+                            <label for="feedbackName">Name</label>
+                            <input type="text" id="feedbackName" name="name" placeholder="Enter your name" required>
+                            <span class="error-text" id="feedbackNameError"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="feedbackEmail">Email</label>
+                            <input type="email" id="feedbackEmail" name="email" placeholder="Enter your email" required>
+                            <span class="error-text" id="feedbackEmailError"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="feedbackMessage">Message</label>
+                            <textarea id="feedbackMessage" name="message" placeholder="Your feedback" rows="5" required></textarea>
+                            <span class="error-text" id="feedbackMessageError"></span>
+                        </div>
+                        <span class="error-text" id="feedbackGeneralError"></span>
+                        <button type="submit" class="submit-btn">Submit Feedback</button>
+                        <div class="loading-overlay" id="feedbackLoading">
+                            <div class="book-loader">
+                                <div class="book-front"></div>
+                                <div class="book-back"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <p>© 2025 <a href="#">Shinobi Systems</a></p>
     </footer>
 
+    <!-- Network Status -->
     <div class="network-status" id="networkStatus"></div>
 
     <script>
@@ -660,6 +1118,12 @@
         const navMenu = document.getElementById('navMenu');
         const overlay = document.getElementById('overlay');
         const navbarBrand = document.getElementById('navbarBrand');
+        const homeLink = document.querySelector('.nav-links a[href="#home"]');
+        const aboutLink = document.querySelector('.nav-links a[href="#about"]');
+        const contactLink = document.querySelector('.nav-links a[href="#contact"]');
+        const homeSection = document.getElementById('homeSection');
+        const aboutSection = document.getElementById('aboutSection');
+        const contactSection = document.getElementById('contactSection');
         const studentBtn = document.getElementById('studentBtn');
         const adminBtn = document.getElementById('adminBtn');
         const studentLogin = document.getElementById('studentLogin');
@@ -676,6 +1140,7 @@
         const forgotPasswordForm = document.getElementById('forgotPasswordForm');
         const forgotOtpForm = document.getElementById('forgotOtpForm');
         const resetPasswordForm = document.getElementById('resetPasswordForm');
+        const feedbackForm = document.getElementById('feedbackForm');
         const registerLink = document.getElementById('registerLink');
         const forgotPasswordLink = document.getElementById('forgotPasswordLink');
         const backToLogin = document.getElementById('backToLogin');
@@ -691,6 +1156,7 @@
         const forgotLoading = document.getElementById('forgotLoading');
         const forgotOtpLoading = document.getElementById('forgotOtpLoading');
         const resetLoading = document.getElementById('resetLoading');
+        const feedbackLoading = document.getElementById('feedbackLoading');
         const resendOtp = document.getElementById('resendOtp');
         const resendForgotOtp = document.getElementById('resendForgotOtp');
         const toggleRegisterPassword = document.getElementById('toggleRegisterPassword');
@@ -703,42 +1169,58 @@
         let verifiedOtp = null;
 
         // Navbar Toggle
-        navToggle.addEventListener('click', () => {
+        navToggle.addEventListener('click', toggleMenu);
+
+        function toggleMenu() {
             navMenu.classList.toggle('active');
             overlay.classList.toggle('active');
             navToggle.textContent = navMenu.classList.contains('active') ? '✖' : '☰';
-        });
+        }
 
-        overlay.addEventListener('click', () => {
+        overlay.addEventListener('click', closeMenu);
+
+        function closeMenu() {
             navMenu.classList.remove('active');
             overlay.classList.remove('active');
             navToggle.textContent = '☰';
             resetForms();
-        });
+        }
+
+        // Navigation Handlers
+        navbarBrand.addEventListener('click', showHome);
+        homeLink.addEventListener('click', (e) => { e.preventDefault(); showHome(); });
+        aboutLink.addEventListener('click', (e) => { e.preventDefault(); showAbout(); });
+        contactLink.addEventListener('click', (e) => { e.preventDefault(); showContact(); });
+
+        function showHome() {
+            homeSection.style.display = 'flex';
+            aboutSection.style.display = 'none';
+            contactSection.style.display = 'none';
+            closeMenu();
+        }
+
+        function showAbout() {
+            homeSection.style.display = 'none';
+            aboutSection.style.display = 'block';
+            contactSection.style.display = 'none';
+            closeMenu();
+        }
+
+        function showContact() {
+            homeSection.style.display = 'none';
+            aboutSection.style.display = 'none';
+            contactSection.style.display = 'block';
+            closeMenu();
+        }
 
         // Form Switching
         studentBtn.addEventListener('click', () => switchForm('student'));
         adminBtn.addEventListener('click', () => switchForm('admin'));
-        registerLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchForm('register');
-        });
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchForm('forgot');
-        });
-        backToLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchForm('admin');
-        });
-        backToLoginFromForgot.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchForm('admin');
-        });
-        backToLoginFromReset.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchForm('admin');
-        });
+        registerLink.addEventListener('click', (e) => { e.preventDefault(); switchForm('register'); });
+        forgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); switchForm('forgot'); });
+        backToLogin.addEventListener('click', (e) => { e.preventDefault(); switchForm('admin'); });
+        backToLoginFromForgot.addEventListener('click', (e) => { e.preventDefault(); switchForm('admin'); });
+        backToLoginFromReset.addEventListener('click', (e) => { e.preventDefault(); switchForm('admin'); });
         loginNowBtn.addEventListener('click', () => {
             switchForm('admin');
             overlay.classList.remove('active');
@@ -767,619 +1249,64 @@
             forgotPasswordBox.classList.remove('active');
             forgotOtpBox.classList.remove('active');
             resetPasswordBox.classList.remove('active');
-            successPopup.classList.remove('active');
             studentBtn.classList.add('active');
             adminBtn.classList.remove('active');
             navbarBrand.textContent = 'Library Management System';
         }
 
         // Password Visibility Toggle
-        toggleRegisterPassword.addEventListener('click', () => {
-            const passwordInput = document.getElementById('registerPassword');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleRegisterPassword.classList.remove('fa-eye');
-                toggleRegisterPassword.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleRegisterPassword.classList.remove('fa-eye-slash');
-                toggleRegisterPassword.classList.add('fa-eye');
-            }
-        });
+        toggleRegisterPassword.addEventListener('click', () => togglePassword('registerPassword', toggleRegisterPassword));
+        toggleRegisterConfirmPassword.addEventListener('click', () => togglePassword('registerConfirmPassword', toggleRegisterConfirmPassword));
 
-        toggleRegisterConfirmPassword.addEventListener('click', () => {
-            const confirmPasswordInput = document.getElementById('registerConfirmPassword');
-            if (confirmPasswordInput.type === 'password') {
-                confirmPasswordInput.type = 'text';
-                toggleRegisterConfirmPassword.classList.remove('fa-eye');
-                toggleRegisterConfirmPassword.classList.add('fa-eye-slash');
+        function togglePassword(inputId, toggleIcon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
             } else {
-                confirmPasswordInput.type = 'password';
-                toggleRegisterConfirmPassword.classList.remove('fa-eye-slash');
-                toggleRegisterConfirmPassword.classList.add('fa-eye');
+                input.type = 'password';
+                toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
             }
-        });
+        }
 
-        // OTP Timer (Registration - 10 minutes)
+        // OTP Timers
         function startOtpTimer() {
-            let timeLeft = 600; // 10 minutes in seconds
+            let timeLeft = 600; // 10 minutes
             clearInterval(otpTimerInterval);
-            
-            otpTimerInterval = setInterval(() => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('otpTimer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(otpTimerInterval);
-                    document.getElementById('otpTimer').textContent = 'Expired';
-                    resendOtp.style.display = 'block';
-                }
-                timeLeft--;
-            }, 1000);
+            otpTimerInterval = setInterval(() => updateTimer('otpTimer', timeLeft--, resendOtp), 1000);
         }
 
-        // Forgot OTP Timer (5 minutes)
         function startForgotOtpTimer() {
-            let timeLeft = 300; // 5 minutes in seconds
+            let timeLeft = 300; // 5 minutes
             clearInterval(forgotOtpTimerInterval);
-            
-            forgotOtpTimerInterval = setInterval(() => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('forgotOtpTimer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(forgotOtpTimerInterval);
-                    document.getElementById('forgotOtpTimer').textContent = 'Expired';
-                    resendForgotOtp.style.display = 'block';
-                }
-                timeLeft--;
-            }, 1000);
+            forgotOtpTimerInterval = setInterval(() => updateTimer('forgotOtpTimer', timeLeft--, resendForgotOtp), 1000);
         }
 
-        // Network Status Detection
-        function updateNetworkStatus() {
-            if (!navigator.onLine) {
-                networkStatus.textContent = 'You are offline. Please connect to the network again.';
-                networkStatus.classList.remove('online');
-                networkStatus.classList.add('offline');
-            } else {
-                networkStatus.textContent = 'Network connected successfully';
-                networkStatus.classList.remove('offline');
-                networkStatus.classList.add('online');
-                setTimeout(() => {
-                    networkStatus.classList.remove('online');
-                }, 3000); // Hide after 3 seconds when online
+        function updateTimer(timerId, timeLeft, resendLink) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById(timerId).textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            if (timeLeft <= 0) {
+                clearInterval(otpTimerInterval);
+                clearInterval(forgotOtpTimerInterval);
+                document.getElementById(timerId).textContent = 'Expired';
+                resendLink.style.display = 'block';
             }
+        }
+
+        // Network Status
+        function updateNetworkStatus() {
+            networkStatus.textContent = navigator.onLine ? 'Network connected successfully' : 'You are offline. Please connect to the network.';
+            networkStatus.classList.toggle('online', navigator.onLine);
+            networkStatus.classList.toggle('offline', !navigator.onLine);
+            if (navigator.onLine) setTimeout(() => networkStatus.classList.remove('online'), 3000);
         }
 
         window.addEventListener('online', updateNetworkStatus);
         window.addEventListener('offline', updateNetworkStatus);
-        updateNetworkStatus(); // Initial check
+        updateNetworkStatus();
 
-        // Student Login Handler (Get User Details)
-        async function handleStudentLogin(e) {
-            e.preventDefault();
-            clearErrors('student');
-
-            if (!navigator.onLine) {
-                showGeneralError('student', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            const username = document.getElementById('studentUsername').value.trim();
-            const rollNumber = document.getElementById('studentRollNumber').value.trim();
-            let isValid = true;
-
-            if (!username) {
-                showError('student', 'Username', 'Username is required');
-                isValid = false;
-            }
-            if (!rollNumber) {
-                showError('student', 'RollNumber', 'Roll number is required');
-                isValid = false;
-            }
-
-            if (isValid) {
-                navbarBrand.textContent = `${username} Library`;
-                studentLoading.classList.add('active');
-                try {
-                    const response = await fetch(`${api}getuserdetails/${username}/${rollNumber}/`, {
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json' }
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        if (data.error === "invalid library username") {
-                            showError('student', 'Username', 'Invalid username for library');
-                        } else if (data.error === "User not found!") {
-                            showError('student', 'RollNumber', 'Invalid roll number');
-                        } else {
-                            showGeneralError('student', 'An error occurred');
-                        }
-                        studentLoading.classList.remove('active');
-                        return;
-                    }
-
-                    localStorage.setItem('userData', JSON.stringify(data));
-                    studentLoading.classList.remove('active');
-                    window.location.href = 'user.html';
-
-                } catch (error) {
-                    showGeneralError('student', 'Invalid credentials or network error');
-                    console.error('Student login fetch error:', error);
-                    studentLoading.classList.remove('active');
-                }
-            }
-        }
-
-        // Admin Login Handler
-        async function handleAdminLogin(e) {
-            e.preventDefault();
-            clearErrors('admin');
-
-            if (!navigator.onLine) {
-                showGeneralError('admin', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            const email = document.getElementById('adminEmail').value.trim();
-            const password = document.getElementById('adminPassword').value.trim();
-            let isValid = true;
-
-            if (!email) {
-                showError('admin', 'Email', 'Email is required');
-                isValid = false;
-            }
-            if (!password) {
-                showError('admin', 'Password', 'Password is required');
-                isValid = false;
-            }
-
-            if (isValid) {
-                adminLoading.classList.add('active');
-                try {
-                    const payload = { email, password };
-                    const response = await fetch(`${api}login/`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        if (data.email) {
-                            if (data.email === "Invalid email!") {
-                                showError('admin', 'Email', 'Invalid email!');
-                            } else if (data.email.includes('please activate your account')) {
-                                showError('admin', 'Email', 'Please activate your account! Click "Forgot Password" to proceed.');
-                            } else {
-                                showError('admin', 'Email', data.email);
-                            }
-                        }
-                        if (data.password) showError('admin', 'Password', data.password);
-                        if (!data.email && !data.password) showGeneralError('admin', data.detail || 'Login failed');
-                        adminLoading.classList.remove('active');
-                        return;
-                    }
-
-                    if (data.token) {
-                        localStorage.setItem('access_token', data.token);
-                        console.log('Admin login successful, token saved:', data.token);
-                    }
-
-                    adminLoading.classList.remove('active');
-                    window.location.href = './vendor.html';
-
-                } catch (error) {
-                    showGeneralError('admin', 'Login error. Try again.');
-                    console.error('Admin login fetch error:', error);
-                    adminLoading.classList.remove('active');
-                }
-            }
-        }
-
-        // Register Handler
-        async function handleRegister(e) {
-            e.preventDefault();
-            clearErrors('register');
-
-            if (!navigator.onLine) {
-                showGeneralError('register', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            const username = document.getElementById('registerUsername').value.trim();
-            const email = document.getElementById('registerEmail').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
-            const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
-            let isValid = true;
-
-            if (!username) {
-                showError('register', 'Username', 'Username is required');
-                isValid = false;
-            }
-            if (!email) {
-                showError('register', 'Email', 'Email is required');
-                isValid = false;
-            } else if (!/\S+@\S+\.\S+/.test(email)) {
-                showError('register', 'Email', 'Invalid email format');
-                isValid = false;
-            }
-            if (!password) {
-                showError('register', 'Password', 'Password is required');
-                isValid = false;
-            } else if (password.length > 8) {
-                showError('register', 'Password', 'Password must be 8 characters or less');
-                isValid = false;
-            }
-            if (!confirmPassword) {
-                showError('register', 'ConfirmPassword', 'Confirm password is required');
-                isValid = false;
-            } else if (password !== confirmPassword) {
-                showError('register', 'ConfirmPassword', 'Passwords do not match');
-                isValid = false;
-            }
-
-            if (isValid) {
-                registerLoading.classList.add('active');
-                try {
-                    registrationData = { username, email, password };
-                    console.log('Sending registration data:', registrationData);
-
-                    const response = await fetch(`${api}register/`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(registrationData)
-                    });
-
-                    const data = await response.json();
-                    console.log('Server response:', response.status, data);
-
-                    if (!response.ok) {
-                        if (typeof data === 'string') {
-                            if (data.includes('username already exists')) {
-                                showError('register', 'Username', 'Username already exists!');
-                            } else if (data.includes('email already exists')) {
-                                showError('register', 'Email', 'Email already exists!');
-                            } else {
-                                showGeneralError('register', data);
-                            }
-                        } else if (data.non_field_errors) {
-                            if (data.non_field_errors.some(err => err.includes('username already exists'))) {
-                                showError('register', 'Username', 'Username already exists!');
-                            }
-                            if (data.non_field_errors.some(err => err.includes('email already exists'))) {
-                                showError('register', 'Email', 'Email already exists!');
-                            }
-                        } else if (data.username) {
-                            showError('register', 'Username', data.username[0]);
-                        } else if (data.email) {
-                            showError('register', 'Email', data.email[0]);
-                        } else if (data.password) {
-                            showError('register', 'Password', data.password[0]);
-                        } else if (data.detail) {
-                            showGeneralError('register', data.detail);
-                        } else {
-                            showGeneralError('register', 'Registration failed: ' + JSON.stringify(data));
-                        }
-                        registerLoading.classList.remove('active');
-                        return;
-                    }
-
-                    console.log('Registration successful, proceeding to OTP');
-                    registerLoading.classList.remove('active');
-                    switchForm('otp');
-                    startOtpTimer();
-
-                } catch (error) {
-                    console.error('Registration error:', error);
-                    showGeneralError('register', 'Network error. Please try again.');
-                    registerLoading.classList.remove('active');
-                }
-            }
-        }
-
-        // OTP Verification Handler (Registration)
-        async function handleOtpVerification(e) {
-            e.preventDefault();
-            clearErrors('otp');
-
-            if (!navigator.onLine) {
-                showGeneralError('otp', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            const otp = document.getElementById('otpInput').value.trim();
-            if (!otp) {
-                showError('otp', '', 'OTP is required');
-                return;
-            }
-
-            otpLoading.classList.add('active');
-            try {
-                const response = await fetch(`${api}register/verify-otp/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: registrationData.email,
-                        otp: otp
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    if (data.email) showError('otp', '', data.email[0]);
-                    if (data.otp) showError('otp', '', data.otp[0]);
-                    otpLoading.classList.remove('active');
-                    return;
-                }
-
-                clearInterval(otpTimerInterval);
-                if (data.token) {
-                    localStorage.setItem('access_token', data.token);
-                    console.log('Registration successful, token saved:', data.token);
-                }
-                otpLoading.classList.remove('active');
-                successMessage.textContent = 'Your account has been created.';
-                successPopup.classList.add('active');
-                overlay.classList.add('active');
-
-            } catch (error) {
-                showError('otp', '', 'OTP verification failed');
-                console.error('OTP verification error:', error);
-                otpLoading.classList.remove('active');
-            }
-        }
-
-        // Resend OTP Handler (Registration)
-        resendOtp.addEventListener('click', async (e) => {
-            e.preventDefault();
-            if (!navigator.onLine) {
-                showGeneralError('otp', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            otpLoading.classList.add('active');
-            try {
-                const response = await fetch(`${api}register/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(registrationData)
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    if (data.email) showError('otp', '', data.email[0]);
-                    otpLoading.classList.remove('active');
-                    return;
-                }
-
-                startOtpTimer();
-                clearErrors('otp');
-                document.getElementById('otpInput').value = '';
-                showGeneralError('otp', 'New OTP sent successfully');
-                otpLoading.classList.remove('active');
-            } catch (error) {
-                showError('otp', '', 'Failed to resend OTP');
-                console.error('Resend OTP error:', error);
-                otpLoading.classList.remove('active');
-            }
-        });
-
-        // Forgot Password Handler (Send OTP)
-        async function handleForgotPassword(e) {
-            e.preventDefault();
-            clearErrors('forgot');
-
-            if (!navigator.onLine) {
-                showGeneralError('forgot', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            const email = document.getElementById('forgotEmail').value.trim();
-            if (!email) {
-                showError('forgot', 'Email', 'Email is required');
-                return;
-            }
-
-            forgotLoading.classList.add('active');
-            try {
-                const response = await fetch(`${api}forgot-password/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    if (data.email) showError('forgot', 'Email', data.email[0]);
-                    forgotLoading.classList.remove('active');
-                    return;
-                }
-
-                forgotEmail = email;
-                forgotLoading.classList.remove('active');
-                switchForm('forgotOtp');
-                startForgotOtpTimer();
-
-            } catch (error) {
-                showGeneralError('forgot', 'Failed to send OTP. Try again.');
-                console.error('Forgot password error:', error);
-                forgotLoading.classList.remove('active');
-            }
-        }
-
-        // Forgot OTP Verification Handler
-        async function handleForgotOtpVerification(e) {
-            e.preventDefault();
-            clearErrors('forgotOtp');
-
-            if (!navigator.onLine) {
-                showGeneralError('forgotOtp', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            const otp = document.getElementById('forgotOtpInput').value.trim();
-            if (!otp) {
-                showError('forgotOtp', '', 'OTP is required');
-                return;
-            }
-
-            forgotOtpLoading.classList.add('active');
-            try {
-                const response = await fetch(`${api}register/verify-otp/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: forgotEmail,
-                        otp: otp
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    if (data.email) showError('forgotOtp', '', data.email[0]);
-                    if (data.otp) showError('forgotOtp', '', data.otp[0]);
-                    forgotOtpLoading.classList.remove('active');
-                    return;
-                }
-
-                clearInterval(forgotOtpTimerInterval);
-                verifiedOtp = otp;
-                forgotOtpLoading.classList.remove('active');
-                switchForm('reset');
-
-            } catch (error) {
-                showError('forgotOtp', '', 'OTP verification failed');
-                console.error('Forgot OTP verification error:', error);
-                forgotOtpLoading.classList.remove('active');
-            }
-        }
-
-        // Resend OTP Handler (Forgot Password)
-        resendForgotOtp.addEventListener('click', async (e) => {
-            e.preventDefault();
-            if (!navigator.onLine) {
-                showGeneralError('forgotOtp', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            forgotOtpLoading.classList.add('active');
-            try {
-                const response = await fetch(`${api}forgot-password/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: forgotEmail })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    if (data.email) showError('forgotOtp', '', data.email[0]);
-                    forgotOtpLoading.classList.remove('active');
-                    return;
-                }
-
-                startForgotOtpTimer();
-                clearErrors('forgotOtp');
-                document.getElementById('forgotOtpInput').value = '';
-                showGeneralError('forgotOtp', 'New OTP sent successfully');
-                forgotOtpLoading.classList.remove('active');
-            } catch (error) {
-                showError('forgotOtp', '', 'Failed to resend OTP');
-                console.error('Resend forgot OTP error:', error);
-                forgotOtpLoading.classList.remove('active');
-            }
-        });
-
-        // Reset Password Handler
-        async function handleResetPassword(e) {
-            e.preventDefault();
-            clearErrors('reset');
-
-            if (!navigator.onLine) {
-                showGeneralError('reset', 'You are offline. Please connect to the network.');
-                return;
-            }
-
-            const newPassword = document.getElementById('newPassword').value.trim();
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
-            let isValid = true;
-
-            if (!newPassword) {
-                showError('reset', 'NewPassword', 'New password is required');
-                isValid = false;
-            } else if (newPassword.length > 8) {
-                showError('reset', 'NewPassword', 'Password must be 8 characters or less');
-                isValid = false;
-            }
-            if (!confirmNewPassword) {
-                showError('reset', 'ConfirmNewPassword', 'Confirm password is required');
-                isValid = false;
-            } else if (newPassword !== confirmNewPassword) {
-                showError('reset', 'ConfirmNewPassword', 'Passwords do not match');
-                isValid = false;
-            }
-
-            if (isValid) {
-                resetLoading.classList.add('active');
-                try {
-                    const response = await fetch(`${api}password-reset/`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            email: forgotEmail,
-                            otp: verifiedOtp,
-                            new_password: newPassword
-                        })
-                    });
-
-                    const text = await response.text();
-                    let data;
-                    try {
-                        data = JSON.parse(text);
-                    } catch (jsonError) {
-                        console.error('Response is not JSON:', text);
-                        throw new Error('Server returned invalid response: ' + text);
-                    }
-
-                    console.log('Reset password response:', response.status, data);
-
-                    if (!response.ok) {
-                        if (data.email) showError('reset', 'NewPassword', data.email[0]);
-                        if (data.otp) showError('reset', 'NewPassword', data.otp[0]);
-                        if (data.new_password) showError('reset', 'NewPassword', data.new_password[0]);
-                        if (data.detail) showGeneralError('reset', data.detail);
-                        resetLoading.classList.remove('active');
-                        return;
-                    }
-
-                    resetLoading.classList.remove('active');
-                    successMessage.textContent = 'Password reset is complete.';
-                    successPopup.classList.add('active');
-                    overlay.classList.add('active');
-
-                } catch (error) {
-                    showGeneralError('reset', 'Failed to reset password. Server error: ' + error.message);
-                    console.error('Reset password error:', error);
-                    resetLoading.classList.remove('active');
-                }
-            }
-        }
-
-        // Form Event Listeners
+        // Form Handlers
         studentLoginForm.addEventListener('submit', handleStudentLogin);
         adminLoginForm.addEventListener('submit', handleAdminLogin);
         registerForm.addEventListener('submit', handleRegister);
@@ -1387,8 +1314,274 @@
         forgotPasswordForm.addEventListener('submit', handleForgotPassword);
         forgotOtpForm.addEventListener('submit', handleForgotOtpVerification);
         resetPasswordForm.addEventListener('submit', handleResetPassword);
+        feedbackForm.addEventListener('submit', handleFeedback);
+
+        async function handleStudentLogin(e) {
+            e.preventDefault();
+            clearErrors('student');
+            if (!navigator.onLine) return showGeneralError('student', 'You are offline.');
+            const username = document.getElementById('studentUsername').value.trim();
+            const rollNumber = document.getElementById('studentRollNumber').value.trim();
+            if (!username || !rollNumber) return showErrors('student', !username, !rollNumber);
+            studentLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}getuserdetails/${username}/${rollNumber}/`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+                const data = await response.json();
+                if (!response.ok) return handleStudentLoginError(data);
+                localStorage.setItem('userData', JSON.stringify(data));
+                navbarBrand.textContent = `${username} Library`;
+                window.location.href = 'user.html';
+            } catch (error) {
+                showGeneralError('student', 'Network error.');
+                console.error('Student login error:', error);
+            } finally {
+                studentLoading.classList.remove('active');
+            }
+        }
+
+        function handleStudentLoginError(data) {
+            if (data.error === "invalid library username") showError('student', 'Username', 'Invalid username');
+            else if (data.error === "User not found!") showError('student', 'RollNumber', 'Invalid roll number');
+            else showGeneralError('student', 'An error occurred');
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            clearErrors('admin');
+            if (!navigator.onLine) return showGeneralError('admin', 'You are offline.');
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+            if (!email || !password) return showErrors('admin', !email, !password);
+            adminLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}login/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+                const data = await response.json();
+                if (!response.ok) return handleAdminLoginError(data);
+                localStorage.setItem('access_token', data.token);
+                window.location.href = './vendor.html';
+            } catch (error) {
+                showGeneralError('admin', 'Login error.');
+                console.error('Admin login error:', error);
+            } finally {
+                adminLoading.classList.remove('active');
+            }
+        }
+
+        function handleAdminLoginError(data) {
+            if (data.email) showError('admin', 'Email', data.email.includes('activate') ? 'Please activate your account!' : data.email);
+            if (data.password) showError('admin', 'Password', data.password);
+            if (!data.email && !data.password) showGeneralError('admin', data.detail || 'Login failed');
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            clearErrors('register');
+            if (!navigator.onLine) return showGeneralError('register', 'You are offline.');
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
+            if (!validateRegister(username, email, password, confirmPassword)) return;
+            registerLoading.classList.add('active');
+            try {
+                registrationData = { username, email, password };
+                const response = await fetch(`${api}register/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(registrationData) });
+                const data = await response.json();
+                if (!response.ok) return handleRegisterError(data);
+                switchForm('otp');
+                startOtpTimer();
+            } catch (error) {
+                showGeneralError('register', 'Network error.');
+                console.error('Register error:', error);
+            } finally {
+                registerLoading.classList.remove('active');
+            }
+        }
+
+        function validateRegister(username, email, password, confirmPassword) {
+            let isValid = true;
+            if (!username) { showError('register', 'Username', 'Username is required'); isValid = false; }
+            if (!email || !/\S+@\S+\.\S+/.test(email)) { showError('register', 'Email', 'Valid email is required'); isValid = false; }
+            if (!password || password.length > 8) { showError('register', 'Password', password ? 'Max 8 characters' : 'Password is required'); isValid = false; }
+            if (!confirmPassword || password !== confirmPassword) { showError('register', 'ConfirmPassword', confirmPassword ? 'Passwords do not match' : 'Confirm password'); isValid = false; }
+            return isValid;
+        }
+
+        function handleRegisterError(data) {
+            if (data.username) showError('register', 'Username', data.username[0]);
+            if (data.email) showError('register', 'Email', data.email[0]);
+            if (data.password) showError('register', 'Password', data.password[0]);
+            else showGeneralError('register', data.detail || 'Registration failed');
+        }
+
+        async function handleOtpVerification(e) {
+            e.preventDefault();
+            clearErrors('otp');
+            if (!navigator.onLine) return showGeneralError('otp', 'You are offline.');
+            const otp = document.getElementById('otpInput').value.trim();
+            if (!otp) return showError('otp', '', 'OTP is required');
+            otpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}register/verify-otp/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: registrationData.email, otp }) });
+                const data = await response.json();
+                if (!response.ok) return showError('otp', '', data.otp ? data.otp[0] : 'Invalid OTP');
+                clearInterval(otpTimerInterval);
+                localStorage.setItem('access_token', data.token);
+                showSuccess('Your account has been created.');
+            } catch (error) {
+                showError('otp', '', 'OTP verification failed');
+                console.error('OTP error:', error);
+            } finally {
+                otpLoading.classList.remove('active');
+            }
+        }
+
+        resendOtp.addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (!navigator.onLine) return showGeneralError('otp', 'You are offline.');
+            otpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}register/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(registrationData) });
+                if (!response.ok) throw new Error('Resend failed');
+                startOtpTimer();
+                document.getElementById('otpInput').value = '';
+                showGeneralError('otp', 'New OTP sent successfully');
+            } catch (error) {
+                showError('otp', '', 'Failed to resend OTP');
+                console.error('Resend OTP error:', error);
+            } finally {
+                otpLoading.classList.remove('active');
+            }
+        });
+
+        async function handleForgotPassword(e) {
+            e.preventDefault();
+            clearErrors('forgot');
+            if (!navigator.onLine) return showGeneralError('forgot', 'You are offline.');
+            const email = document.getElementById('forgotEmail').value.trim();
+            if (!email) return showError('forgot', 'Email', 'Email is required');
+            forgotLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}forgot-password/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                if (!response.ok) throw new Error('Failed to send OTP');
+                forgotEmail = email;
+                switchForm('forgotOtp');
+                startForgotOtpTimer();
+            } catch (error) {
+                showGeneralError('forgot', 'Failed to send OTP.');
+                console.error('Forgot password error:', error);
+            } finally {
+                forgotLoading.classList.remove('active');
+            }
+        }
+
+        async function handleForgotOtpVerification(e) {
+            e.preventDefault();
+            clearErrors('forgotOtp');
+            if (!navigator.onLine) return showGeneralError('forgotOtp', 'You are offline.');
+            const otp = document.getElementById('forgotOtpInput').value.trim();
+            if (!otp) return showError('forgotOtp', '', 'OTP is required');
+            forgotOtpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}register/verify-otp/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: forgotEmail, otp }) });
+                if (!response.ok) throw new Error('Invalid OTP');
+                clearInterval(forgotOtpTimerInterval);
+                verifiedOtp = otp;
+                switchForm('reset');
+            } catch (error) {
+                showError('forgotOtp', '', 'OTP verification failed');
+                console.error('Forgot OTP error:', error);
+            } finally {
+                forgotOtpLoading.classList.remove('active');
+            }
+        }
+
+        resendForgotOtp.addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (!navigator.onLine) return showGeneralError('forgotOtp', 'You are offline.');
+            forgotOtpLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}forgot-password/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: forgotEmail }) });
+                if (!response.ok) throw new Error('Resend failed');
+                startForgotOtpTimer();
+                document.getElementById('forgotOtpInput').value = '';
+                showGeneralError('forgotOtp', 'New OTP sent successfully');
+            } catch (error) {
+                showError('forgotOtp', '', 'Failed to resend OTP');
+                console.error('Resend forgot OTP error:', error);
+            } finally {
+                forgotOtpLoading.classList.remove('active');
+            }
+        });
+
+        async function handleResetPassword(e) {
+            e.preventDefault();
+            clearErrors('reset');
+            if (!navigator.onLine) return showGeneralError('reset', 'You are offline.');
+            const newPassword = document.getElementById('newPassword').value.trim();
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+            if (!validateReset(newPassword, confirmNewPassword)) return;
+            resetLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}password-reset/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: forgotEmail, otp: verifiedOtp, new_password: newPassword }) });
+                const data = await response.json();
+                if (!response.ok) return showGeneralError('reset', data.detail || 'Reset failed');
+                showSuccess('Password reset is complete.');
+            } catch (error) {
+                showGeneralError('reset', 'Failed to reset password.');
+                console.error('Reset password error:', error);
+            } finally {
+                resetLoading.classList.remove('active');
+            }
+        }
+
+        function validateReset(newPassword, confirmNewPassword) {
+            let isValid = true;
+            if (!newPassword || newPassword.length > 8) { showError('reset', 'NewPassword', newPassword ? 'Max 8 characters' : 'New password required'); isValid = false; }
+            if (!confirmNewPassword || newPassword !== confirmNewPassword) { showError('reset', 'ConfirmNewPassword', confirmNewPassword ? 'Passwords do not match' : 'Confirm password'); isValid = false; }
+            return isValid;
+        }
+
+        async function handleFeedback(e) {
+            e.preventDefault();
+            clearErrors('feedback');
+            if (!navigator.onLine) return showGeneralError('feedback', 'You are offline.');
+            const name = document.getElementById('feedbackName').value.trim();
+            const email = document.getElementById('feedbackEmail').value.trim();
+            const message = document.getElementById('feedbackMessage').value.trim();
+            if (!validateFeedback(name, email, message)) return;
+            feedbackLoading.classList.add('active');
+            try {
+                const response = await fetch(`${api}feedback/`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ name, email, message }) 
+                });
+                if (!response.ok) throw new Error('Feedback submission failed');
+                showSuccess('Thank you for your feedback!');
+                feedbackForm.reset();
+            } catch (error) {
+                showGeneralError('feedback', 'Failed to submit feedback.');
+                console.error('Feedback error:', error);
+            } finally {
+                feedbackLoading.classList.remove('active');
+            }
+        }
+
+        function validateFeedback(name, email, message) {
+            let isValid = true;
+            if (!name) { showError('feedback', 'Name', 'Name is required'); isValid = false; }
+            if (!email || !/\S+@\S+\.\S+/.test(email)) { showError('feedback', 'Email', 'Valid email is required'); isValid = false; }
+            if (!message) { showError('feedback', 'Message', 'Message is required'); isValid = false; }
+            return isValid;
+        }
 
         // Utility Functions
+        function showErrors(type, usernameError, passwordError) {
+            if (usernameError) showError(type, type === 'student' ? 'Username' : 'Email', `${type === 'student' ? 'Username' : 'Email'} is required`);
+            if (passwordError) showError(type, type === 'student' ? 'RollNumber' : 'Password', `${type === 'student' ? 'Roll number' : 'Password'} is required`);
+        }
+
         function showError(type, field, message) {
             const errorElement = document.getElementById(`${type}${field}Error`) || document.getElementById(`${type}Error`);
             errorElement.textContent = message;
@@ -1396,8 +1589,7 @@
         }
 
         function showGeneralError(type, message) {
-            const generalErrorElement = document.getElementById(`${type}GeneralError`);
-            if (generalErrorElement) generalErrorElement.textContent = message;
+            document.getElementById(`${type}GeneralError`).textContent = message;
         }
 
         function clearErrors(type) {
@@ -1406,13 +1598,24 @@
                 type === 'forgot' ? 'forgotPasswordBox' :
                 type === 'forgotOtp' ? 'forgotOtpBox' :
                 type === 'reset' ? 'resetPasswordBox' :
+                type === 'feedback' ? 'feedbackForm' :
                 `${type}${type === 'register' ? 'Box' : 'Login'}`
             );
             form.querySelectorAll('.error-text').forEach(el => el.textContent = '');
             form.querySelectorAll('.input-group').forEach(el => el.classList.remove('error'));
-            const generalErrorElement = document.getElementById(`${type}GeneralError`);
-            if (generalErrorElement) generalErrorElement.textContent = '';
+            document.getElementById(`${type}GeneralError`).textContent = '';
         }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successPopup.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        // Demo Button
+        document.querySelector('.demo-btn').addEventListener('click', () => {
+            alert('Request for a live demo has been submitted! We’ll get back to you soon.');
+        });
 
         // Initialize
         switchForm('student');
