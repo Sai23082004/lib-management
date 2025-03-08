@@ -1,1734 +1,1709 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        line-height: 1.6;
-        display: flex;
-        min-height: 100vh;
-      }
-      .sidebar {
-        background-color: #ffffff;
-        width: 250px;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        z-index: 1000;
-        animation: fadeInLeft 1s ease-in-out;
-      }
-      .sidebar-brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        margin-bottom: 30px;
-      }
-      .sidebar-brand i {
-        font-size: 1.8rem;
-        color: #1b265d;
-      }
-      .sidebar-brand span {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #1b265d;
-      }
-      .sidebar-menu {
-        list-style: none;
-      }
-      .sidebar-menu li {
-        margin-bottom: 10px;
-      }
-      .sidebar-menu a {
-        color: #1b265d;
-        text-decoration: none;
-        font-size: 1.1rem;
-        font-weight: 500;
-        padding: 10px 15px;
-        border-radius: 5px;
-        display: block;
-        transition: background-color 0.3s ease;
-      }
-      .sidebar-menu a:hover {
-        background-color: #e6ecef;
-      }
-      .sidebar-menu a.active {
-        background-color: #1b265d;
-        color: #ffffff;
-      }
-      .profile {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-      }
-      .profile-icon {
-        font-size: 1.8rem;
-        color: #1b265d;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-      }
-      .profile-icon:hover {
-        transform: scale(1.1);
-      }
-      .profile-dropdown {
-        display: none;
-        position: absolute;
-        background-color: #ffffff;
-        min-width: 120px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        z-index: 1;
-        top: 100%;
-        right: 0;
-      }
-      .profile-dropdown.active {
-        display: block;
-      }
-      .profile-dropdown a {
-        padding: 10px 15px;
-        color: #1b265d;
-        text-decoration: none;
-        display: block;
-        transition: background-color 0.3s ease;
-      }
-      .profile-dropdown a:hover {
-        background-color: #e6ecef;
-      }
-      .main-body {
-        width: calc(100% - 250px);
-        margin-left: 250px;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        flex-grow: 1;
-      }
-      .library-heading {
-        font-size: 2.2rem;
-        color: #1b265d;
-        text-align: center;
-        margin-bottom: 20px;
-        font-weight: bold;
-      }
-      .content-section {
-        display: none;
-      }
-      .content-section.active {
-        display: block;
-      }
-      .search-section {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 20px;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .search-field {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-      }
-      .search-field label {
-        font-size: 1rem;
-        color: #1b265d;
-        font-weight: 500;
-      }
-      .search-field select,
-      .search-field input {
-        padding: 10px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
-        width: 200px;
-        transition: border-color 0.3s ease;
-      }
-      .search-field select:focus,
-      .search-field input:focus {
-        border-color: #1b265d;
-        outline: none;
-      }
-      .search-btn {
-        background-color: #1b265d;
-        color: #ffffff;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-      }
-      .search-btn:hover {
-        background-color: #132043;
-        transform: scale(1.05);
-      }
-      .table-container {
-        overflow-x: auto;
-        margin-bottom: 20px;
-        width: 100%;
-        animation: slideIn 0.5s ease-in-out;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-      th,
-      td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      th {
-        background-color: #1b265d;
-        color: #ffffff;
-        font-weight: bold;
-      }
-      td {
-        color: #333;
-      }
-      .status-btn {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 5px;
-        font-size: 0.9rem;
-        cursor: default;
-        transition: transform 0.3s ease;
-      }
-      .status-btn.submitted {
-        background-color: #28a745;
-        color: #ffffff;
-      }
-      .status-btn.not-submitted {
-        background-color: #dc3545;
-        color: #ffffff;
-        cursor: pointer;
-      }
-      .status-btn:hover {
-        transform: scale(1.05);
-      }
-      .reg-form {
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      .form-group {
-        margin-bottom: 20px;
-      }
-      .form-group label {
-        display: block;
-        font-size: 1rem;
-        color: #1b265d;
-        font-weight: 500;
-        margin-bottom: 8px;
-      }
-      .form-group input,
-      .form-group select {
-        width: 100%;
-        padding: 10px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-      }
-      .form-group input:focus,
-      .form-group select:focus {
-        border-color: #1b265d;
-        outline: none;
-      }
-      .form-group.error input,
-      .form-group.error select {
-        border-color: #ff0000;
-      }
-      .form-group .batch-group {
-        display: flex;
-        gap: 10px;
-      }
-      .error-message {
-        color: #ff0000;
-        font-size: 0.9rem;
-        margin-top: 5px;
-        display: block;
-      }
-      .register-btn {
-        background-color: #1b265d;
-        color: #ffffff;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 500;
-        cursor: pointer;
-        width: 100%;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-      }
-      .register-btn:hover {
-        background-color: #132043;
-        transform: scale(1.05);
-      }
-      .user-profile {
-        display: none;
-        max-width: 100%;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-      }
-      .user-profile.active {
-        display: block;
-      }
-      .user-profile h2 {
-        font-size: 1.8rem;
-        color: #1b265d;
-        text-align: center;
-        margin-bottom: 20px;
-        font-weight: bold;
-      }
-      .user-card {
-        background: linear-gradient(135deg, #f9fafb 0%, #e9ecef 100%);
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        margin-bottom: 20px;
-        width: 100%;
-        animation: fadeIn 0.5s ease-in-out;
-        border: 1px solid #ddd;
-      }
-      .user-card div {
-        font-size: 1.1rem;
-        color: #1b265d;
-        margin-bottom: 12px;
-        display: flex;
-        justify-content: space-between;
-        padding: 5px 10px;
-        border-bottom: 1px dashed #ddd;
-      }
-      .user-card .label {
-        font-weight: bold;
-        margin-right: 10px;
-      }
-      .user-card .value {
-        color: #333;
-        flex-grow: 1;
-        text-align: right;
-      }
-      .add-btn {
-        background-color: #28a745;
-        color: #ffffff;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        margin: 20px auto;
-        display: block;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-      .add-btn:hover {
-        background-color: #218838;
-        transform: scale(1.1);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-      }
-      .add-book-form {
-        display: none;
-        max-width: 100%;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #f9fafb;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-      .add-book-form.active {
-        display: block;
-      }
-      .add-book-form .form-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: flex-start;
-        background-color: #ffffff;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-      }
-      .add-book-form .form-group {
-        flex: 1;
-        min-width: 150px;
-        margin-bottom: 0;
-      }
-      .add-book-form .form-group label {
-        font-size: 0.9rem;
-        margin-bottom: 5px;
-        text-align: center;
-      }
-      .add-book-form .form-group input {
-        width: 100%;
-        padding: 8px;
-        font-size: 0.9rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .add-book-form .form-group input[readonly] {
-        background-color: #e9ecef;
-      }
-      .add-book-form .register-btn {
-        flex: 0 0 auto;
-        padding: 10px 20px;
-        margin-top: 20px;
-        width: auto;
-      }
-      .dialogue-box {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        z-index: 2000;
-      }
-      .dialogue-box.active {
-        display: block;
-      }
-      .dialogue-box p {
-        font-size: 1.2rem;
-        color: #333;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      .dialogue-box button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-      .dialogue-box .confirm-btn {
-        background-color: #28a745;
-        color: #ffffff;
-        margin-right: 10px;
-      }
-      .dialogue-box .confirm-btn:hover {
-        background-color: #218838;
-      }
-      .dialogue-box .cancel-btn {
-        background-color: #dc3545;
-        color: #ffffff;
-      }
-      .dialogue-box .cancel-btn:hover {
-        background-color: #c82333;
-      }
-      .count-display {
-        font-size: 1.1rem;
-        color: #1b265d;
-        text-align: center;
-        margin-bottom: 10px;
-      }
-      .summary-stats {
-        display: flex;
-        justify-content: space-around;
-        background-color: #f9fafb;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-      }
-      .summary-stats div {
-        font-size: 1rem;
-        color: #1b265d;
-      }
-      .summary-stats .label {
-        font-weight: bold;
-        margin-right: 5px;
-      }
-      .summary-stats .value {
-        color: #333;
-      }
-      .pie-chart-container {
-        width: 300px;
-        height: 300px;
-        margin: 0 auto;
-      }
-      .no-data-message {
-        font-size: 1.2rem;
-        color: #dc3545;
-        text-align: center;
-        margin-top: 20px;
-      }
-      .user-details-box {
-        display: none;
-        background-color: #f9fafb;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-      }
-      .user-details-box.active {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-      .user-details-box div {
-        font-size: 1rem;
-        color: #1b265d;
-      }
-      .user-details-box .label {
-        font-weight: bold;
-        margin-right: 5px;
-      }
-      .user-details-box .value {
-        color: #333;
-      }
-      .success-message {
-        display: none;
-        font-size: 1.2rem;
-        color: #28a745;
-        text-align: center;
-        margin-top: 20px;
-      }
-      .loading-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 3000;
-        justify-content: center;
-        align-items: center;
-      }
-      .loading-overlay.active {
-        display: flex;
-      }
-      .book-loading {
-        width: 60px;
-        height: 80px;
-        position: relative;
-        perspective: 1000px;
-      }
-      .book-loading .book {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        transform-style: preserve-3d;
-        animation: flipBook 0.5s infinite ease-in-out;
-      }
-      .book-loading .page {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
-        border: 2px solid #1b265d;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transform-origin: left center;
-      }
-      .book-loading .page:nth-child(1) {
-        transform: rotateY(0deg);
-        z-index: 3;
-      }
-      .book-loading .page:nth-child(2) {
-        transform: rotateY(-10deg);
-        z-index: 2;
-        animation-delay: 0.1s;
-      }
-      .book-loading .page:nth-child(3) {
-        transform: rotateY(-20deg);
-        z-index: 1;
-        animation-delay: 0.2s;
-      }
-      @keyframes flipBook {
-        0% { transform: rotateY(0deg); }
-        50% { transform: rotateY(-30deg); }
-        100% { transform: rotateY(0deg); }
-      }
-      @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
-      }
-      @keyframes slideIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes fadeInLeft {
-        0% { opacity: 0; transform: translateX(-20px); }
-        100% { opacity: 1; transform: translateX(0); }
-      }
-      /* Forced Colors Mode Support */
-      @media (forced-colors: active) {
-        .sidebar, .main-body, .user-card, table {
-          forced-color-adjust: none;
-          background-color: canvas;
-          color: canvastext;
-          border-color: buttonborder;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .search-btn, .register-btn, .add-btn {
-          background-color: buttonface;
-          color: buttontext;
-          border-color: buttonborder;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1000;
+            animation: fadeInLeft 1s ease-in-out;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            text-decoration: none;
+        }
+        .sidebar-brand i {
+            font-size: 1.8rem;
+            color: #1b265d;
+        }
+        .sidebar-brand span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1b265d;
+        }
+        .sidebar-menu {
+            list-style: none;
+        }
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        .sidebar-menu a {
+            color: #1b265d;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar-menu a:hover {
+            background: #e6ecef;
+        }
+        .sidebar-menu a.active {
+            background: #1b265d;
+            color: #fff;
+        }
+        .profile {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .profile-icon {
+            font-size: 1.8rem;
+            color: #1b265d;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .profile-icon:hover {
+            transform: scale(1.1);
+        }
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            min-width: 120px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .profile-dropdown.active {
+            display: block;
+        }
+        .profile-dropdown a {
+            padding: 10px 15px;
+            color: #1b265d;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        .profile-dropdown a:hover {
+            background: #e6ecef;
+        }
+        .main-body {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+        .library-heading {
+            font-size: 2.2rem;
+            color: #1b265d;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .search-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .search-field label {
+            font-size: 1rem;
+            color: #1b265d;
+            font-weight: 500;
+        }
+        .search-field select,
+        .search-field input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 200px;
+            transition: border-color 0.3s ease;
+        }
+        .search-field select:focus,
+        .search-field input:focus {
+            border-color: #1b265d;
+            outline: none;
+        }
+        .search-btn {
+            background: #1b265d;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .search-btn:hover {
+            background: #132043;
+            transform: scale(1.05);
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            width: 100%;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #1b265d;
+            color: #fff;
+            font-weight: bold;
+        }
+        td {
+            color: #333;
+        }
+        .status-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: default;
+            transition: transform 0.3s ease;
         }
         .status-btn.submitted {
-          background-color: #28a745;
-          color: #ffffff;
+            background: #28a745;
+            color: #fff;
         }
         .status-btn.not-submitted {
-          background-color: #dc3545;
-          color: #ffffff;
+            background: #dc3545;
+            color: #fff;
+            cursor: pointer;
         }
-      }
-      @media (max-width: 768px) {
-        .sidebar { width: 200px; }
-        .main-body { width: calc(100% - 200px); margin-left: 200px; }
-        .library-heading { font-size: 1.8rem; }
-        .search-field select,
-        .search-field input,
+        .status-btn:hover {
+            transform: scale(1.05);
+        }
+        .reg-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            color: #1b265d;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
         .form-group input,
-        .form-group select { width: 100%; }
-        .search-btn,
-        .register-btn { width: 100%; }
-        th, td { font-size: 0.9rem; padding: 8px; }
-        .form-group .batch-group { flex-direction: column; }
-        .user-details-box div { width: 50%; margin-bottom: 10px; }
-        .summary-stats { flex-direction: column; }
-        .pie-chart-container { width: 200px; height: 200px; }
-        .user-card div { flex-direction: column; text-align: left; }
-      }
-      @media (max-width: 480px) {
-        .sidebar { width: 150px; }
-        .main-body { width: calc(100% - 150px); margin-left: 150px; }
-        .library-heading { font-size: 1.5rem; }
-        .sidebar-brand span { font-size: 1.2rem; }
-        .sidebar-menu a { font-size: 1rem; }
-        .user-details-box div { width: 100%; }
-      }
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #1b265d;
+            outline: none;
+        }
+        .form-group.error input,
+        .form-group.error select {
+            border-color: #ff0000;
+        }
+        .form-group .batch-group {
+            display: flex;
+            gap: 10px;
+        }
+        .error-message {
+            color: #ff0000;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: block;
+        }
+        .register-btn {
+            background: #1b265d;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .register-btn:hover {
+            background: #132043;
+            transform: scale(1.05);
+        }
+        .user-profile {
+            display: none;
+            max-width: 100%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        .user-profile.active {
+            display: block;
+        }
+        .user-profile h2 {
+            font-size: 1.8rem;
+            color: #1b265d;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .user-card {
+            background: linear-gradient(135deg, #f9fafb 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .user-card div {
+            font-size: 1.1rem;
+            color: #1b265d;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+        .user-card .label {
+            font-weight: bold;
+        }
+        .user-card .value {
+            color: #333;
+            text-align: right;
+            flex-grow: 1;
+        }
+        .add-btn {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .add-btn:hover {
+            background: #218838;
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .delete-user-btn {
+            background: #dc3545 !important;
+        }
+        .delete-user-btn:hover {
+            background: #c82333 !important;
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .add-book-form {
+            display: none;
+            max-width: 100%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .add-book-form.active {
+            display: block;
+        }
+        .add-book-form .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .add-book-form .form-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 0;
+        }
+        .add-book-form .form-group label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .add-book-form .form-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .add-book-form .form-group input[readonly] {
+            background: #e9ecef;
+        }
+        .add-book-form .register-btn {
+            flex: 0 0 auto;
+            padding: 10px 20px;
+            margin-top: 20px;
+            width: auto;
+        }
+        .dialogue-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            text-align: center;
+        }
+        .dialogue-box.active {
+            display: block;
+        }
+        .dialogue-box p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .dialogue-box button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .dialogue-box .confirm-btn {
+            background: #28a745;
+            color: #fff;
+            margin-right: 10px;
+        }
+        .dialogue-box .confirm-btn:hover {
+            background: #218838;
+        }
+        .dialogue-box .cancel-btn {
+            background: #dc3545;
+            color: #fff;
+        }
+        .dialogue-box .cancel-btn:hover {
+            background: #c82333;
+        }
+        .count-display {
+            font-size: 1.1rem;
+            color: #1b265d;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .summary-stats div {
+            font-size: 1rem;
+            color: #1b265d;
+        }
+        .summary-stats .label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .summary-stats .value {
+            color: #333;
+        }
+        .pie-chart-container {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .no-data-message {
+            font-size: 1.2rem;
+            color: #dc3545;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .user-details-box {
+            display: none;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .user-details-box.active {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .user-details-box div {
+            font-size: 1rem;
+            color: #1b265d;
+        }
+        .user-details-box .label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .user-details-box .value {
+            color: #333;
+        }
+        .success-message {
+            display: none;
+            font-size: 1.2rem;
+            color: #28a745;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+        .loading-overlay.active {
+            display: flex;
+        }
+        .book-loading {
+            width: 60px;
+            height: 80px;
+            position: relative;
+            perspective: 1000px;
+        }
+        .book-loading .book {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: flipBook 0.5s infinite ease-in-out;
+        }
+        .book-loading .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            border: 2px solid #1b265d;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform-origin: left center;
+        }
+        .book-loading .page:nth-child(1) {
+            transform: rotateY(0deg);
+            z-index: 3;
+        }
+        .book-loading .page:nth-child(2) {
+            transform: rotateY(-10deg);
+            z-index: 2;
+            animation-delay: 0.1s;
+        }
+        .book-loading .page:nth-child(3) {
+            transform: rotateY(-20deg);
+            z-index: 1;
+            animation-delay: 0.2s;
+        }
+        @keyframes flipBook {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(-30deg); }
+            100% { transform: rotateY(0deg); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @media (forced-colors: active) {
+            .sidebar, .main-body, .user-card, table {
+                forced-color-adjust: none;
+                background: canvas;
+                color: canvastext;
+                border-color: buttonborder;
+            }
+            .search-btn, .register-btn, .add-btn {
+                background: buttonface;
+                color: buttontext;
+                border-color: buttonborder;
+            }
+            .status-btn.submitted {
+                background: #28a745;
+                color: #fff;
+            }
+            .status-btn.not-submitted {
+                background: #dc3545;
+                color: #fff;
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar { width: 200px; }
+            .main-body { width: calc(100% - 200px); margin-left: 200px; }
+            .library-heading { font-size: 1.8rem; }
+            .search-field select, .search-field input, .form-group input, .form-group select { width: 100%; }
+            .search-btn, .register-btn { width: 100%; }
+            th, td { font-size: 0.9rem; padding: 8px; }
+            .form-group .batch-group { flex-direction: column; }
+            .user-details-box div { width: 50%; margin-bottom: 10px; }
+            .summary-stats { flex-direction: column; }
+            .pie-chart-container { width: 200px; height: 200px; }
+            .user-card div { flex-direction: column; text-align: left; }
+        }
+        @media (max-width: 480px) {
+            .sidebar { width: 150px; }
+            .main-body { width: calc(100% - 150px); margin-left: 150px; }
+            .library-heading { font-size: 1.5rem; }
+            .sidebar-brand span { font-size: 1.2rem; }
+            .sidebar-menu a { font-size: 1rem; }
+            .user-details-box div { width: 100%; }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <aside class="sidebar">
-      <a href="#" class="sidebar-brand">
-        <i class="fas fa-book-open"></i>
-        <span>Library System</span>
-      </a>
-      <ul class="sidebar-menu">
-        <li><a href="#" class="nav-link active" data-section="dashboard">Dashboard</a></li>
-        <li><a href="#" class="nav-link" data-section="reg-user">Reg User</a></li>
-        <li><a href="#" class="nav-link" data-section="search">Search</a></li>
-        <li><a href="#" class="nav-link" data-section="add-book">Add Book</a></li>
-        <li><a href="#" class="nav-link" data-section="return-book">Return Book</a></li>
-      </ul>
+        <a href="#" class="sidebar-brand">
+            <i class="fas fa-book-open"></i>
+            <span>Library System</span>
+        </a>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+            <li><a href="#" class="nav-link" data-section="reg-user">Reg User</a></li>
+            <li><a href="#" class="nav-link" data-section="search">Search</a></li>
+            <li><a href="#" class="nav-link" data-section="add-book">Add Book</a></li>
+            <li><a href="#" class="nav-link" data-section="return-book">Return Book</a></li>
+        </ul>
     </aside>
 
     <section class="main-body">
-      <div class="library-heading" id="library-heading">Library Dashboard</div>
-      <div class="profile">
-        <i class="fas fa-user-circle profile-icon" id="profile-icon"></i>
-        <div class="profile-dropdown" id="profile-dropdown">
-          <a href="#">Profile</a>
-          <a href="#" id="sign-out">Sign Out</a>
+        <div class="library-heading" id="library-heading">Library Dashboard</div>
+        <div class="profile">
+            <i class="fas fa-user-circle profile-icon" id="profile-icon"></i>
+            <div class="profile-dropdown" id="profile-dropdown">
+                <a href="#">Profile</a>
+                <a href="#" id="sign-out">Sign Out</a>
+            </div>
         </div>
-      </div>
 
-      <div class="content-section active" id="dashboard">
-        <div class="search-section">
-          <div class="search-field">
-            <label for="department">Select Department</label>
-            <select id="department" name="department">
-              <option value="all">All</option>
-              <option value="cse">CSE</option>
-              <option value="ai">AI</option>
-              <option value="ml">ML</option>
-              <option value="ds">DS</option>
-              <option value="eee">EEE</option>
-              <option value="ece">ECE</option>
-              <option value="mech">MECH</option>
-              <option value="civil">CIVIL</option>
-              <option value="mtech-cse">M.Tech CSE</option>
-              <option value="mba">MBA</option>
-              <option value="10th">10th Standard</option>
-              <option value="11th">11th Standard</option>
-              <option value="12th">12th Standard</option>
-            </select>
-          </div>
-          <div class="search-field">
-            <label for="year">Select Year</label>
-            <select id="year" name="year">
-              <option value="all">All</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-          <button class="search-btn" id="search-btn">Search</button>
+        <div class="content-section active" id="dashboard">
+            <div class="search-section">
+                <div class="search-field">
+                    <label for="department">Select Department</label>
+                    <select id="department" name="department">
+                        <option value="all">All</option>
+                        <option value="cse">CSE</option>
+                        <option value="ai">AI</option>
+                        <option value="ml">ML</option>
+                        <option value="ds">DS</option>
+                        <option value="eee">EEE</option>
+                        <option value="ece">ECE</option>
+                        <option value="mech">MECH</option>
+                        <option value="civil">CIVIL</option>
+                        <option value="mtech-cse">M.Tech CSE</option>
+                        <option value="mba">MBA</option>
+                        <option value="10th">10th Standard</option>
+                        <option value="11th">11th Standard</option>
+                        <option value="12th">12th Standard</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label for="year">Select Year</label>
+                    <select id="year" name="year">
+                        <option value="all">All</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <button class="search-btn" id="search-btn">Search</button>
+            </div>
+            <div class="count-display" id="student-count">Number of students: 0</div>
+            <div class="summary-stats" id="summary-stats">
+                <div class="pie-chart-container">
+                    <canvas id="book-chart"></canvas>
+                </div>
+                <div><span class="label">Department:</span><span class="value" id="selected-dept">-</span></div>
+                <div><span class="label">Year:</span><span class="value" id="selected-year">-</span></div>
+            </div>
+            <div class="table-container" id="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Reg No</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Year</th>
+                            <th>Book ID</th>
+                            <th>Book Code</th>
+                            <th>Book Name</th>
+                            <th>Issue Date</th>
+                            <th>Return Date</th>
+                            <th>Submitted Date</th>
+                            <th>Status</th>
+                            <th>Library</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+            <p class="no-data-message" id="no-data-message" style="display: none">There is no data</p>
         </div>
-        <div class="count-display" id="student-count">Number of students: 0</div>
-        <div class="summary-stats" id="summary-stats">
-          <div class="pie-chart-container">
-            <canvas id="book-chart"></canvas>
-          </div>
-          <div><span class="label">Department:</span><span class="value" id="selected-dept">-</span></div>
-          <div><span class="label">Year:</span><span class="value" id="selected-year">-</span></div>
-        </div>
-        <div class="table-container" id="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Reg No</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Year</th>
-                <th>Book ID</th>
-                <th>Book Code</th>
-                <th>Book Name</th>
-                <th>Issue Date</th>
-                <th>Return Date</th>
-                <th>Submitted Date</th>
-                <th>Status</th>
-                <th>Library</th>
-              </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-          </table>
-        </div>
-        <p class="no-data-message" id="no-data-message" style="display: none">
-          There is no data
-        </p>
-      </div>
 
-      <div class="content-section" id="reg-user">
-        <div class="reg-form">
-          <h2>Register User</h2>
-          <form id="reg-form">
-            <div class="form-group">
-              <label for="roll">Roll No</label>
-              <input type="text" id="roll" name="roll" placeholder="Enter Roll No" required />
-              <span class="error-message" id="roll-error"></span>
+        <div class="content-section" id="reg-user">
+            <div class="reg-form">
+                <h2>Register User</h2>
+                <form id="reg-form">
+                    <div class="form-group">
+                        <label for="roll">Roll No</label>
+                        <input type="text" id="roll" name="roll" placeholder="Enter Roll No" required />
+                        <span class="error-message" id="roll-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" required />
+                        <span class="error-message" id="firstName-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" required />
+                        <span class="error-message" id="lastName-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter Email" required />
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter Phone" pattern="[0-9]{10}" required />
+                        <span class="error-message" id="phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="branch">Branch</label>
+                        <select id="branch" name="branch" required>
+                            <option value="">Select Branch</option>
+                            <option value="cse">CSE</option>
+                            <option value="ai">AI</option>
+                            <option value="ml">ML</option>
+                            <option value="ds">DS</option>
+                            <option value="eee">EEE</option>
+                            <option value="ece">ECE</option>
+                            <option value="mech">MECH</option>
+                            <option value="civil">CIVIL</option>
+                            <option value="mtech-cse">M.Tech CSE</option>
+                            <option value="mba">MBA</option>
+                            <option value="10th">10th Standard</option>
+                            <option value="11th">11th Standard</option>
+                            <option value="12th">12th Standard</option>
+                        </select>
+                        <span class="error-message" id="branch-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Batch</label>
+                        <div class="batch-group">
+                            <select id="startyear" name="startyear" required>
+                                <option value="">Start Year</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                            <select id="endyear" name="endyear" required>
+                                <option value="">End Year</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                            </select>
+                        </div>
+                        <span class="error-message" id="startyear-error"></span>
+                        <span class="error-message" id="endyear-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="error-message" id="gender-error"></span>
+                    </div>
+                    <button type="submit" class="register-btn">Register</button>
+                </form>
+                <div class="dialogue-box" id="reg-success-dialogue">
+                    <p>User Added Successfully!</p>
+                    <button class="confirm-btn" id="reg-success-ok">OK</button>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="firstName">First Name</label>
-              <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" required />
-              <span class="error-message" id="firstName-error"></span>
-            </div>
-            <div class="form-group">
-              <label for="lastName">Last Name</label>
-              <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" required />
-              <span class="error-message" id="lastName-error"></span>
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="Enter Email" required />
-              <span class="error-message" id="email-error"></span>
-            </div>
-            <div class="form-group">
-              <label for="phone">Phone</label>
-              <input type="tel" id="phone" name="phone" placeholder="Enter Phone" pattern="[0-9]{10}" required />
-              <span class="error-message" id="phone-error"></span>
-            </div>
-            <div class="form-group">
-              <label for="branch">Branch</label>
-              <select id="branch" name="branch" required>
-                <option value="">Select Branch</option>
-                <option value="cse">CSE</option>
-                <option value="ai">AI</option>
-                <option value="ml">ML</option>
-                <option value="ds">DS</option>
-                <option value="eee">EEE</option>
-                <option value="ece">ECE</option>
-                <option value="mech">MECH</option>
-                <option value="civil">CIVIL</option>
-                <option value="mtech-cse">M.Tech CSE</option>
-                <option value="mba">MBA</option>
-                <option value="10th">10th Standard</option>
-                <option value="11th">11th Standard</option>
-                <option value="12th">12th Standard</option>
-              </select>
-              <span class="error-message" id="branch-error"></span>
-            </div>
-            <div class="form-group">
-              <label>Batch</label>
-              <div class="batch-group">
-                <select id="startyear" name="startyear" required>
-                  <option value="">Start Year</option>
-                  <option value="2020">2020</option>
-                  <option value="2021">2021</option>
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                  <option value="2024">2024</option>
-                  <option value="2025">2025</option>
-                </select>
-                <select id="endyear" name="endyear" required>
-                  <option value="">End Year</option>
-                  <option value="2024">2024</option>
-                  <option value="2025">2025</option>
-                  <option value="2026">2026</option>
-                  <option value="2027">2027</option>
-                  <option value="2028">2028</option>
-                  <option value="2029">2029</option>
-                </select>
-              </div>
-              <span class="error-message" id="startyear-error"></span>
-              <span class="error-message" id="endyear-error"></span>
-            </div>
-            <div class="form-group">
-              <label for="gender">Gender</label>
-              <select id="gender" name="gender" required>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              <span class="error-message" id="gender-error"></span>
-            </div>
-            <button type="submit" class="register-btn">Register</button>
-          </form>
-          <div class="dialogue-box" id="reg-success-dialogue">
-            <p>User Added Successfully!</p>
-            <button class="confirm-btn" id="reg-success-ok">OK</button>
-          </div>
         </div>
-      </div>
 
-      <div class="content-section" id="search">
-        <div class="search-section">
-          <div class="search-field">
-            <label for="roll-no">Enter Roll No</label>
-            <input type="text" id="roll-no" name="roll-no" placeholder="e.g., CS001" required />
-          </div>
-          <button class="search-btn" id="profile-search-btn">Search</button>
-        </div>
-        <div class="user-profile" id="user-profile">
-          <h2>User Profile</h2>
-          <div class="user-card" id="user-card">
-            <div><span class="label">Roll No:</span><span class="value" id="profile-roll-no"></span></div>
-            <div><span class="label">First Name:</span><span class="value" id="profile-firstName"></span></div>
-            <div><span class="label">Last Name:</span><span class="value" id="profile-lastName"></span></div>
-            <div><span class="label">Email:</span><span class="value" id="profile-email"></span></div>
-            <div><span class="label">Phone No:</span><span class="value" id="profile-phone"></span></div>
-            <div><span class="label">Branch:</span><span class="value" id="profile-branch"></span></div>
-            <div><span class="label">Batch:</span><span class="value" id="profile-batch"></span></div>
-            <div><span class="label">Gender:</span><span class="value" id="profile-gender"></span></div>
-            <div><span class="label">Created:</span><span class="value" id="profile-created"></span></div>
-          </div>
-          <div class="table-container" id="books-table-container">
-            <table id="books-table">
-              <thead>
-                <tr>
-                  <th>S.No</th>
-                  <th>Book ID</th>
-                  <th>Book Code</th>
-                  <th>Book Name</th>
-                  <th>Issue Date</th>
-                  <th>Return Date</th>
-                  <th>Submitted Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="books-table-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-section" id="add-book">
-        <div class="search-section">
-          <div class="search-field">
-            <label for="add-roll-no">Enter Roll No</label>
-            <input type="text" id="add-roll-no" name="add-roll-no" placeholder="e.g., CS001" required />
-          </div>
-          <button class="search-btn" id="add-book-search-btn">Search</button>
-        </div>
-        <div class="user-details-box" id="user-details-box">
-          <div>
-            <span class="label">Roll No:</span>
-            <span class="value" id="add-roll-no-display"></span>
-          </div>
-          <div>
-            <span class="label">Name:</span>
-            <span class="value" id="add-full-name"></span>
-          </div>
-          <div>
-            <span class="label">Phone:</span>
-            <span class="value" id="add-phone"></span>
-          </div>
-          <div>
-            <span class="label">Year:</span>
-            <span class="value" id="add-year"></span>
-          </div>
-        </div>
-        <div class="table-container" id="add-book-table">
-          <table>
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Roll No</th>
-                <th>Book ID</th>
-                <th>Book Code</th>
-                <th>Book Name</th>
-                <th>Issue Date</th>
-                <th>Return Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="add-book-table-body"></tbody>
-          </table>
-        </div>
-        <p class="no-data-message" id="no-books-message" style="display: none">
-          The user doesn't have any books.
-        </p>
-        <button class="add-btn" id="add-new-book-btn">+ Add Book</button>
-        <div class="add-book-form" id="add-book-form">
-          <form id="add-book-form-submit">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="new-sno">S.No</label>
-                <input type="number" id="new-sno" name="new-sno" readonly />
-              </div>
-              <div class="form-group">
-                <label for="new-roll-no">Roll No</label>
-                <input type="text" id="new-roll-no" name="new-roll-no" readonly />
-                <span class="error-message" id="new-roll-no-error"></span>
-              </div>
-              <div class="form-group">
-                <label for="new-book-code">Book Code</label>
-                <input type="text" id="new-book-code" name="new-book-code" required />
-                <span class="error-message" id="new-book-code-error"></span>
-              </div>
-              <div class="form-group">
-                <label for="new-book-name">Book Name</label>
-                <input type="text" id="new-book-name" name="new-book-name" required />
-                <span class="error-message" id="new-book-name-error"></span>
-              </div>
-              <div class="form-group">
-                <label for="new-issue-date">Issue Date</label>
-                <input type="date" id="new-issue-date" name="new-issue-date" readonly />
-              </div>
-              <div class="form-group">
-                <label for="new-return-date">Return Date</label>
-                <input type="date" id="new-return-date" name="new-return-date" required />
-                <span class="error-message" id="new-return-date-error"></span>
-              </div>
-              <button type="submit" class="register-btn" id="submit-new-book">Add</button>
+        <div class="content-section" id="search">
+            <div class="search-section">
+                <div class="search-field">
+                    <label for="roll-no">Enter Roll No</label>
+                    <input type="text" id="roll-no" name="roll-no" placeholder="e.g., CS001" required />
+                </div>
+                <button class="search-btn" id="profile-search-btn">Search</button>
             </div>
-          </form>
-          <div class="dialogue-box" id="add-book-success-dialogue">
-            <p>Book Added Successfully!</p>
-            <button class="confirm-btn" id="add-book-success-ok">OK</button>
-          </div>
+            <div class="user-profile" id="user-profile">
+                <h2>User Profile</h2>
+                <div class="user-card" id="user-card">
+                    <div><span class="label">Roll No:</span><span class="value" id="profile-roll-no"></span></div>
+                    <div><span class="label">First Name:</span><span class="value" id="profile-firstName"></span></div>
+                    <div><span class="label">Last Name:</span><span class="value" id="profile-lastName"></span></div>
+                    <div><span class="label">Email:</span><span class="value" id="profile-email"></span></div>
+                    <div><span class="label">Phone No:</span><span class="value" id="profile-phone"></span></div>
+                    <div><span class="label">Branch:</span><span class="value" id="profile-branch"></span></div>
+                    <div><span class="label">Batch:</span><span class="value" id="profile-batch"></span></div>
+                    <div><span class="label">Gender:</span><span class="value" id="profile-gender"></span></div>
+                    <div><span class="label">Created:</span><span class="value" id="profile-created"></span></div>
+                </div>
+                <div class="table-container" id="books-table-container">
+                    <table id="books-table">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Book ID</th>
+                                <th>Book Code</th>
+                                <th>Book Name</th>
+                                <th>Issue Date</th>
+                                <th>Return Date</th>
+                                <th>Submitted Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="books-table-body"></tbody>
+                    </table>
+                </div>
+                <button class="add-btn delete-user-btn" id="delete-user-btn">Delete User</button>
+                <div class="dialogue-box" id="delete-user-dialogue">
+                    <p>Are you sure you want to delete this user?</p>
+                    <button class="confirm-btn" id="delete-user-confirm">OK</button>
+                    <button class="cancel-btn" id="delete-user-cancel">Cancel</button>
+                </div>
+                <p class="success-message" id="delete-user-success-message">User Deleted Successfully!</p>
+            </div>
         </div>
-      </div>
 
-      <div class="content-section" id="return-book">
-        <div class="search-section">
-          <div class="search-field">
-            <label for="return-roll-no">Enter Roll No</label>
-            <input type="text" id="return-roll-no" name="return-roll-no" placeholder="e.g., CS001" required />
-          </div>
-          <button class="search-btn" id="return-book-search-btn">Search</button>
+        <div class="content-section" id="add-book">
+            <div class="search-section">
+                <div class="search-field">
+                    <label for="add-roll-no">Enter Roll No</label>
+                    <input type="text" id="add-roll-no" name="add-roll-no" placeholder="e.g., CS001" required />
+                </div>
+                <button class="search-btn" id="add-book-search-btn">Search</button>
+            </div>
+            <div class="user-details-box" id="user-details-box">
+                <div><span class="label">Roll No:</span><span class="value" id="add-roll-no-display"></span></div>
+                <div><span class="label">Name:</span><span class="value" id="add-full-name"></span></div>
+                <div><span class="label">Phone:</span><span class="value" id="add-phone"></span></div>
+                <div><span class="label">Year:</span><span class="value" id="add-year"></span></div>
+            </div>
+            <div class="table-container" id="add-book-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Roll No</th>
+                            <th>Book ID</th>
+                            <th>Book Code</th>
+                            <th>Book Name</th>
+                            <th>Issue Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="add-book-table-body"></tbody>
+                </table>
+            </div>
+            <p class="no-data-message" id="no-books-message" style="display: none">The user doesn't have any books.</p>
+            <button class="add-btn" id="add-new-book-btn">+ Add Book</button>
+            <div class="add-book-form" id="add-book-form">
+                <form id="add-book-form-submit">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="new-sno">S.No</label>
+                            <input type="number" id="new-sno" name="new-sno" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="new-roll-no">Roll No</label>
+                            <input type="text" id="new-roll-no" name="new-roll-no" readonly />
+                            <span class="error-message" id="new-roll-no-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-book-code">Book Code</label>
+                            <input type="text" id="new-book-code" name="new-book-code" required />
+                            <span class="error-message" id="new-book-code-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-book-name">Book Name</label>
+                            <input type="text" id="new-book-name" name="new-book-name" required />
+                            <span class="error-message" id="new-book-name-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-issue-date">Issue Date</label>
+                            <input type="date" id="new-issue-date" name="new-issue-date" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="new-return-date">Return Date</label>
+                            <input type="date" id="new-return-date" name="new-return-date" required />
+                            <span class="error-message" id="new-return-date-error"></span>
+                        </div>
+                        <button type="submit" class="register-btn" id="submit-new-book">Add</button>
+                    </div>
+                </form>
+                <div class="dialogue-box" id="add-book-success-dialogue">
+                    <p>Book Added Successfully!</p>
+                    <button class="confirm-btn" id="add-book-success-ok">OK</button>
+                </div>
+            </div>
         </div>
-        <div class="user-details-box" id="return-user-details-box">
-          <div>
-            <span class="label">Roll No:</span>
-            <span class="value" id="return-roll-no-display"></span>
-          </div>
-          <div>
-            <span class="label">Name:</span>
-            <span class="value" id="return-full-name"></span>
-          </div>
-          <div>
-            <span class="label">Phone:</span>
-            <span class="value" id="return-phone"></span>
-          </div>
-          <div>
-            <span class="label">Year:</span>
-            <span class="value" id="return-year"></span>
-          </div>
-        </div>
-        <div class="table-container" id="return-book-table">
-          <table>
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Roll No</th>
-                <th>Book ID</th>
-                <th>Book Code</th>
-                <th>Book Name</th>
-                <th>Issue Date</th>
-                <th>Return Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="return-book-table-body"></tbody>
-          </table>
-        </div>
-        <p class="no-data-message" id="return-no-books-message" style="display: none">
-          No books found.
-        </p>
-        <div class="dialogue-box" id="return-dialogue">
-          <p>Are you sure you want to submit this book?</p>
-          <button class="confirm-btn" id="confirm-return">OK</button>
-          <button class="cancel-btn" id="cancel-return">Cancel</button>
-        </div>
-        <p class="success-message" id="return-success-message">Book Submitted Successfully!</p>
-      </div>
 
-      <div class="dialogue-box" id="logout-confirm-dialogue">
-        <p>Are you sure you want to log out?</p>
-        <button class="confirm-btn" id="logout-confirm-ok">OK</button>
-        <button class="cancel-btn" id="logout-confirm-cancel">Cancel</button>
-      </div>
-
-      <div class="dialogue-box" id="logout-success-dialogue">
-        <p>Logout successful</p>
-      </div>
-
-      <div class="loading-overlay" id="loading-overlay">
-        <div class="book-loading">
-          <div class="book">
-            <div class="page"></div>
-            <div class="page"></div>
-            <div class="page"></div>
-          </div>
+        <div class="content-section" id="return-book">
+            <div class="search-section">
+                <div class="search-field">
+                    <label for="return-roll-no">Enter Roll No</label>
+                    <input type="text" id="return-roll-no" name="return-roll-no" placeholder="e.g., CS001" required />
+                </div>
+                <button class="search-btn" id="return-book-search-btn">Search</button>
+            </div>
+            <div class="user-details-box" id="return-user-details-box">
+                <div><span class="label">Roll No:</span><span class="value" id="return-roll-no-display"></span></div>
+                <div><span class="label">Name:</span><span class="value" id="return-full-name"></span></div>
+                <div><span class="label">Phone:</span><span class="value" id="return-phone"></span></div>
+                <div><span class="label">Year:</span><span class="value" id="return-year"></span></div>
+            </div>
+            <div class="table-container" id="return-book-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Roll No</th>
+                            <th>Book ID</th>
+                            <th>Book Code</th>
+                            <th>Book Name</th>
+                            <th>Issue Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="return-book-table-body"></tbody>
+                </table>
+            </div>
+            <p class="no-data-message" id="return-no-books-message" style="display: none">No books found.</p>
+            <div class="dialogue-box" id="return-dialogue">
+                <p>Are you sure you want to submit this book?</p>
+                <button class="confirm-btn" id="confirm-return">OK</button>
+                <button class="cancel-btn" id="cancel-return">Cancel</button>
+            </div>
+            <p class="success-message" id="return-success-message">Book Submitted Successfully!</p>
         </div>
-      </div>
+
+        <div class="dialogue-box" id="logout-confirm-dialogue">
+            <p>Are you sure you want to log out?</p>
+            <button class="confirm-btn" id="logout-confirm-ok">OK</button>
+            <button class="cancel-btn" id="logout-confirm-cancel">Cancel</button>
+        </div>
+
+        <div class="dialogue-box" id="logout-success-dialogue">
+            <p>Logout successful</p>
+        </div>
+
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="book-loading">
+                <div class="book">
+                    <div class="page"></div>
+                    <div class="page"></div>
+                    <div class="page"></div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <script>
-      // API Base URL
-      const api = "https://lib-management-backend-hu2z.onrender.com/api/";
+        const api = "https://lib-management-backend-hu2z.onrender.com/api/";
 
-      // DOM Elements
-      const profileIcon = document.getElementById("profile-icon");
-      const profileDropdown = document.getElementById("profile-dropdown");
-      const signOutLink = document.getElementById("sign-out");
-      const searchBtn = document.getElementById("search-btn");
-      const tableContainer = document.getElementById("table-container");
-      const tableBody = document.getElementById("table-body");
-      const studentCount = document.getElementById("student-count");
-      const noDataMessage = document.getElementById("no-data-message");
-      const summaryStats = document.getElementById("summary-stats");
-      const selectedDept = document.getElementById("selected-dept");
-      const selectedYear = document.getElementById("selected-year");
-      const navLinks = document.querySelectorAll(".nav-link");
-      const contentSections = document.querySelectorAll(".content-section");
-      const regForm = document.getElementById("reg-form");
-      const regSuccessDialogue = document.getElementById("reg-success-dialogue");
-      const regSuccessOk = document.getElementById("reg-success-ok");
-      const profileSearchBtn = document.getElementById("profile-search-btn");
-      const userProfile = document.getElementById("user-profile");
-      const rollNoInput = document.getElementById("roll-no");
-      const booksTableContainer = document.getElementById("books-table-container");
-      const booksTableBody = document.getElementById("books-table-body");
-      const addBookSearchBtn = document.getElementById("add-book-search-btn");
-      const addBookTable = document.getElementById("add-book-table");
-      const addBookTableBody = document.getElementById("add-book-table-body");
-      const addNewBookBtn = document.getElementById("add-new-book-btn");
-      const addBookForm = document.getElementById("add-book-form");
-      const addRollNoInput = document.getElementById("add-roll-no");
-      const addBookFormSubmit = document.getElementById("add-book-form-submit");
-      const returnBookSearchBtn = document.getElementById("return-book-search-btn");
-      const returnBookTable = document.getElementById("return-book-table");
-      const returnBookTableBody = document.getElementById("return-book-table-body");
-      const returnRollNoInput = document.getElementById("return-roll-no");
-      const returnDialogue = document.getElementById("return-dialogue");
-      const confirmReturn = document.getElementById("confirm-return");
-      const cancelReturn = document.getElementById("cancel-return");
-      const returnSuccessMessage = document.getElementById("return-success-message");
-      const userDetailsBox = document.getElementById("user-details-box");
-      const returnUserDetailsBox = document.getElementById("return-user-details-box");
-      const addBookSuccessDialogue = document.getElementById("add-book-success-dialogue");
-      const addBookSuccessOk = document.getElementById("add-book-success-ok");
-      const logoutConfirmDialogue = document.getElementById("logout-confirm-dialogue");
-      const logoutConfirmOk = document.getElementById("logout-confirm-ok");
-      const logoutConfirmCancel = document.getElementById("logout-confirm-cancel");
-      const logoutSuccessDialogue = document.getElementById("logout-success-dialogue");
-      const noBooksMessage = document.getElementById("no-books-message");
-      const returnNoBooksMessage = document.getElementById("return-no-books-message");
-      const loadingOverlay = document.getElementById("loading-overlay");
-      const libraryHeading = document.getElementById("library-heading");
+        // DOM Elements
+        const profileIcon = document.getElementById("profile-icon");
+        const profileDropdown = document.getElementById("profile-dropdown");
+        const signOutLink = document.getElementById("sign-out");
+        const searchBtn = document.getElementById("search-btn");
+        const tableContainer = document.getElementById("table-container");
+        const tableBody = document.getElementById("table-body");
+        const studentCount = document.getElementById("student-count");
+        const noDataMessage = document.getElementById("no-data-message");
+        const summaryStats = document.getElementById("summary-stats");
+        const selectedDept = document.getElementById("selected-dept");
+        const selectedYear = document.getElementById("selected-year");
+        const navLinks = document.querySelectorAll(".nav-link");
+        const contentSections = document.querySelectorAll(".content-section");
+        const regForm = document.getElementById("reg-form");
+        const regSuccessDialogue = document.getElementById("reg-success-dialogue");
+        const regSuccessOk = document.getElementById("reg-success-ok");
+        const profileSearchBtn = document.getElementById("profile-search-btn");
+        const userProfile = document.getElementById("user-profile");
+        const rollNoInput = document.getElementById("roll-no");
+        const booksTableContainer = document.getElementById("books-table-container");
+        const booksTableBody = document.getElementById("books-table-body");
+        const deleteUserBtn = document.getElementById("delete-user-btn");
+        const deleteUserDialogue = document.getElementById("delete-user-dialogue");
+        const deleteUserConfirm = document.getElementById("delete-user-confirm");
+        const deleteUserCancel = document.getElementById("delete-user-cancel");
+        const deleteUserSuccessMessage = document.getElementById("delete-user-success-message");
+        const addBookSearchBtn = document.getElementById("add-book-search-btn");
+        const addBookTable = document.getElementById("add-book-table");
+        const addBookTableBody = document.getElementById("add-book-table-body");
+        const addNewBookBtn = document.getElementById("add-new-book-btn");
+        const addBookForm = document.getElementById("add-book-form");
+        const addRollNoInput = document.getElementById("add-roll-no");
+        const addBookFormSubmit = document.getElementById("add-book-form-submit");
+        const returnBookSearchBtn = document.getElementById("return-book-search-btn");
+        const returnBookTable = document.getElementById("return-book-table");
+        const returnBookTableBody = document.getElementById("return-book-table-body");
+        const returnRollNoInput = document.getElementById("return-roll-no");
+        const returnDialogue = document.getElementById("return-dialogue");
+        const confirmReturn = document.getElementById("confirm-return");
+        const cancelReturn = document.getElementById("cancel-return");
+        const returnSuccessMessage = document.getElementById("return-success-message");
+        const userDetailsBox = document.getElementById("user-details-box");
+        const returnUserDetailsBox = document.getElementById("return-user-details-box");
+        const addBookSuccessDialogue = document.getElementById("add-book-success-dialogue");
+        const addBookSuccessOk = document.getElementById("add-book-success-ok");
+        const logoutConfirmDialogue = document.getElementById("logout-confirm-dialogue");
+        const logoutConfirmOk = document.getElementById("logout-confirm-ok");
+        const logoutConfirmCancel = document.getElementById("logout-confirm-cancel");
+        const logoutSuccessDialogue = document.getElementById("logout-success-dialogue");
+        const noBooksMessage = document.getElementById("no-books-message");
+        const returnNoBooksMessage = document.getElementById("return-no-books-message");
+        const loadingOverlay = document.getElementById("loading-overlay");
+        const libraryHeading = document.getElementById("library-heading");
 
-      // Chart Initialization
-      let bookChart;
-      const ctx = document.getElementById("book-chart").getContext("2d");
+        // Chart Initialization
+        let bookChart;
+        const ctx = document.getElementById("book-chart").getContext("2d");
 
-      // API Functions
-      async function logoutUser() {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          return false;
-        }
-        try {
-          const response = await fetch(`${api}logout/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          if (!response.ok) throw new Error("Logout failed");
-          const data = await response.json();
-          if (data.message === "Logged out successfully") {
-            localStorage.removeItem("access_token");
-            window.location.href = "./index.html";
-            return true;
-          }
-          return false;
-        } catch (error) {
-          showGeneralError(`Logout error: ${error.message}`);
-          localStorage.removeItem("access_token");
-          window.location.href = "./index.html";
-          return false;
-        }
-      }
-
-      async function fetchDashboardData(dept, year) {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          setTimeout(() => (window.location.href = "./index.html"), 2000);
-          return;
-        }
-        loadingOverlay.classList.add("active");
-        try {
-          const response = await fetch(`${api}books/`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          if (!response.ok) throw new Error("Failed to fetch dashboard data");
-          const data = await response.json();
-
-          let filteredData = data;
-          if (dept !== "all") {
-            filteredData = filteredData.filter(item => item.branch === dept);
-          }
-          if (year !== "all") {
-            filteredData = filteredData.filter(item => calculateYear(item.year) === parseInt(year));
-          }
-
-          if (filteredData.length > 0) {
-            const libraryName = filteredData[0].library || "Unknown";
-            libraryHeading.textContent = `${libraryName} Library Dashboard`;
-          }
-
-          if (filteredData.length === 0) {
-            tableContainer.style.display = "none";
-            summaryStats.style.display = "none";
-            noDataMessage.style.display = "block";
-            studentCount.textContent = "Number of students: 0";
-            if (bookChart) bookChart.destroy();
-          } else {
-            tableContainer.style.display = "block";
-            summaryStats.style.display = "flex";
-            noDataMessage.style.display = "none";
-            populateTable(filteredData, "table-body");
-            studentCount.textContent = `Number of students: ${new Set(filteredData.map(item => item.user)).size}`;
-
-            const totalBooksCount = filteredData.length;
-            const notSubmittedCount = filteredData.filter(book => !book.submited).length;
-            const submittedCount = totalBooksCount - notSubmittedCount;
-
-            if (bookChart) bookChart.destroy();
-            bookChart = new Chart(ctx, {
-              type: "pie",
-              data: {
-                labels: ["Not Submitted", "Submitted"],
-                datasets: [{
-                  data: [notSubmittedCount, submittedCount],
-                  backgroundColor: ["#dc3545", "#28a745"],
-                  borderWidth: 1,
-                }],
-              },
-              options: {
-                responsive: true,
-                plugins: {
-                  legend: { position: "top" },
-                  title: { display: true, text: "Book Status" },
-                },
-              },
-            });
-
-            selectedDept.textContent = dept === "all" ? "All" : dept.toUpperCase();
-            selectedYear.textContent = year === "all" ? "All" : year;
-          }
-        } catch (error) {
-          showGeneralError(`Dashboard error: ${error.message}`);
-          tableContainer.style.display = "none";
-          summaryStats.style.display = "none";
-          noDataMessage.style.display = "block";
-          studentCount.textContent = "Number of students: 0";
-          if (bookChart) bookChart.destroy();
-        } finally {
-          setTimeout(() => loadingOverlay.classList.remove("active"), 500);
-        }
-      }
-
-      async function fetchUserBooks(rollNo) {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          setTimeout(() => (window.location.href = "./index.html"), 2000);
-          return;
-        }
-        try {
-          const response = await fetch(`${api}getbooks/${rollNo}/`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          if (!response.ok) throw new Error("Failed to fetch books");
-          const data = await response.json();
-
-          libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
-
-          document.getElementById("add-roll-no-display").textContent = data.id || "-";
-          document.getElementById("add-full-name").textContent = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "-";
-          document.getElementById("add-phone").textContent = data.phone || "-";
-          document.getElementById("add-year").textContent = `${data.startyear || "-"}-${new Date().getFullYear()}`;
-          userDetailsBox.classList.add("active");
-
-          const books = data.books || [];
-          if (books.length === 0) {
-            addBookTable.style.display = "none";
-            noBooksMessage.style.display = "block";
-            document.getElementById("new-roll-no").value = rollNo;
-            document.getElementById("new-sno").value = 1;
-          } else {
-            addBookTable.style.display = "block";
-            noBooksMessage.style.display = "none";
-            populateAddBookTable(books, rollNo);
-            document.getElementById("new-roll-no").value = rollNo;
-            document.getElementById("new-sno").value = books.length + 1;
-          }
-        } catch (error) {
-          showGeneralError(`Book fetch error: ${error.message}`);
-          addBookTable.style.display = "none";
-          noBooksMessage.style.display = "none";
-          userDetailsBox.classList.remove("active");
-        }
-      }
-
-      async function fetchUnreturnedBooks(rollNo) {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          setTimeout(() => (window.location.href = "./index.html"), 2000);
-          return;
-        }
-        try {
-          const response = await fetch(`${api}getbooks/${rollNo}/`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          if (!response.ok) throw new Error("Failed to fetch books");
-
-          const data = await response.json();
-
-          libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
-
-          document.getElementById("return-roll-no-display").textContent = data.id || "-";
-          document.getElementById("return-full-name").textContent = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "-";
-          document.getElementById("return-phone").textContent = data.phone || "-";
-          document.getElementById("return-year").textContent = `${data.startyear || "-"}-${new Date().getFullYear()}`;
-          returnUserDetailsBox.classList.add("active");
-
-          const unreturnedBooks = data.books.filter((book) => !book.submited);
-          if (unreturnedBooks.length === 0) {
-            returnBookTable.style.display = "none";
-            returnNoBooksMessage.style.display = "block";
-          } else {
-            returnBookTable.style.display = "block";
-            returnNoBooksMessage.style.display = "none";
-            populateReturnBookTable(unreturnedBooks, rollNo);
-          }
-        } catch (error) {
-          showGeneralError(`Error fetching books: ${error.message}`);
-          returnBookTable.style.display = "none";
-          returnNoBooksMessage.style.display = "block";
-          returnUserDetailsBox.classList.remove("active");
-        }
-      }
-
-      async function fetchUserProfile(rollNo) {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          setTimeout(() => (window.location.href = "./index.html"), 2000);
-          return;
-        }
-        loadingOverlay.classList.add("active");
-        try {
-          const response = await fetch(`${api}getbooks/${rollNo}/`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          if (!response.ok) throw new Error("Failed to fetch user profile");
-          const data = await response.json();
-
-          libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
-
-          document.getElementById("profile-roll-no").textContent = data.id || "-";
-          document.getElementById("profile-firstName").textContent = data.firstName || "-";
-          document.getElementById("profile-lastName").textContent = data.lastName || "-";
-          document.getElementById("profile-email").textContent = data.email || "-";
-          document.getElementById("profile-phone").textContent = data.phone || "-";
-          document.getElementById("profile-branch").textContent = data.branch || "-";
-          document.getElementById("profile-batch").textContent = `${data.startyear || "-"}-${data.endyear || "-"}`;
-          document.getElementById("profile-gender").textContent = data.gender || "-";
-          document.getElementById("profile-created").textContent = data.created ? new Date(data.created).toLocaleString() : "-";
-
-          const books = data.books || [];
-          if (books.length === 0) {
-            booksTableContainer.style.display = "none";
-          } else {
-            booksTableContainer.style.display = "block";
-            populateBooksTable(books);
-          }
-
-          userProfile.classList.add("active");
-        } catch (error) {
-          showGeneralError(`Profile fetch error: ${error.message}`);
-          userProfile.classList.remove("active");
-        } finally {
-          setTimeout(() => loadingOverlay.classList.remove("active"), 500);
-        }
-      }
-
-      async function updateBookStatus(bookId, bookCode) {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          setTimeout(() => (window.location.href = "./index.html"), 2000);
-          return false;
-        }
-        loadingOverlay.classList.add("active");
-        try {
-          const response = await fetch(`${api}addbook/`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({ code: bookCode, id: bookId, submited: true }),
-          });
-          if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.detail || "Failed to update book status");
-          }
-          return true;
-        } catch (error) {
-          showGeneralError(`Update book error: ${error.message}`);
-          return false;
-        } finally {
-          setTimeout(() => loadingOverlay.classList.remove("active"), 500);
-        }
-      }
-
-      async function addBook(bookData) {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          setTimeout(() => (window.location.href = "./index.html"), 2000);
-          return false;
-        }
-        loadingOverlay.classList.add("active");
-        try {
-          const response = await fetch(`${api}addbook/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(bookData),
-          });
-          if (!response.ok) {
-            const data = await response.json();
-            throw new Error("Failed to add book", { cause: data });
-          }
-          return true;
-        } catch (error) {
-          if (error.cause) {
-            const data = error.cause;
-            if (data.user) showError("new-roll-no", data.user[0]);
-            if (data.code) showError("new-book-code", data.code[0]);
-            if (data.name) showError("new-book-name", data.name[0]);
-            if (data.submited_date) showError("new-return-date", data.submited_date[0]);
-          } else {
-            showGeneralError(`Add book error: ${error.message}`);
-          }
-          return false;
-        } finally {
-          setTimeout(() => loadingOverlay.classList.remove("active"), 500);
-        }
-      }
-
-      async function registerUser(formData) {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-          showGeneralError("User is not logged in!");
-          setTimeout(() => (window.location.href = "./index.html"), 2000);
-          return false;
-        }
-        try {
-          const response = await fetch(`${api}studentregister/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(formData),
-          });
-          if (!response.ok) {
-            const data = await response.json();
-            throw new Error("Registration failed", { cause: data });
-          }
-          return true;
-        } catch (error) {
-          if (error.cause) {
-            const data = error.cause;
-            if (data.roll) showError("roll", data.roll[0]);
-            if (data.firstName) showError("firstName", data.firstName[0]);
-            if (data.lastName) showError("lastName", data.lastName[0]);
-            if (data.email) showError("email", data.email[0]);
-            if (data.phone) showError("phone", data.phone[0]);
-            if (data.branch) showError("branch", data.branch[0]);
-            if (data.startyear) showError("startyear", data.startyear[0]);
-            if (data.endyear) showError("endyear", data.endyear[0]);
-            if (data.gender) showError("gender", data.gender[0]);
-          } else {
-            showGeneralError(`Registration error: ${error.message}`);
-          }
-          return false;
-        }
-      }
-
-      // Utility Functions
-      function showError(field, message) {
-        const input = document.getElementById(field);
-        const errorElement = document.getElementById(`${field}-error`);
-        errorElement.textContent = message;
-        input.parentElement.classList.add("error");
-      }
-
-      function showGeneralError(message) {
-        const errorDialogue = document.createElement("div");
-        errorDialogue.className = "dialogue-box active";
-        errorDialogue.innerHTML = `
-          <p>${message}</p>
-          <button class="confirm-btn" id="error-ok">OK</button>
-        `;
-        document.body.appendChild(errorDialogue);
-        document.getElementById("error-ok").onclick = () => errorDialogue.remove();
-      }
-
-      function clearErrors() {
-        document.querySelectorAll(".error-message").forEach((el) => (el.textContent = ""));
-        document.querySelectorAll(".form-group").forEach((group) => group.classList.remove("error"));
-      }
-
-      function calculateYear(startYear) {
-        if (!startYear) return "-";
-        const currentYear = new Date().getFullYear();
-        return currentYear - startYear + 1;
-      }
-
-      function formatYear(startYear) {
-        if (!startYear) return "-";
-        const currentYear = new Date().getFullYear();
-        return `${startYear}-${currentYear}`;
-      }
-
-      function populateTable(data, tbodyId) {
-        const tbody = document.getElementById(tbodyId);
-        tbody.innerHTML = "";
-        data.forEach((row, index) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${row.user || "-"}</td>
-            <td>${row.username || "-"}</td>
-            <td>${row.branch || "-"}</td>
-            <td>${formatYear(row.year)}</td>
-            <td>${row.id || "-"}</td>
-            <td>${row.code || "-"}</td>
-            <td>${row.name || "-"}</td>
-            <td>${row.created_at ? new Date(row.created_at).toLocaleDateString() : "-"}</td>
-            <td>${row.return_date ? new Date(row.return_date).toLocaleDateString() : "-"}</td>
-            <td>${row.submited_date ? new Date(row.submited_date).toLocaleDateString() : "-"}</td>
-            <td><button class="status-btn ${row.submited ? "submitted" : "not-submitted"}">${row.submited ? "Submitted" : "Not Submitted"}</button></td>
-            <td>${row.library || "-"}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      function populateAddBookTable(books, rollNo) {
-        const tbody = document.getElementById("add-book-table-body");
-        tbody.innerHTML = "";
-        books.forEach((book, index) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${rollNo}</td>
-            <td>${book.id || "-"}</td>
-            <td>${book.code || "-"}</td>
-            <td>${book.name || "-"}</td>
-            <td>${book.created_at ? new Date(book.created_at).toLocaleDateString() : "-"}</td>
-            <td>${book.submited_date ? new Date(book.submited_date).toLocaleDateString() : "-"}</td>
-            <td><button class="status-btn ${book.submited ? "submitted" : "not-submitted"}">${book.submited ? "Submitted" : "Not Submitted"}</button></td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      function populateReturnBookTable(books, rollNo) {
-        const tbody = document.getElementById("return-book-table-body");
-        tbody.innerHTML = "";
-        books.forEach((book, index) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${rollNo}</td>
-            <td>${book.id || "-"}</td>
-            <td>${book.code || "-"}</td>
-            <td>${book.name || "-"}</td>
-            <td>${book.created_at ? new Date(book.created_at).toLocaleDateString() : "-"}</td>
-            <td>${book.submited_date ? new Date(book.submited_date).toLocaleDateString() : "-"}</td>
-            <td><button class="status-btn ${book.submited ? "submitted" : "not-submitted"}" data-book-id="${book.id}" data-book-code="${book.code}" data-roll-no="${rollNo}">${book.submited ? "Submitted" : "Not Submitted"}</button></td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      function populateBooksTable(books) {
-        const tbody = document.getElementById("books-table-body");
-        tbody.innerHTML = "";
-        books.forEach((book, index) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${book.id || "-"}</td>
-            <td>${book.code || "-"}</td>
-            <td>${book.name || "-"}</td>
-            <td>${book.created_at ? new Date(book.created_at).toLocaleDateString() : "-"}</td>
-            <td>${book.return_date ? new Date(book.return_date).toLocaleDateString() : "-"}</td>
-            <td>${book.submited_date ? new Date(book.submited_date).toLocaleDateString() : "-"}</td>
-            <td><button class="status-btn ${book.submited ? "submitted" : "not-submitted"}">${book.submited ? "Submitted" : "Not Submitted"}</button></td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      // Event Listeners
-      profileIcon.addEventListener("click", () => profileDropdown.classList.toggle("active"));
-
-      document.addEventListener("click", (e) => {
-        if (!profileIcon.contains(e.target) && !profileDropdown.contains(e.target)) {
-          profileDropdown.classList.remove("active");
-        }
-      });
-
-      signOutLink.addEventListener("click", async (e) => {
-        e.preventDefault();
-        logoutConfirmDialogue.classList.add("active");
-        logoutConfirmOk.onclick = async () => {
-          if (await logoutUser()) {
-            logoutConfirmDialogue.classList.remove("active");
-            logoutSuccessDialogue.classList.add("active");
-            setTimeout(() => {
-              logoutSuccessDialogue.classList.remove("active");
-            }, 2000);
-          }
-        };
-        logoutConfirmCancel.onclick = () => logoutConfirmDialogue.classList.remove("active");
-      });
-
-      searchBtn.addEventListener("click", () => {
-        const dept = document.getElementById("department").value;
-        const year = document.getElementById("year").value;
-        fetchDashboardData(dept, year);
-      });
-
-      navLinks.forEach((link) => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          navLinks.forEach((l) => l.classList.remove("active"));
-          link.classList.add("active");
-          const sectionId = link.getAttribute("data-section");
-          contentSections.forEach((section) => {
-            section.classList.remove("active");
-            if (section.id === sectionId) section.classList.add("active");
-          });
-          userProfile.classList.remove("active");
-          addBookTable.style.display = "none";
-          addBookForm.classList.remove("active");
-          returnBookTable.style.display = "none";
-          returnDialogue.classList.remove("active");
-          returnSuccessMessage.style.display = "none";
-          noBooksMessage.style.display = "none";
-          returnNoBooksMessage.style.display = "none";
-          userDetailsBox.classList.remove("active");
-          returnUserDetailsBox.classList.remove("active");
-        });
-      });
-
-      regForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        clearErrors();
-        const formData = {
-          roll: document.getElementById("roll").value.trim(),
-          firstName: document.getElementById("firstName").value.trim(),
-          lastName: document.getElementById("lastName").value.trim(),
-          email: document.getElementById("email").value.trim(),
-          phone: document.getElementById("phone").value.trim(),
-          branch: document.getElementById("branch").value,
-          startyear: document.getElementById("startyear").value,
-          endyear: document.getElementById("endyear").value,
-          gender: document.getElementById("gender").value,
-        };
-        let isValid = true;
-        if (!formData.roll) { showError("roll", "Roll No is required"); isValid = false; }
-        if (!formData.firstName) { showError("firstName", "First Name is required"); isValid = false; }
-        if (!formData.lastName) { showError("lastName", "Last Name is required"); isValid = false; }
-        if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) { showError("email", "Valid email is required"); isValid = false; }
-        if (!formData.phone || !/^[0-9]{10}$/.test(formData.phone)) { showError("phone", "Phone must be 10 digits"); isValid = false; }
-        if (!formData.branch) { showError("branch", "Branch is required"); isValid = false; }
-        if (!formData.startyear) { showError("startyear", "Start Year is required"); isValid = false; }
-        if (!formData.endyear) { showError("endyear", "End Year is required"); isValid = false; }
-        if (!formData.gender) { showError("gender", "Gender is required"); isValid = false; }
-        if (!isValid) return;
-        if (await registerUser(formData)) {
-          regSuccessDialogue.classList.add("active");
-          regSuccessOk.onclick = () => {
-            regSuccessDialogue.classList.remove("active");
-            regForm.reset();
-          };
-        }
-      });
-
-      profileSearchBtn.addEventListener("click", () => {
-        const rollNo = rollNoInput.value.trim();
-        if (rollNo) {
-          fetchUserProfile(rollNo);
-        } else {
-          showGeneralError("Please enter a Roll No.");
-        }
-      });
-
-      addBookSearchBtn.addEventListener("click", () => {
-        const rollNo = addRollNoInput.value.trim();
-        if (rollNo) fetchUserBooks(rollNo);
-        else showGeneralError("Please enter a Roll No.");
-      });
-
-      addNewBookBtn.addEventListener("click", () => {
-        const rollNo = addRollNoInput.value.trim();
-        if (rollNo) {
-          document.getElementById("new-issue-date").value = new Date().toISOString().split("T")[0];
-          addBookForm.classList.add("active");
-        } else {
-          showGeneralError("Please search for a Roll No. first.");
-        }
-      });
-
-      addBookFormSubmit.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        clearErrors();
-        const rollNo = document.getElementById("new-roll-no").value.trim();
-        const bookCode = document.getElementById("new-book-code").value.trim();
-        const bookName = document.getElementById("new-book-name").value.trim();
-        const returnDate = document.getElementById("new-return-date").value;
-        if (!rollNo) { showError("new-roll-no", "Roll No is required"); return; }
-        if (!bookCode) { showError("new-book-code", "Book Code is required"); return; }
-        if (!bookName) { showError("new-book-name", "Book Name is required"); return; }
-        if (!returnDate) { showError("new-return-date", "Return Date is required"); return; }
-        const bookData = {
-          user: rollNo,
-          code: bookCode,
-          name: bookName,
-          submited_date: returnDate,
-          submited: false,
-        };
-        if (await addBook(bookData)) {
-          addBookForm.classList.remove("active");
-          addBookSuccessDialogue.classList.add("active");
-          addBookFormSubmit.reset();
-          document.getElementById("new-issue-date").value = new Date().toISOString().split("T")[0];
-          fetchUserBooks(rollNo);
-          addBookSuccessOk.onclick = () => addBookSuccessDialogue.classList.remove("active");
-        }
-      });
-
-      returnBookSearchBtn.addEventListener("click", () => {
-        const rollNo = returnRollNoInput.value.trim();
-        if (rollNo) fetchUnreturnedBooks(rollNo);
-        else showGeneralError("Please enter a Roll No.");
-      });
-
-      returnBookTableBody.addEventListener("click", async (e) => {
-        if (e.target.classList.contains("not-submitted")) {
-          const bookId = e.target.getAttribute("data-book-id");
-          const bookCode = e.target.getAttribute("data-book-code");
-          const rollNo = e.target.getAttribute("data-roll-no");
-          returnDialogue.classList.add("active");
-
-          confirmReturn.onclick = async () => {
-            const success = await updateBookStatus(bookId, bookCode);
-            if (success) {
-              returnDialogue.classList.remove("active");
-              returnSuccessMessage.style.display = "block";
-              setTimeout(() => {
-                returnSuccessMessage.style.display = "none";
-                fetchUnreturnedBooks(rollNo);
-              }, 2000);
+        // API Functions
+        async function logoutUser() {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                return false;
             }
-          };
-          cancelReturn.onclick = () => returnDialogue.classList.remove("active");
+            try {
+                const response = await fetch(`${api}logout/`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                });
+                if (!response.ok) throw new Error("Logout failed");
+                const data = await response.json();
+                if (data.message === "Logged out successfully") {
+                    localStorage.removeItem("access_token");
+                    window.location.href = "./index.html";
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                showGeneralError(`Logout error: ${error.message}`);
+                localStorage.removeItem("access_token");
+                window.location.href = "./index.html";
+                return false;
+            }
         }
-      });
 
-      // Initial Setup
-      tableContainer.style.display = "none";
-      summaryStats.style.display = "none";
-      studentCount.textContent = "Number of students: 0";
+        async function fetchDashboardData(dept, year) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return;
+            }
+            loadingOverlay.classList.add("active");
+            try {
+                const response = await fetch(`${api}books/`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                });
+                if (!response.ok) throw new Error("Failed to fetch dashboard data");
+                const data = await response.json();
 
-      // Initial Dashboard Fetch
-      fetchDashboardData("all", "all");
+                let filteredData = data;
+                if (dept !== "all") filteredData = filteredData.filter(item => item.branch === dept);
+                if (year !== "all") filteredData = filteredData.filter(item => calculateYear(item.year) === parseInt(year));
+
+                if (filteredData.length > 0) {
+                    libraryHeading.textContent = `${filteredData[0].library || "Unknown"} Library Dashboard`;
+                }
+
+                if (filteredData.length === 0) {
+                    tableContainer.style.display = "none";
+                    summaryStats.style.display = "none";
+                    noDataMessage.style.display = "block";
+                    studentCount.textContent = "Number of students: 0";
+                    if (bookChart) bookChart.destroy();
+                } else {
+                    tableContainer.style.display = "block";
+                    summaryStats.style.display = "flex";
+                    noDataMessage.style.display = "none";
+                    populateTable(filteredData, "table-body");
+                    studentCount.textContent = `Number of students: ${new Set(filteredData.map(item => item.user)).size}`;
+
+                    const totalBooks = filteredData.length;
+                    const notSubmitted = filteredData.filter(book => !book.submited).length;
+                    const submitted = totalBooks - notSubmitted;
+
+                    if (bookChart) bookChart.destroy();
+                    bookChart = new Chart(ctx, {
+                        type: "pie",
+                        data: {
+                            labels: ["Not Submitted", "Submitted"],
+                            datasets: [{ data: [notSubmitted, submitted], backgroundColor: ["#dc3545", "#28a745"], borderWidth: 1 }],
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: "top" }, title: { display: true, text: "Book Status" } },
+                        },
+                    });
+
+                    selectedDept.textContent = dept === "all" ? "All" : dept.toUpperCase();
+                    selectedYear.textContent = year === "all" ? "All" : year;
+                }
+            } catch (error) {
+                showGeneralError(`Dashboard error: ${error.message}`);
+                tableContainer.style.display = "none";
+                summaryStats.style.display = "none";
+                noDataMessage.style.display = "block";
+                studentCount.textContent = "Number of students: 0";
+                if (bookChart) bookChart.destroy();
+            } finally {
+                setTimeout(() => loadingOverlay.classList.remove("active"), 500);
+            }
+        }
+
+        async function fetchUserBooks(rollNo) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return;
+            }
+            try {
+                const response = await fetch(`${api}getbooks/${rollNo}/`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                });
+                if (!response.ok) throw new Error("Failed to fetch books");
+                const data = await response.json();
+
+                libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
+
+                document.getElementById("add-roll-no-display").textContent = data.id || "-";
+                document.getElementById("add-full-name").textContent = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "-";
+                document.getElementById("add-phone").textContent = data.phone || "-";
+                document.getElementById("add-year").textContent = `${data.startyear || "-"}-${new Date().getFullYear()}`;
+                userDetailsBox.classList.add("active");
+
+                const books = data.books || [];
+                if (books.length === 0) {
+                    addBookTable.style.display = "none";
+                    noBooksMessage.style.display = "block";
+                    document.getElementById("new-roll-no").value = rollNo;
+                    document.getElementById("new-sno").value = 1;
+                } else {
+                    addBookTable.style.display = "block";
+                    noBooksMessage.style.display = "none";
+                    populateAddBookTable(books, rollNo);
+                    document.getElementById("new-roll-no").value = rollNo;
+                    document.getElementById("new-sno").value = books.length + 1;
+                }
+            } catch (error) {
+                showGeneralError(`Book fetch error: ${error.message}`);
+                addBookTable.style.display = "none";
+                noBooksMessage.style.display = "none";
+                userDetailsBox.classList.remove("active");
+            }
+        }
+
+        async function fetchUnreturnedBooks(rollNo) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return;
+            }
+            try {
+                const response = await fetch(`${api}getbooks/${rollNo}/`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                });
+                if (!response.ok) throw new Error("Failed to fetch books");
+                const data = await response.json();
+
+                libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
+
+                document.getElementById("return-roll-no-display").textContent = data.id || "-";
+                document.getElementById("return-full-name").textContent = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "-";
+                document.getElementById("return-phone").textContent = data.phone || "-";
+                document.getElementById("return-year").textContent = `${data.startyear || "-"}-${new Date().getFullYear()}`;
+                returnUserDetailsBox.classList.add("active");
+
+                const unreturnedBooks = data.books.filter(book => !book.submited);
+                if (unreturnedBooks.length === 0) {
+                    returnBookTable.style.display = "none";
+                    returnNoBooksMessage.style.display = "block";
+                } else {
+                    returnBookTable.style.display = "block";
+                    returnNoBooksMessage.style.display = "none";
+                    populateReturnBookTable(unreturnedBooks, rollNo);
+                }
+            } catch (error) {
+                showGeneralError(`Error fetching books: ${error.message}`);
+                returnBookTable.style.display = "none";
+                returnNoBooksMessage.style.display = "block";
+                returnUserDetailsBox.classList.remove("active");
+            }
+        }
+
+        async function fetchUserProfile(rollNo) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return;
+            }
+            loadingOverlay.classList.add("active");
+            try {
+                const response = await fetch(`${api}getbooks/${rollNo}/`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                });
+                if (!response.ok) throw new Error("Failed to fetch user profile");
+                const data = await response.json();
+
+                libraryHeading.textContent = `${data.library || "Unknown"} Library Dashboard`;
+
+                document.getElementById("profile-roll-no").textContent = data.id || "-";
+                document.getElementById("profile-firstName").textContent = data.firstName || "-";
+                document.getElementById("profile-lastName").textContent = data.lastName || "-";
+                document.getElementById("profile-email").textContent = data.email || "-";
+                document.getElementById("profile-phone").textContent = data.phone || "-";
+                document.getElementById("profile-branch").textContent = data.branch || "-";
+                document.getElementById("profile-batch").textContent = `${data.startyear || "-"}-${data.endyear || "-"}`;
+                document.getElementById("profile-gender").textContent = data.gender || "-";
+                document.getElementById("profile-created").textContent = data.created ? new Date(data.created).toLocaleString() : "-";
+
+                const books = data.books || [];
+                if (books.length === 0) {
+                    booksTableContainer.style.display = "none";
+                } else {
+                    booksTableContainer.style.display = "block";
+                    populateBooksTable(books);
+                }
+
+                userProfile.classList.add("active");
+                deleteUserSuccessMessage.style.display = "none";
+            } catch (error) {
+                showGeneralError(`Profile fetch error: ${error.message}`);
+                userProfile.classList.remove("active");
+                deleteUserSuccessMessage.style.display = "none";
+            } finally {
+                setTimeout(() => loadingOverlay.classList.remove("active"), 500);
+            }
+        }
+
+        async function updateBookStatus(bookId, bookCode) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return false;
+            }
+            loadingOverlay.classList.add("active");
+            try {
+                const response = await fetch(`${api}addbook/`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({ code: bookCode, id: bookId, submited: true }),
+                });
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.detail || "Failed to update book status");
+                }
+                return true;
+            } catch (error) {
+                showGeneralError(`Update book error: ${error.message}`);
+                return false;
+            } finally {
+                setTimeout(() => loadingOverlay.classList.remove("active"), 500);
+            }
+        }
+
+        async function addBook(bookData) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return false;
+            }
+            loadingOverlay.classList.add("active");
+            try {
+                const response = await fetch(`${api}addbook/`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                    body: JSON.stringify(bookData),
+                });
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error("Failed to add book", { cause: data });
+                }
+                return true;
+            } catch (error) {
+                if (error.cause) {
+                    const data = error.cause;
+                    if (data.user) showError("new-roll-no", data.user[0]);
+                    if (data.code) showError("new-book-code", data.code[0]);
+                    if (data.name) showError("new-book-name", data.name[0]);
+                    if (data.submited_date) showError("new-return-date", data.submited_date[0]);
+                } else {
+                    showGeneralError(`Add book error: ${error.message}`);
+                }
+                return false;
+            } finally {
+                setTimeout(() => loadingOverlay.classList.remove("active"), 500);
+            }
+        }
+
+        async function registerUser(formData) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return false;
+            }
+            try {
+                const response = await fetch(`${api}studentregister/`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                    body: JSON.stringify(formData),
+                });
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error("Registration failed", { cause: data });
+                }
+                return true;
+            } catch (error) {
+                if (error.cause) {
+                    const data = error.cause;
+                    if (data.roll) showError("roll", data.roll[0]);
+                    if (data.firstName) showError("firstName", data.firstName[0]);
+                    if (data.lastName) showError("lastName", data.lastName[0]);
+                    if (data.email) showError("email", data.email[0]);
+                    if (data.phone) showError("phone", data.phone[0]);
+                    if (data.branch) showError("branch", data.branch[0]);
+                    if (data.startyear) showError("startyear", data.startyear[0]);
+                    if (data.endyear) showError("endyear", data.endyear[0]);
+                    if (data.gender) showError("gender", data.gender[0]);
+                } else {
+                    showGeneralError(`Registration error: ${error.message}`);
+                }
+                return false;
+            }
+        }
+
+        async function deleteUser(rollNo) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                showGeneralError("User is not logged in!");
+                setTimeout(() => (window.location.href = "./index.html"), 2000);
+                return false;
+            }
+            loadingOverlay.classList.add("active");
+            try {
+                const response = await fetch(`${api}student/delete/`, {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({ roll: rollNo }),
+                });
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.detail || "Failed to delete user");
+                }
+                return true;
+            } catch (error) {
+                showGeneralError(`Delete user error: ${error.message}`);
+                return false;
+            } finally {
+                setTimeout(() => loadingOverlay.classList.remove("active"), 500);
+            }
+        }
+
+        // Utility Functions
+        function showError(field, message) {
+            const input = document.getElementById(field);
+            const errorElement = document.getElementById(`${field}-error`);
+            errorElement.textContent = message;
+            input.parentElement.classList.add("error");
+        }
+
+        function showGeneralError(message) {
+            const errorDialogue = document.createElement("div");
+            errorDialogue.className = "dialogue-box active";
+            errorDialogue.innerHTML = `<p>${message}</p><button class="confirm-btn" id="error-ok">OK</button>`;
+            document.body.appendChild(errorDialogue);
+            document.getElementById("error-ok").onclick = () => errorDialogue.remove();
+        }
+
+        function clearErrors() {
+            document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
+            document.querySelectorAll(".form-group").forEach(group => group.classList.remove("error"));
+        }
+
+        function calculateYear(startYear) {
+            if (!startYear) return "-";
+            return new Date().getFullYear() - startYear + 1;
+        }
+
+        function formatYear(startYear) {
+            if (!startYear) return "-";
+            return `${startYear}-${new Date().getFullYear()}`;
+        }
+
+        function populateTable(data, tbodyId) {
+            const tbody = document.getElementById(tbodyId);
+            tbody.innerHTML = "";
+            data.forEach((row, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${row.user || "-"}</td>
+                    <td>${row.username || "-"}</td>
+                    <td>${row.branch || "-"}</td>
+                    <td>${formatYear(row.year)}</td>
+                    <td>${row.id || "-"}</td>
+                    <td>${row.code || "-"}</td>
+                    <td>${row.name || "-"}</td>
+                    <td>${row.created_at ? new Date(row.created_at).toLocaleDateString() : "-"}</td>
+                    <td>${row.return_date ? new Date(row.return_date).toLocaleDateString() : "-"}</td>
+                    <td>${row.submited_date ? new Date(row.submited_date).toLocaleDateString() : "-"}</td>
+                    <td><button class="status-btn ${row.submited ? "submitted" : "not-submitted"}">${row.submited ? "Submitted" : "Not Submitted"}</button></td>
+                    <td>${row.library || "-"}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function populateAddBookTable(books, rollNo) {
+            const tbody = document.getElementById("add-book-table-body");
+            tbody.innerHTML = "";
+            books.forEach((book, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${rollNo}</td>
+                    <td>${book.id || "-"}</td>
+                    <td>${book.code || "-"}</td>
+                    <td>${book.name || "-"}</td>
+                    <td>${book.created_at ? new Date(book.created_at).toLocaleDateString() : "-"}</td>
+                    <td>${book.submited_date ? new Date(book.submited_date).toLocaleDateString() : "-"}</td>
+                    <td><button class="status-btn ${book.submited ? "submitted" : "not-submitted"}">${book.submited ? "Submitted" : "Not Submitted"}</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function populateReturnBookTable(books, rollNo) {
+            const tbody = document.getElementById("return-book-table-body");
+            tbody.innerHTML = "";
+            books.forEach((book, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${rollNo}</td>
+                    <td>${book.id || "-"}</td>
+                    <td>${book.code || "-"}</td>
+                    <td>${book.name || "-"}</td>
+                    <td>${book.created_at ? new Date(book.created_at).toLocaleDateString() : "-"}</td>
+                    <td>${book.submited_date ? new Date(book.submited_date).toLocaleDateString() : "-"}</td>
+                    <td><button class="status-btn ${book.submited ? "submitted" : "not-submitted"}" data-book-id="${book.id}" data-book-code="${book.code}" data-roll-no="${rollNo}">${book.submited ? "Submitted" : "Not Submitted"}</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function populateBooksTable(books) {
+            const tbody = document.getElementById("books-table-body");
+            tbody.innerHTML = "";
+            books.forEach((book, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${book.id || "-"}</td>
+                    <td>${book.code || "-"}</td>
+                    <td>${book.name || "-"}</td>
+                    <td>${book.created_at ? new Date(book.created_at).toLocaleDateString() : "-"}</td>
+                    <td>${book.return_date ? new Date(book.return_date).toLocaleDateString() : "-"}</td>
+                    <td>${book.submited_date ? new Date(book.submited_date).toLocaleDateString() : "-"}</td>
+                    <td><button class="status-btn ${book.submited ? "submitted" : "not-submitted"}">${book.submited ? "Submitted" : "Not Submitted"}</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Event Listeners
+        profileIcon.addEventListener("click", () => profileDropdown.classList.toggle("active"));
+
+        document.addEventListener("click", (e) => {
+            if (!profileIcon.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove("active");
+            }
+        });
+
+        signOutLink.addEventListener("click", async (e) => {
+            e.preventDefault();
+            logoutConfirmDialogue.classList.add("active");
+            logoutConfirmOk.onclick = async () => {
+                if (await logoutUser()) {
+                    logoutConfirmDialogue.classList.remove("active");
+                    logoutSuccessDialogue.classList.add("active");
+                    setTimeout(() => logoutSuccessDialogue.classList.remove("active"), 2000);
+                }
+            };
+            logoutConfirmCancel.onclick = () => logoutConfirmDialogue.classList.remove("active");
+        });
+
+        searchBtn.addEventListener("click", () => {
+            const dept = document.getElementById("department").value;
+            const year = document.getElementById("year").value;
+            fetchDashboardData(dept, year);
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                navLinks.forEach(l => l.classList.remove("active"));
+                link.classList.add("active");
+                const sectionId = link.getAttribute("data-section");
+                contentSections.forEach(section => {
+                    section.classList.remove("active");
+                    if (section.id === sectionId) section.classList.add("active");
+                });
+                userProfile.classList.remove("active");
+                addBookTable.style.display = "none";
+                addBookForm.classList.remove("active");
+                returnBookTable.style.display = "none";
+                returnDialogue.classList.remove("active");
+                returnSuccessMessage.style.display = "none";
+                noBooksMessage.style.display = "none";
+                returnNoBooksMessage.style.display = "none";
+                userDetailsBox.classList.remove("active");
+                returnUserDetailsBox.classList.remove("active");
+            });
+        });
+
+        regForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            clearErrors();
+            const formData = {
+                roll: document.getElementById("roll").value.trim(),
+                firstName: document.getElementById("firstName").value.trim(),
+                lastName: document.getElementById("lastName").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+                branch: document.getElementById("branch").value,
+                startyear: document.getElementById("startyear").value,
+                endyear: document.getElementById("endyear").value,
+                gender: document.getElementById("gender").value,
+            };
+            let isValid = true;
+            if (!formData.roll) { showError("roll", "Roll No is required"); isValid = false; }
+            if (!formData.firstName) { showError("firstName", "First Name is required"); isValid = false; }
+            if (!formData.lastName) { showError("lastName", "Last Name is required"); isValid = false; }
+            if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) { showError("email", "Valid email is required"); isValid = false; }
+            if (!formData.phone || !/^[0-9]{10}$/.test(formData.phone)) { showError("phone", "Phone must be 10 digits"); isValid = false; }
+            if (!formData.branch) { showError("branch", "Branch is required"); isValid = false; }
+            if (!formData.startyear) { showError("startyear", "Start Year is required"); isValid = false; }
+            if (!formData.endyear) { showError("endyear", "End Year is required"); isValid = false; }
+            if (!formData.gender) { showError("gender", "Gender is required"); isValid = false; }
+            if (!isValid) return;
+            if (await registerUser(formData)) {
+                regSuccessDialogue.classList.add("active");
+                regSuccessOk.onclick = () => {
+                    regSuccessDialogue.classList.remove("active");
+                    regForm.reset();
+                };
+            }
+        });
+
+        profileSearchBtn.addEventListener("click", () => {
+            const rollNo = rollNoInput.value.trim();
+            if (rollNo) fetchUserProfile(rollNo);
+            else showGeneralError("Please enter a Roll No.");
+        });
+
+        deleteUserBtn.addEventListener("click", () => {
+            const rollNo = rollNoInput.value.trim();
+            if (!rollNo || !userProfile.classList.contains("active")) {
+                showGeneralError("Please search for a user first.");
+                return;
+            }
+            deleteUserDialogue.classList.add("active");
+            deleteUserConfirm.onclick = async () => {
+                const success = await deleteUser(rollNo);
+                if (success) {
+                    deleteUserDialogue.classList.remove("active");
+                    deleteUserSuccessMessage.style.display = "block";
+                    setTimeout(() => {
+                        deleteUserSuccessMessage.style.display = "none";
+                        userProfile.classList.remove("active");
+                        rollNoInput.value = "";
+                        booksTableContainer.style.display = "none";
+                    }, 2000);
+                }
+            };
+            deleteUserCancel.onclick = () => deleteUserDialogue.classList.remove("active");
+        });
+
+        addBookSearchBtn.addEventListener("click", () => {
+            const rollNo = addRollNoInput.value.trim();
+            if (rollNo) fetchUserBooks(rollNo);
+            else showGeneralError("Please enter a Roll No.");
+        });
+
+        addNewBookBtn.addEventListener("click", () => {
+            const rollNo = addRollNoInput.value.trim();
+            if (rollNo) {
+                document.getElementById("new-issue-date").value = new Date().toISOString().split("T")[0];
+                addBookForm.classList.add("active");
+            } else {
+                showGeneralError("Please search for a Roll No. first.");
+            }
+        });
+
+        addBookFormSubmit.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            clearErrors();
+            const rollNo = document.getElementById("new-roll-no").value.trim();
+            const bookCode = document.getElementById("new-book-code").value.trim();
+            const bookName = document.getElementById("new-book-name").value.trim();
+            const returnDate = document.getElementById("new-return-date").value;
+            if (!rollNo) { showError("new-roll-no", "Roll No is required"); return; }
+            if (!bookCode) { showError("new-book-code", "Book Code is required"); return; }
+            if (!bookName) { showError("new-book-name", "Book Name is required"); return; }
+            if (!returnDate) { showError("new-return-date", "Return Date is required"); return; }
+            const bookData = { user: rollNo, code: bookCode, name: bookName, submited_date: returnDate, submited: false };
+            if (await addBook(bookData)) {
+                addBookForm.classList.remove("active");
+                addBookSuccessDialogue.classList.add("active");
+                addBookFormSubmit.reset();
+                document.getElementById("new-issue-date").value = new Date().toISOString().split("T")[0];
+                fetchUserBooks(rollNo);
+                addBookSuccessOk.onclick = () => addBookSuccessDialogue.classList.remove("active");
+            }
+        });
+
+        returnBookSearchBtn.addEventListener("click", () => {
+            const rollNo = returnRollNoInput.value.trim();
+            if (rollNo) fetchUnreturnedBooks(rollNo);
+            else showGeneralError("Please enter a Roll No.");
+        });
+
+        returnBookTableBody.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("not-submitted")) {
+                const bookId = e.target.getAttribute("data-book-id");
+                const bookCode = e.target.getAttribute("data-book-code");
+                const rollNo = e.target.getAttribute("data-roll-no");
+                returnDialogue.classList.add("active");
+
+                confirmReturn.onclick = async () => {
+                    const success = await updateBookStatus(bookId, bookCode);
+                    if (success) {
+                        returnDialogue.classList.remove("active");
+                        returnSuccessMessage.style.display = "block";
+                        setTimeout(() => {
+                            returnSuccessMessage.style.display = "none";
+                            fetchUnreturnedBooks(rollNo);
+                        }, 2000);
+                    }
+                };
+                cancelReturn.onclick = () => returnDialogue.classList.remove("active");
+            }
+        });
+
+        // Initial Setup
+        tableContainer.style.display = "none";
+        summaryStats.style.display = "none";
+        studentCount.textContent = "Number of students: 0";
+        fetchDashboardData("all", "all");
     </script>
-  </body>
+</body>
 </html>
