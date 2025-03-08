@@ -12,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f6f5;
@@ -21,7 +20,6 @@
             display: flex;
             flex-direction: column;
         }
-
         /* Navbar */
         .navbar {
             background-color: #4285f4;
@@ -35,7 +33,6 @@
             top: 0;
             z-index: 1000;
         }
-
         .navbar-brand {
             font-size: 1.6rem;
             font-weight: bold;
@@ -45,13 +42,11 @@
             flex-grow: 1;
             cursor: pointer;
         }
-
         .nav-links {
             display: flex;
             gap: 20px;
             list-style: none;
         }
-
         .nav-links a {
             color: #fff;
             text-decoration: none;
@@ -60,11 +55,9 @@
             transition: background-color 0.3s;
             display: block;
         }
-
         .nav-links a:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
-
         .nav-toggle {
             display: none;
             background: none;
@@ -73,7 +66,6 @@
             font-size: 1.8rem;
             cursor: pointer;
         }
-
         /* Main Container */
         .main-container {
             max-width: 1200px;
@@ -83,25 +75,21 @@
             flex-grow: 1;
             gap: 20px;
         }
-
         .welcome-section {
             flex: 1;
             padding: 20px;
             animation: fadeIn 1s ease-in-out;
         }
-
         .welcome-section h1 {
             font-size: 2.2rem;
             color: #4285f4;
             margin-bottom: 15px;
         }
-
         .welcome-section img {
             max-width: 100%;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         .auth-container {
             flex: 1;
             padding: 20px;
@@ -109,13 +97,11 @@
             flex-direction: column;
             align-items: center;
         }
-
         .auth-buttons {
             display: flex;
             gap: 15px;
             margin-bottom: 20px;
         }
-
         .auth-btn {
             padding: 10px 20px;
             border: none;
@@ -126,16 +112,13 @@
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
         }
-
         .auth-btn.active {
             background-color: #4285f4;
             color: #fff;
         }
-
         .auth-btn:hover {
             background-color: #d2e3fc;
         }
-
         .form-box, .register-box {
             display: none;
             width: 100%;
@@ -146,30 +129,25 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
             animation: slideUp 0.5s ease-in-out;
         }
-
         .form-box.active, .register-box.active {
             display: block;
         }
-
         .form-box h2, .register-box h2 {
             font-size: 1.6rem;
             color: #202124;
             margin-bottom: 20px;
             text-align: center;
         }
-
         .input-group {
             margin-bottom: 15px;
             position: relative;
         }
-
         .input-group label {
             display: block;
             font-size: 0.9rem;
             color: #5f6368;
             margin-bottom: 5px;
         }
-
         .input-group input, .input-group textarea {
             width: 100%;
             padding: 10px;
@@ -178,16 +156,10 @@
             font-size: 1rem;
             transition: border-color 0.3s;
         }
-
-        .input-group textarea {
-            resize: vertical;
-        }
-
         .input-group input:focus, .input-group textarea:focus {
             border-color: #4285f4;
             outline: none;
         }
-
         .input-group .toggle-password {
             position: absolute;
             right: 10px;
@@ -197,18 +169,15 @@
             color: #5f6368;
             font-size: 1rem;
         }
-
         .error-text {
             color: #d93025;
             font-size: 0.8rem;
             margin-top: 5px;
             display: none;
         }
-
         .input-group.error .error-text {
             display: block;
         }
-
         .submit-btn {
             width: 100%;
             padding: 12px;
@@ -220,27 +189,22 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
         .submit-btn:hover {
             background-color: #3267d6;
         }
-
         .form-options {
             margin-top: 15px;
             display: flex;
             justify-content: space-between;
             font-size: 0.9rem;
         }
-
         .form-options a {
             color: #4285f4;
             text-decoration: none;
         }
-
         .form-options a:hover {
             text-decoration: underline;
         }
-
         /* Popup */
         .popup-box {
             display: none;
@@ -257,23 +221,19 @@
             max-width: 300px;
             animation: fadeIn 0.5s ease-in-out;
         }
-
         .popup-box.active {
             display: block;
         }
-
         .popup-box h2 {
             font-size: 1.5rem;
             color: #202124;
             margin-bottom: 10px;
         }
-
         .popup-box p {
             font-size: 1rem;
             color: #5f6368;
             margin-bottom: 20px;
         }
-
         .popup-box button {
             padding: 10px 20px;
             background-color: #4285f4;
@@ -282,11 +242,9 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
         .popup-box button:hover {
             background-color: #3267d6;
         }
-
         .overlay {
             display: none;
             position: fixed;
@@ -297,11 +255,9 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
         }
-
         .overlay.active {
             display: block;
         }
-
         /* Footer */
         .footer {
             background-color: #4285f4;
@@ -310,12 +266,10 @@
             color: #fff;
             margin-top: auto;
         }
-
         .footer a {
             color: #fff;
             text-decoration: underline;
         }
-
         /* Loading Animation */
         .loading-overlay {
             display: none;
@@ -329,11 +283,9 @@
             justify-content: center;
             align-items: center;
         }
-
         .loading-overlay.active {
             display: flex;
         }
-
         .book-loader {
             width: 60px;
             height: 80px;
@@ -341,7 +293,6 @@
             transform-style: preserve-3d;
             animation: flip 1.5s infinite ease-in-out;
         }
-
         .book-front, .book-back {
             position: absolute;
             width: 100%;
@@ -351,23 +302,19 @@
             border-radius: 5px;
             backface-visibility: hidden;
         }
-
         .book-front {
             z-index: 2;
             background: url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80') center/cover no-repeat;
         }
-
         .book-back {
             transform: rotateY(180deg);
             background: #3267d6;
         }
-
         @keyframes flip {
             0% { transform: rotateY(0deg); }
             50% { transform: rotateY(180deg); }
             100% { transform: rotateY(360deg); }
         }
-
         /* Network Status */
         .network-status {
             display: none;
@@ -381,309 +328,70 @@
             z-index: 1002;
             font-size: 0.9rem;
         }
-
         .network-status.offline {
             display: block;
             background: #d93025;
             color: #fff;
         }
-
         .network-status.online {
             display: block;
             background: #34c759;
             color: #fff;
         }
-
-        /* Shared Section Styles */
-        .about-section, .contact-section {
-            background-color: #f5f6f5;
-            padding: 40px 0;
-            display: none;
-        }
-
-        .about-content, .contact-content {
-            flex: 1;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .about-heading, .contact-heading {
-            font-size: 2.5rem;
-            color: #4285f4;
-            margin-bottom: 10px;
-            animation: fadeInDown 1s ease-in-out;
-        }
-
-        .about-subtitle, .contact-subtitle {
-            font-size: 1.2rem;
-            color: #5f6368;
-            margin-bottom: 40px;
-            animation: fadeIn 1.2s ease-in-out;
-        }
-
-        .about-block, .contact-block {
-            margin-bottom: 40px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-            animation: slideUp 0.8s ease-in-out;
-        }
-
-        .about-block h2, .contact-block h2 {
-            font-size: 1.8rem;
-            color: #202124;
-            margin-bottom: 15px;
-        }
-
-        .about-block p, .contact-block p {
-            font-size: 1rem;
-            color: #5f6368;
-        }
-
-        /* About Section Specific */
-        .read-more {
-            color: #4285f4;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .read-more:hover {
-            text-decoration: underline;
-        }
-
-        .steps-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-            padding: 15px;
-            transition: transform 0.3s;
-        }
-
-        .step:hover {
-            transform: scale(1.05);
-        }
-
-        .step-icon {
-            font-size: 2rem;
-            color: #4285f4;
-            margin-bottom: 10px;
-        }
-
-        .team-members, .founders-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .team-member, .founder-card {
-            text-align: center;
-            width: 220px;
-            padding: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .team-member:hover, .founder-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
-        }
-
-        .member-photo, .founder-photo {
-            width: 100px;
-            height: 100px;
-            background: #4285f4;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            animation: pulse 2s infinite;
-        }
-
-        .team-member h3, .founder-card h3 {
-            font-size: 1.2rem;
-            color: #202124;
-        }
-
-        .team-member p, .founder-card p {
-            font-size: 0.9rem;
-            color: #5f6368;
-        }
-
-        .cta-block {
-            background: #4285f4;
-            color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            animation: fadeInUp 1s ease-in-out;
-        }
-
-        .cta-block h2 {
-            color: #fff;
-        }
-
-        .demo-btn {
-            padding: 12px 25px;
-            background-color: #fff;
-            color: #4285f4;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .demo-btn:hover {
-            background-color: #e8f0fe;
-            color: #3267d6;
-        }
-
-        /* Contact Section Specific */
-        .founder-card {
-            background: #e8f0fe;
-            border-radius: 8px;
-        }
-
-        .contact-block a {
-            color: #4285f4;
-            text-decoration: none;
-        }
-
-        .contact-block a:hover {
-            text-decoration: underline;
-        }
-
-        .map-container {
-            margin-top: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .social-links {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .social-links a {
-            color: #4285f4;
-            font-size: 1.5rem;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        .social-links a:hover {
-            color: #3267d6;
-            transform: scale(1.2);
-        }
-
         /* Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-toggle {
                 display: block;
             }
-
             .nav-links {
                 position: fixed;
                 top: 0;
-                left: -250px; /* Changed to slide from left */
+                left: -250px;
                 width: 250px;
                 height: 100vh;
-                background: linear-gradient(135deg, #1e3c72, #2a5298); /* Gradient background */
+                background: linear-gradient(135deg, #1e3c72, #2a5298);
                 flex-direction: column;
                 padding: 70px 20px 20px;
                 transition: left 0.3s ease-in-out;
                 z-index: 999;
                 box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
             }
-
             .nav-links.active {
-                left: 0; /* Slide in from left */
+                left: 0;
                 display: flex;
             }
-
-            .nav-links li {
-                width: 100%;
-                margin: 10px 0;
-            }
-
             .nav-links a {
                 padding: 15px 20px;
-                color: #fff;
                 font-size: 1.1rem;
                 text-align: left;
                 border-radius: 8px;
-                transition: background-color 0.3s, transform 0.2s;
             }
-
             .nav-links a:hover {
                 background-color: rgba(255, 255, 255, 0.1);
-                transform: translateX(10px); /* Slight shift on hover */
+                transform: translateX(10px);
             }
-
             .main-container {
                 flex-direction: column;
                 text-align: center;
             }
-
             .auth-buttons {
                 flex-direction: column;
                 gap: 10px;
             }
-
             .auth-btn {
                 width: 100%;
             }
-
             .navbar-brand {
                 font-size: 1.4rem;
-            }
-
-            .steps-container, .team-members, .founders-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .team-member, .founder-card {
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .map-container iframe {
-                height: 200px;
             }
         }
     </style>
@@ -694,9 +402,9 @@
         <button class="nav-toggle" id="navToggle">☰</button>
         <span class="navbar-brand" id="navbarBrand">Library Management System</span>
         <ul class="nav-links" id="navMenu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
 
@@ -704,7 +412,7 @@
     <div class="overlay" id="overlay"></div>
 
     <!-- Home Section -->
-    <div class="main-container" id="homeSection">
+    <div class="main-container">
         <div class="welcome-section">
             <h1>Discover Knowledge</h1>
             <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
@@ -919,188 +627,6 @@
         </div>
     </div>
 
-    <!-- About Section -->
-    <section class="about-section" id="aboutSection">
-        <div class="main-container">
-            <div class="about-content">
-                <h1 class="about-heading">About Us</h1>
-                <p class="about-subtitle">Empowering libraries with free, innovative solutions</p>
-
-                <div class="about-block aim-block">
-                    <h2>Our Aim</h2>
-                    <p>
-                        The Library Management System is a free, open-access application designed to bridge the gap between librarians and users. Anyone can create an account using a library name and credentials, manage users, add books, return books, and track all operations in real-time. Our goal is to provide an intermediate platform that simplifies library management, offering immediate updates and a seamless experience at no cost.
-                    </p>
-                    <a href="#learn-more" class="read-more">Learn More</a>
-                </div>
-
-                <div class="about-block how-it-works-block">
-                    <h2>How It Works</h2>
-                    <div class="steps-container">
-                        <div class="step">
-                            <div class="step-icon"><i class="fas fa-user-plus"></i></div>
-                            <p><strong>Create Account:</strong> Admins register with library credentials.</p>
-                        </div>
-                        <div class="step">
-                            <div class="step-icon"><i class="fas fa-book"></i></div>
-                            <p><strong>Manage Books:</strong> Add, return, and track books instantly.</p>
-                        </div>
-                        <div class="step">
-                            <div class="step-icon"><i class="fas fa-users"></i></div>
-                            <p><strong>User Access:</strong> Students log in with library name and roll number to view books.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="about-block team-block">
-                    <h2>Meet Shinobi Systems</h2>
-                    <p>
-                        We are Shinobi Systems, a company dedicated to providing cutting-edge, user-friendly applications that solve real-world problems. Our team of passionate developers is committed to transforming library management for the better.
-                    </p>
-                    <div class="team-members">
-                        <div class="team-member">
-                            <div class="member-photo"></div>
-                            <h3>M. Sai Teja</h3>
-                            <p>Full Stack Developer</p>
-                        </div>
-                        <div class="team-member">
-                            <div class="member-photo"></div>
-                            <h3>G. Saikiran</h3>
-                            <p>Full Stack Developer</p>
-                        </div>
-                        <div class="team-member">
-                            <div class="member-photo"></div>
-                            <h3>C. Abbas</h3>
-                            <p>Frontend Developer</p>
-                        </div>
-                        <div class="team-member">
-                            <div class="member-photo"></div>
-                            <h3>K. Bhavana</h3>
-                            <p>Frontend Developer</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="about-block vision-block">
-                    <h2>Our Vision & Mission</h2>
-                    <p><strong>Vision:</strong> To revolutionize library management with innovative, free tools.</p>
-                    <p><strong>Mission:</strong> Automate library processes, enhance user experience, and support thousands of libraries worldwide by 2030.</p>
-                </div>
-
-                <div class="cta-block">
-                    <h2>Ready to Experience It?</h2>
-                    <p>Join us today and see the live demo of our Library Management System!</p>
-                    <button class="demo-btn">Request a Live Demo</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section" id="contactSection">
-        <div class="main-container">
-            <div class="contact-content">
-                <h1 class="contact-heading">Contact Us</h1>
-                <p class="contact-subtitle">We’re here to assist you with your library management needs!</p>
-
-                <div class="contact-block location-block">
-                    <h2>Our Location</h2>
-                    <p>Shinobi Systems HQ</p>
-                    <p>123 Innovation Street, Tech City, India</p>
-                    <div class="map-container">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509371!2d144.95373531531688!3d-37.81627997975195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d7e5b5e7e5f!2sVictoria!5e0!3m2!1sen!2sau!4v1634567890123" 
-                                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                </div>
-
-                <div class="contact-block company-contact-block">
-                    <h2>Get in Touch</h2>
-                    <p><i class="fas fa-phone"></i> +91-98765-43210</p>
-                    <p><i class="fas fa-envelope"></i> <a href="mailto:support@shinobisystems.com">support@shinobisystems.com</a></p>
-                </div>
-
-                <div class="contact-block founders-block">
-                    <h2>Meet Our Founders</h2>
-                    <div class="founders-container">
-                        <div class="founder-card">
-                            <div class="founder-photo"></div>
-                            <h3>M. Sai Teja</h3>
-                            <p>Full Stack Developer</p>
-                            <p><i class="fas fa-envelope"></i> <a href="mailto:msaiteja@shinobisystems.com">msaiteja@shinobisystems.com</a></p>
-                            <div class="social-links">
-                                <a href="https://linkedin.com/in/msaiteja" target="_blank"><i class="fab fa-linkedin"></i></a>
-                                <a href="https://instagram.com/msaiteja" target="_blank"><i class="fab fa-instagram"></i></a>
-                                <a href="https://github.com/msaiteja" target="_blank"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                        <div class="founder-card">
-                            <div class="founder-photo"></div>
-                            <h3>G. Saikiran</h3>
-                            <p>Full Stack Developer</p>
-                            <p><i class="fas fa-envelope"></i> <a href="mailto:gsaikiran@shinobisystems.com">gsaikiran@shinobisystems.com</a></p>
-                            <div class="social-links">
-                                <a href="https://linkedin.com/in/gsaikiran" target="_blank"><i class="fab fa-linkedin"></i></a>
-                                <a href="https://instagram.com/gsaikiran" target="_blank"><i class="fab fa-instagram"></i></a>
-                                <a href="https://github.com/gsaikiran" target="_blank"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                        <div class="founder-card">
-                            <div class="founder-photo"></div>
-                            <h3>C. Abbas</h3>
-                            <p>Frontend Developer</p>
-                            <p><i class="fas fa-envelope"></i> <a href="mailto:cabbas@shinobisystems.com">cabbas@shinobisystems.com</a></p>
-                            <div class="social-links">
-                                <a href="https://linkedin.com/in/cabbas" target="_blank"><i class="fab fa-linkedin"></i></a>
-                                <a href="https://instagram.com/cabbas" target="_blank"><i class="fab fa-instagram"></i></a>
-                                <a href="https://github.com/cabbas" target="_blank"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                        <div class="founder-card">
-                            <div class="founder-photo"></div>
-                            <h3>K. Bhavana</h3>
-                            <p>Frontend Developer</p>
-                            <p><i class="fas fa-envelope"></i> <a href="mailto:kbhavana@shinobisystems.com">kbhavana@shinobisystems.com</a></p>
-                            <div class="social-links">
-                                <a href="https://linkedin.com/in/kbhavana" target="_blank"><i class="fab fa-linkedin"></i></a>
-                                <a href="https://instagram.com/kbhavana" target="_blank"><i class="fab fa-instagram"></i></a>
-                                <a href="https://github.com/kbhavana" target="_blank"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="contact-block feedback-block">
-                    <h2>Send Us Your Feedback</h2>
-                    <form id="feedbackForm">
-                        <div class="input-group">
-                            <label for="feedbackName">Name</label>
-                            <input type="text" id="feedbackName" name="name" placeholder="Enter your name" required>
-                            <span class="error-text" id="feedbackNameError"></span>
-                        </div>
-                        <div class="input-group">
-                            <label for="feedbackEmail">Email</label>
-                            <input type="email" id="feedbackEmail" name="email" placeholder="Enter your email" required>
-                            <span class="error-text" id="feedbackEmailError"></span>
-                        </div>
-                        <div class="input-group">
-                            <label for="feedbackMessage">Message</label>
-                            <textarea id="feedbackMessage" name="message" placeholder="Your feedback" rows="5" required></textarea>
-                            <span class="error-text" id="feedbackMessageError"></span>
-                        </div>
-                        <span class="error-text" id="feedbackGeneralError"></span>
-                        <button type="submit" class="submit-btn">Submit Feedback</button>
-                        <div class="loading-overlay" id="feedbackLoading">
-                            <div class="book-loader">
-                                <div class="book-front"></div>
-                                <div class="book-back"></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
         <p>© 2025 <a href="#">Shinobi Systems</a></p>
@@ -1118,12 +644,6 @@
         const navMenu = document.getElementById('navMenu');
         const overlay = document.getElementById('overlay');
         const navbarBrand = document.getElementById('navbarBrand');
-        const homeLink = document.querySelector('.nav-links a[href="#home"]');
-        const aboutLink = document.querySelector('.nav-links a[href="#about"]');
-        const contactLink = document.querySelector('.nav-links a[href="#contact"]');
-        const homeSection = document.getElementById('homeSection');
-        const aboutSection = document.getElementById('aboutSection');
-        const contactSection = document.getElementById('contactSection');
         const studentBtn = document.getElementById('studentBtn');
         const adminBtn = document.getElementById('adminBtn');
         const studentLogin = document.getElementById('studentLogin');
@@ -1140,7 +660,6 @@
         const forgotPasswordForm = document.getElementById('forgotPasswordForm');
         const forgotOtpForm = document.getElementById('forgotOtpForm');
         const resetPasswordForm = document.getElementById('resetPasswordForm');
-        const feedbackForm = document.getElementById('feedbackForm');
         const registerLink = document.getElementById('registerLink');
         const forgotPasswordLink = document.getElementById('forgotPasswordLink');
         const backToLogin = document.getElementById('backToLogin');
@@ -1156,7 +675,6 @@
         const forgotLoading = document.getElementById('forgotLoading');
         const forgotOtpLoading = document.getElementById('forgotOtpLoading');
         const resetLoading = document.getElementById('resetLoading');
-        const feedbackLoading = document.getElementById('feedbackLoading');
         const resendOtp = document.getElementById('resendOtp');
         const resendForgotOtp = document.getElementById('resendForgotOtp');
         const toggleRegisterPassword = document.getElementById('toggleRegisterPassword');
@@ -1184,33 +702,6 @@
             overlay.classList.remove('active');
             navToggle.textContent = '☰';
             resetForms();
-        }
-
-        // Navigation Handlers
-        navbarBrand.addEventListener('click', showHome);
-        homeLink.addEventListener('click', (e) => { e.preventDefault(); showHome(); });
-        aboutLink.addEventListener('click', (e) => { e.preventDefault(); showAbout(); });
-        contactLink.addEventListener('click', (e) => { e.preventDefault(); showContact(); });
-
-        function showHome() {
-            homeSection.style.display = 'flex';
-            aboutSection.style.display = 'none';
-            contactSection.style.display = 'none';
-            closeMenu();
-        }
-
-        function showAbout() {
-            homeSection.style.display = 'none';
-            aboutSection.style.display = 'block';
-            contactSection.style.display = 'none';
-            closeMenu();
-        }
-
-        function showContact() {
-            homeSection.style.display = 'none';
-            aboutSection.style.display = 'none';
-            contactSection.style.display = 'block';
-            closeMenu();
         }
 
         // Form Switching
@@ -1314,7 +805,6 @@
         forgotPasswordForm.addEventListener('submit', handleForgotPassword);
         forgotOtpForm.addEventListener('submit', handleForgotOtpVerification);
         resetPasswordForm.addEventListener('submit', handleResetPassword);
-        feedbackForm.addEventListener('submit', handleFeedback);
 
         async function handleStudentLogin(e) {
             e.preventDefault();
@@ -1542,40 +1032,6 @@
             return isValid;
         }
 
-        async function handleFeedback(e) {
-            e.preventDefault();
-            clearErrors('feedback');
-            if (!navigator.onLine) return showGeneralError('feedback', 'You are offline.');
-            const name = document.getElementById('feedbackName').value.trim();
-            const email = document.getElementById('feedbackEmail').value.trim();
-            const message = document.getElementById('feedbackMessage').value.trim();
-            if (!validateFeedback(name, email, message)) return;
-            feedbackLoading.classList.add('active');
-            try {
-                const response = await fetch(`${api}feedback/`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ name, email, message }) 
-                });
-                if (!response.ok) throw new Error('Feedback submission failed');
-                showSuccess('Thank you for your feedback!');
-                feedbackForm.reset();
-            } catch (error) {
-                showGeneralError('feedback', 'Failed to submit feedback.');
-                console.error('Feedback error:', error);
-            } finally {
-                feedbackLoading.classList.remove('active');
-            }
-        }
-
-        function validateFeedback(name, email, message) {
-            let isValid = true;
-            if (!name) { showError('feedback', 'Name', 'Name is required'); isValid = false; }
-            if (!email || !/\S+@\S+\.\S+/.test(email)) { showError('feedback', 'Email', 'Valid email is required'); isValid = false; }
-            if (!message) { showError('feedback', 'Message', 'Message is required'); isValid = false; }
-            return isValid;
-        }
-
         // Utility Functions
         function showErrors(type, usernameError, passwordError) {
             if (usernameError) showError(type, type === 'student' ? 'Username' : 'Email', `${type === 'student' ? 'Username' : 'Email'} is required`);
@@ -1598,7 +1054,6 @@
                 type === 'forgot' ? 'forgotPasswordBox' :
                 type === 'forgotOtp' ? 'forgotOtpBox' :
                 type === 'reset' ? 'resetPasswordBox' :
-                type === 'feedback' ? 'feedbackForm' :
                 `${type}${type === 'register' ? 'Box' : 'Login'}`
             );
             form.querySelectorAll('.error-text').forEach(el => el.textContent = '');
@@ -1611,11 +1066,6 @@
             successPopup.classList.add('active');
             overlay.classList.add('active');
         }
-
-        // Demo Button
-        document.querySelector('.demo-btn').addEventListener('click', () => {
-            alert('Request for a live demo has been submitted! We’ll get back to you soon.');
-        });
 
         // Initialize
         switchForm('student');

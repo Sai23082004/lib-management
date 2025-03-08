@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="wyV9hIs46a7cM1ddiHYdETBjstGnW1ddhMFDGZTWFNE" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Library Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Same CSS as in your original file */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6f5;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: #4285f4;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            flex-grow: 1;
+            cursor: pointer;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: block;
+        }
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-grow: 1;
+            gap: 20px;
+        }
+        /* Shared Section Styles */
+        .about-section {
+            background-color: #f5f6f5;
+            padding: 40px 0;
+            display: block;
+        }
+        .about-content {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        .about-heading {
+            font-size: 2.5rem;
+            color: #4285f4;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease-in-out;
+        }
+        .about-subtitle {
+            font-size: 1.2rem;
+            color: #5f6368;
+            margin-bottom: 40px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        .about-block {
+            margin-bottom: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-in-out;
+        }
+        .about-block h2 {
+            font-size: 1.8rem;
+            color: #202124;
+            margin-bottom: 15px;
+        }
+        .about-block p {
+            font-size: 1rem;
+            color: #5f6368;
+        }
+        .read-more {
+            color: #4285f4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .read-more:hover {
+            text-decoration: underline;
+        }
+        .steps-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+        .step:hover {
+            transform: scale(1.05);
+        }
+        .step-icon {
+            font-size: 2rem;
+            color: #4285f4;
+            margin-bottom: 10px;
+        }
+        .team-members {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .team-member {
+            text-align: center;
+            width: 220px;
+            padding: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+        }
+        .member-photo {
+            width: 100px;
+            height: 100px;
+            background: #4285f4;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            animation: pulse 2s infinite;
+        }
+        .team-member h3 {
+            font-size: 1.2rem;
+            color: #202124;
+        }
+        .team-member p {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+        .cta-block {
+            background: #4285f4;
+            color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .cta-block h2 {
+            color: #fff;
+        }
+        .demo-btn {
+            padding: 12px 25px;
+            background-color: #fff;
+            color: #4285f4;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .demo-btn:hover {
+            background-color: #e8f0fe;
+            color: #3267d6;
+        }
+        /* Footer */
+        .footer {
+            background-color: #4285f4;
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                width: 250px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1e3c72, #2a5298);
+                flex-direction: column;
+                padding: 70px 20px 20px;
+                transition: left 0.3s ease-in-out;
+                z-index: 999;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            }
+            .nav-links.active {
+                left: 0;
+                display: flex;
+            }
+            .nav-links a {
+                padding: 15px 20px;
+                font-size: 1.1rem;
+                text-align: left;
+                border-radius: 8px;
+            }
+            .nav-links a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                transform: translateX(10px);
+            }
+            .main-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .steps-container, .team-members {
+                flex-direction: column;
+                align-items: center;
+            }
+            .team-member {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <button class="nav-toggle" id="navToggle">☰</button>
+        <span class="navbar-brand">Library Management System</span>
+        <ul class="nav-links" id="navMenu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="main-container">
+            <div class="about-content">
+                <h1 class="about-heading">About Us</h1>
+                <p class="about-subtitle">Empowering libraries with free, innovative solutions</p>
+
+                <div class="about-block aim-block">
+                    <h2>Our Aim</h2>
+                    <p>
+                        The Library Management System is a free, open-access application designed to bridge the gap between librarians and users. Anyone can create an account using a library name and credentials, manage users, add books, return books, and track all operations in real-time. Our goal is to provide an intermediate platform that simplifies library management, offering immediate updates and a seamless experience at no cost.
+                    </p>
+                    <a href="#learn-more" class="read-more">Learn More</a>
+                </div>
+
+                <div class="about-block how-it-works-block">
+                    <h2>How It Works</h2>
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                            <p><strong>Create Account:</strong> Admins register with library credentials.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon"><i class="fas fa-book"></i></div>
+                            <p><strong>Manage Books:</strong> Add, return, and track books instantly.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon"><i class="fas fa-users"></i></div>
+                            <p><strong>User Access:</strong> Students log in with library name and roll number to view books.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-block team-block">
+                    <h2>Meet Shinobi Systems</h2>
+                    <p>
+                        We are Shinobi Systems, a company dedicated to providing cutting-edge, user-friendly applications that solve real-world problems. Our team of passionate developers is committed to transforming library management for the better.
+                    </p>
+                    <div class="team-members">
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>M. Sai Teja</h3>
+                            <p>Full Stack Developer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>G. Saikiran</h3>
+                            <p>Full Stack Developer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>C. Abbas</h3>
+                            <p>Frontend Developer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-photo"></div>
+                            <h3>K. Bhavana</h3>
+                            <p>Frontend Developer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-block vision-block">
+                    <h2>Our Vision & Mission</h2>
+                    <p><strong>Vision:</strong> To revolutionize library management with innovative, free tools.</p>
+                    <p><strong>Mission:</strong> Automate library processes, enhance user experience, and support thousands of libraries worldwide by 2030.</p>
+                </div>
+
+                <div class="cta-block">
+                    <h2>Ready to Experience It?</h2>
+                    <p>Join us today and see the live demo of our Library Management System!</p>
+                    <button class="demo-btn">Request a Live Demo</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 <a href="#">Shinobi Systems</a></p>
+    </footer>
+
+    <script>
+        // Navbar Toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.textContent = navMenu.classList.contains('active') ? '✖' : '☰';
+        });
+
+        // Demo Button
+        document.querySelector('.demo-btn').addEventListener('click', () => {
+            alert('Request for a live demo has been submitted! We’ll get back to you soon.');
+        });
+    </script>
+</body>
+</html>

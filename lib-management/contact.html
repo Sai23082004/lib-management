@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="wyV9hIs46a7cM1ddiHYdETBjstGnW1ddhMFDGZTWFNE" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Library Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Same CSS as in your original file */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6f5;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: #4285f4;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            flex-grow: 1;
+            cursor: pointer;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: block;
+        }
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-grow: 1;
+            gap: 20px;
+        }
+        /* Shared Section Styles */
+        .contact-section {
+            background-color: #f5f6f5;
+            padding: 40px 0;
+            display: block;
+        }
+        .contact-content {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        .contact-heading {
+            font-size: 2.5rem;
+            color: #4285f4;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease-in-out;
+        }
+        .contact-subtitle {
+            font-size: 1.2rem;
+            color: #5f6368;
+            margin-bottom: 40px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        .contact-block {
+            margin-bottom: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-in-out;
+        }
+        .contact-block h2 {
+            font-size: 1.8rem;
+            color: #202124;
+            margin-bottom: 15px;
+        }
+        .contact-block p {
+            font-size: 1rem;
+            color: #5f6368;
+        }
+        .contact-block a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+        .contact-block a:hover {
+            text-decoration: underline;
+        }
+        .map-container {
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .founders-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .founder-card {
+            text-align: center;
+            width: 220px;
+            padding: 15px;
+            background: #e8f0fe;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .founder-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+        }
+        .founder-photo {
+            width: 100px;
+            height: 100px;
+            background: #4285f4;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            animation: pulse 2s infinite;
+        }
+        .founder-card h3 {
+            font-size: 1.2rem;
+            color: #202124;
+        }
+        .founder-card p {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+        .social-links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .social-links a {
+            color: #4285f4;
+            font-size: 1.5rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .social-links a:hover {
+            color: #3267d6;
+            transform: scale(1.2);
+        }
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #5f6368;
+            margin-bottom: 5px;
+        }
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .input-group textarea {
+            resize: vertical;
+        }
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: #4285f4;
+            outline: none;
+        }
+        .error-text {
+            color: #d93025;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+        .input-group.error .error-text {
+            display: block;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #3267d6;
+        }
+        /* Footer */
+        .footer {
+            background-color: #4285f4;
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                width: 250px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1e3c72, #2a5298);
+                flex-direction: column;
+                padding: 70px 20px 20px;
+                transition: left 0.3s ease-in-out;
+                z-index: 999;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            }
+            .nav-links.active {
+                left: 0;
+                display: flex;
+            }
+            .nav-links a {
+                padding: 15px 20px;
+                font-size: 1.1rem;
+                text-align: left;
+                border-radius: 8px;
+            }
+            .nav-links a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                transform: translateX(10px);
+            }
+            .main-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .founders-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .founder-card {
+                width: 100%;
+                max-width: 300px;
+            }
+            .map-container iframe {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <button class="nav-toggle" id="navToggle">☰</button>
+        <span class="navbar-brand">Library Management System</span>
+        <ul class="nav-links" id="navMenu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="main-container">
+            <div class="contact-content">
+                <h1 class="contact-heading">Contact Us</h1>
+                <p class="contact-subtitle">We’re here to assist you with your library management needs!</p>
+
+                <div class="contact-block location-block">
+                    <h2>Our Location</h2>
+                    <p>Shinobi Systems HQ</p>
+                    <p>123 Innovation Street, Tech City, India</p>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509371!2d144.95373531531688!3d-37.81627997975195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d7e5b5e7e5f!2sVictoria!5e0!3m2!1sen!2sau!4v1634567890123" 
+                                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <div class="contact-block company-contact-block">
+                    <h2>Get in Touch</h2>
+                    <p><i class="fas fa-phone"></i> +91-98765-43210</p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:support@shinobisystems.com">support@shinobisystems.com</a></p>
+                </div>
+
+                <div class="contact-block founders-block">
+                    <h2>Meet Our Founders</h2>
+                    <div class="founders-container">
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>M. Sai Teja</h3>
+                            <p>Full Stack Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:msaiteja@shinobisystems.com">msaiteja@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/msaiteja" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/msaiteja" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/msaiteja" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>G. Saikiran</h3>
+                            <p>Full Stack Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:gsaikiran@shinobisystems.com">gsaikiran@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/gsaikiran" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/gsaikiran" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/gsaikiran" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>C. Abbas</h3>
+                            <p>Frontend Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:cabbas@shinobisystems.com">cabbas@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/cabbas" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/cabbas" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/cabbas" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="founder-card">
+                            <div class="founder-photo"></div>
+                            <h3>K. Bhavana</h3>
+                            <p>Frontend Developer</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:kbhavana@shinobisystems.com">kbhavana@shinobisystems.com</a></p>
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/kbhavana" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://instagram.com/kbhavana" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://github.com/kbhavana" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-block feedback-block">
+                    <h2>Send Us Your Feedback</h2>
+                    <form id="feedbackForm">
+                        <div class="input-group">
+                            <label for="feedbackName">Name</label>
+                            <input type="text" id="feedbackName" name="name" placeholder="Enter your name" required>
+                            <span class="error-text" id="feedbackNameError"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="feedbackEmail">Email</label>
+                            <input type="email" id="feedbackEmail" name="email" placeholder="Enter your email" required>
+                            <span class="error-text" id="feedbackEmailError"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="feedbackMessage">Message</label>
+                            <textarea id="feedbackMessage" name="message" placeholder="Your feedback" rows="5" required></textarea>
+                            <span class="error-text" id="feedbackMessageError"></span>
+                        </div>
+                        <span class="error-text" id="feedbackGeneralError"></span>
+                        <button type="submit" class="submit-btn">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 <a href="#">Shinobi Systems</a></p>
+    </footer>
+
+    <script>
+        // API Base URL
+        const api = "https://lib-management-backend-hu2z.onrender.com/api/";
+
+        // DOM Elements
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        const feedbackForm = document.getElementById('feedbackForm');
+
+        // Navbar Toggle
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.textContent = navMenu.classList.contains('active') ? '✖' : '☰';
+        });
+
+        // Feedback Form Handler
+        feedbackForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors('feedback');
+            if (!navigator.onLine) return showGeneralError('feedback', 'You are offline.');
+            const name = document.getElementById('feedbackName').value.trim();
+            const email = document.getElementById('feedbackEmail').value.trim();
+            const message = document.getElementById('feedbackMessage').value.trim();
+            if (!validateFeedback(name, email, message)) return;
+            try {
+                const response = await fetch(`${api}feedback/`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ name, email, message }) 
+                });
+                if (!response.ok) throw new Error('Feedback submission failed');
+                alert('Thank you for your feedback!');
+                feedbackForm.reset();
+            } catch (error) {
+                showGeneralError('feedback', 'Failed to submit feedback.');
+                console.error('Feedback error:', error);
+            }
+        });
+
+        function validateFeedback(name, email, message) {
+            let isValid = true;
+            if (!name) { showError('feedback', 'Name', 'Name is required'); isValid = false; }
+            if (!email || !/\S+@\S+\.\S+/.test(email)) { showError('feedback', 'Email', 'Valid email is required'); isValid = false; }
+            if (!message) { showError('feedback', 'Message', 'Message is required'); isValid = false; }
+            return isValid;
+        }
+
+        function showError(type, field, message) {
+            const errorElement = document.getElementById(`${type}${field}Error`);
+            errorElement.textContent = message;
+            errorElement.parentElement.classList.add('error');
+        }
+
+        function showGeneralError(type, message) {
+            document.getElementById(`${type}GeneralError`).textContent = message;
+        }
+
+        function clearErrors(type) {
+            const form = document.getElementById('feedbackForm');
+            form.querySelectorAll('.error-text').forEach(el => el.textContent = '');
+            form.querySelectorAll('.input-group').forEach(el => el.classList.remove('error'));
+            document.getElementById(`${type}GeneralError`).textContent = '';
+        }
+    </script>
+</body>
+</html>
